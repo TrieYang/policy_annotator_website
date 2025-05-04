@@ -1,0 +1,84 @@
+### **Task**  
+Summarize the **Policy Compliance Evaluation Results for a Specific Policy** into a concise and human-readable format that highlights key weaknesses and provides actionable suggestions. This output is intended for end-users viewing results on a web platform and must be easily scannable.
+
+---
+
+### **Instructions**
+- Input will be a JSON array containing evaluation results for each section and article, where each item has:
+  - `section`: The model card section being evaluated  
+  - `article`: The policy article number  
+  - `score`: The compliance score (0–5)  
+  - `description`: A short explanation of the issue or deficiency if `score < 5`
+
+---
+
+- Your task is to:
+  1. **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
+  2. For items with `score < 5`, group them by **common themes** (e.g., privacy issues, lack of documentation, missing impact assessment).
+  3. Generate a summary with the following format:
+  
+---
+
+### **Output Format**
+```
+#### 🟠 {{POLICY_DOC_NAME}} – Partial Compliance, Improvements Needed
+
+**Key Issues Identified:**
+- **[Short Bold Summary of Issue]** – One-line explanation (from description)
+- ...
+- [Add 3–6 bullet points max]
+
+**Suggested Fixes:**  
+Summarize the main areas needing improvement, using clear and constructive language. This paragraph should be 2–3 sentences suggesting what can be added or improved to help the model card achieve compliance.
+```
+
+---
+
+### **Formatting Rules**
+- Do NOT show raw JSON data.
+- Do NOT include any extra conversational phrasing or meta commentary. This output will be displayed directly on the frontend and should be ready for users to read without modification.
+- Keep bullet points to **6 or fewer** for clarity.
+- Keep the tone **neutral, informative, and professional**.
+
+---
+
+### **Example Input**
+```json
+{
+  "policy": "AIDA",
+  "evaluation_result": [
+    {
+      "section": "System Overview",
+      "article": "1",
+      "score": 3,
+      "description": "The system overview lacks specific details about data processing methods and retention periods."
+    },
+    {
+      "section": "Primary intended uses",
+      "article": "2",
+      "score": 2,
+      "description": "The intended uses section does not clearly address potential privacy risks associated with the system's deployment."
+    }
+  ]
+}
+```
+
+---
+
+### **Example Output**
+```
+#### 🟠 AIDA – Partial Compliance, Improvements Needed
+
+**Key Issues Identified:**
+- **Missing data handling details** – The system overview lacks clarity on how data is processed and retained.
+- **Privacy risks unaddressed** – Intended use scenarios do not consider potential privacy harms.
+
+**Suggested Fixes:**  
+To improve compliance, the model card should clearly document data processing procedures and specify how long data is retained. Additionally, a stronger risk assessment framework should be included to identify and mitigate privacy-related concerns in deployment contexts.
+```
+---
+
+###Input
+
+Policy name: {{POLICY_DOC_NAME}}
+Evaluation Result: {{EVALUATION_RESULT}}
