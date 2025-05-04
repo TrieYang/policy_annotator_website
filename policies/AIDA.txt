@@ -1,0 +1,7 @@
+| Section Number | Paragraph Number | Content |
+|---------------|-----------------|---------|
+| 1 | | This Act may be cited as the Artificial Intelligence and Data Act. |
+| 2 | | The following definitions apply in this Act. artificial intelligence system means a technological system that, autonomously or partly autonomously, processes data related to human activities through the use of a genetic algorithm, a neural network, machine learning or another technique in order to generate content or make decisions, recommendations or predictions. (système d'intelligence artificielle) person includes a trust, a joint venture, a partnership, an unincorporated association and any other legal entity. (personne) personal information has the meaning assigned by subsections 2(1) and (3) of the Consumer Privacy Protection Act. (renseignement personnel) |
+| 3 | (1) | This Act does not apply with respect to a government institution as defined in section 3 of the Privacy Act. |
+| 3 | (2) | This Act does not apply with respect to a product, service or activity that is under the direction or control of (a) the Minister of National Defence; (b) the Director of the Canadian Security Intelligence Service; (c) the Chief of the Communications Security Establishment; or (d) any other person who is responsible for a federal or provincial department or agency and who is prescribed by regulation. |
+| 3 | (3) | The Governor in Council may make regulations prescribing persons for the purpose of paragraph (2)‍(d). |

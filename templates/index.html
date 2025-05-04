@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Policy Annotator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4A90E2;
+            --secondary-color: #6C63FF;
+            --background-color: #F8F9FA;
+            --text-color: #2C3E50;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1rem 0;
+            margin-bottom: 3rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-color) !important;
+        }
+
+        .navbar-brand i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .upload-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .upload-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            border: 2px solid #e9ecef;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        /* Custom file input styling */
+        .file-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: -9999px;
+            opacity: 0;
+        }
+
+        .custom-file-input {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.75rem;
+            background-color: white;
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+        }
+
+        .custom-file-input:hover {
+            border-color: var(--secondary-color);
+            background-color: rgba(74, 144, 226, 0.05);
+        }
+
+        .custom-file-input i {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+        }
+
+        .custom-file-input span {
+            font-weight: 500;
+        }
+
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            text-align: center;
+            display: none;
+        }
+
+        .file-name.show {
+            display: block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .template-link {
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .template-link:hover {
+            color: var(--secondary-color);
+        }
+
+        .loading {
+            display: none;
+            margin: 2rem 0;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading i {
+            color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        .loading p {
+            color: #6c757d;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .heatmap-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-top: 2rem;
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            position: relative;
+        }
+
+        .heatmap-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .color-bar {
+            width: 300px;
+            height: 32px;
+            overflow: visible;
+            display: flex;
+        }
+
+        .color-segment {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-segment:hover {
+            opacity: 0.8;
+        }
+
+        /* Color segments */
+        .color-segment:nth-child(1) { background-color: rgb(255,255,204); }
+        .color-segment:nth-child(2) { background-color: rgb(161,218,180); }
+        .color-segment:nth-child(3) { background-color: rgb(100,181,205); }
+        .color-segment:nth-child(4) { background-color: rgb(54,130,189); }
+        .color-segment:nth-child(5) { background-color: rgb(8,88,158); }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            background-color: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+            width: max-content;
+            max-width: 220px;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .color-segment:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .heatmap-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .scoring-guide {
+            margin-top: 2rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .scoring-guide h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            cursor: help;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .info-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2C3E50 transparent transparent transparent;
+        }
+
+        .info-icon:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .info-tooltip p {
+            margin: 0 0 0.75rem 0;
+        }
+
+        .info-tooltip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .scoring-guide table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .scoring-guide th,
+        .scoring-guide td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .scoring-guide th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+        }
+
+        .scoring-guide tr:nth-child(even) {
+            background-color: white;
+        }
+
+        .scoring-guide .score {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .side-by-side-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .model-card-display {
+            background: #f8f9fa;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            position: relative;
+            height: 800px;  /* Fixed height */
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for scrollable content */
+        .model-card-scroll {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .model-card-content {
+            padding: 0.3rem;
+            padding-top: 0;
+        }
+
+        .heatmap-display {
+            display: none;
+        }
+
+        #heatmapIframe {
+            width: 100%;
+            height: 800px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 95%;
+            padding: 0 2rem;
+        }
+
+        .policy-selector {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector:hover {
+            border-color: var(--primary-color);
+        }
+
+        .policy-options {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .summary-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .policy-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+            position: relative;
+        }
+
+        .policy-content {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .policy-content.collapsed::after {
+            display: none;
+        }
+
+        .show-more-wrapper {
+            display: none;
+        }
+
+        .policy-name {
+            display: none;  /* Hide the old heading since it's in markdown now */
+        }
+
+        .summary-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .summary-content h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-content strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .summary-content ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-content li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .summary-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .summary-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add styles for the policy icon and name */
+        .policy-icon {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        /* Style for the orange circle emoji */
+        .status-emoji {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Add styles for top-level summary */
+        .top-level-summary {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .top-level-summary h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .top-level-summary strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .top-level-summary ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .top-level-summary li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .top-level-summary li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .top-level-summary p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add styles for the view toggle */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .view-toggle label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(32px);
+        }
+
+        /* Add styles for the section heatmap */
+        .section-heatmap {
+            width: 100%;
+            max-height: 30px;
+            display: none;
+        }
+
+        .section-heatmap.active {
+            display: block;
+        }
+
+        .section-summary.active {
+            display: block;
+        }
+
+        .section-summary {
+            display: none;
+        }
+
+        .model-card-table table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            table-layout: fixed;
+            padding: 0.6rem;
+        }
+
+        .model-card-table th,
+        .model-card-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.3rem;
+            text-align: left;
+            font-size: 0.85rem;
+            vertical-align: top;
+            height: 20px;
+        }
+
+        .model-card-table th:nth-child(1),
+        .model-card-table td:nth-child(1) {
+            width: 15%;
+        }
+
+        .model-card-table th:nth-child(2),
+        .model-card-table td:nth-child(2) {
+            width: 25%;  /* Reduced from 35% */
+            height: 20px;            
+            white-space: nowrap;        /* prevent text from wrapping */
+            text-overflow: ellipsis;  
+            overflow: hidden;  
+        }
+
+        .model-card-table th:nth-child(3),
+        .model-card-table td:nth-child(3) {
+            width: 60%;  /* Increased from 50% */
+        }
+
+        .section-heatmap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .model-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .model-card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        /* Add new styles for the policy selector dropdown */
+        .policy-selector-dropdown {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .policy-selector-dropdown select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background-color: white;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            font-size: 1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector-dropdown select:hover {
+            border-color: var(--primary-color);
+        }
+
+        .policy-selector-dropdown select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        .policy-selector-dropdown::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--primary-color);
+        }
+
+        .policy-evaluation {
+            display: none;
+        }
+
+        .policy-evaluation.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-brain"></i>
+                AI Policy Annotator
+            </a>
+        </div>
+    </nav>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="upload-section">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                    </div>
+                    <form action="/upload" method="post" enctype="multipart/form-data" id="uploadForm">
+                        <div class="mb-4">
+                            <label for="modelCard" class="form-label">
+                                <i class="fas fa-file-alt"></i>
+                                Upload Your Model Card
+                            </label>
+                            <div class="file-input-wrapper">
+                                <input type="file" id="modelCard" name="model_card" accept=".txt" required>
+                                <label for="modelCard" class="custom-file-input">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose a file or drag it here</span>
+                                </label>
+                                <div class="file-name" id="fileName"></div>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-filter"></i>
+                                Select Policies to Analyze
+                            </label>
+                            <div class="policy-selector">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="selectAll" checked>
+                                    <label class="form-check-label" for="selectAll">
+                                        Select All Policies
+                                    </label>
+                                </div>
+                                <div class="policy-options">
+                                    <div class="form-check">
+                                        <input class="form-check-input policy-checkbox" type="checkbox" id="policy_EU" checked>
+                                        <label class="form-check-label" for="policy_EU">EU</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input policy-checkbox" type="checkbox" id="policy_AIDA" checked>
+                                        <label class="form-check-label" for="policy_AIDA">AIDA</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input policy-checkbox" type="checkbox" id="policy_CCPA" checked>
+                                        <label class="form-check-label" for="policy_CCPA">CCPA</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-4 text-center">
+                            <a href="/static/model_card_template.txt" class="template-link" download>
+                                <i class="fas fa-download"></i>
+                                <span>Download Model Card Template</span>
+                            </a>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-magic"></i>
+                            Generate Heatmap
+                        </button>
+                    </form>
+                </div>
+
+                <div class="loading text-center">
+                    <div class="spinner">
+                        <i class="fas fa-spinner fa-3x fa-spin"></i>
+                    </div>
+                    <p>Generating your heatmaps...</p>
+                </div>
+
+                <div class="heatmap-container" id="heatmapDisplay">
+                    <div id="heatmapWrappers"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('uploadForm');
+            const fileInput = document.getElementById('modelCard');
+            const fileNameDisplay = document.getElementById('fileName');
+            const loadingDiv = document.querySelector('.loading');
+            const heatmapContainer = document.querySelector('.heatmap-container');
+            const heatmapWrappers = document.getElementById('heatmapWrappers');
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const policyCheckboxes = document.querySelectorAll('.policy-checkbox');
+
+            // Handle select all checkbox
+            selectAllCheckbox.addEventListener('change', function() {
+                policyCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+
+            // Handle individual policy checkboxes
+            policyCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(policyCheckboxes).every(cb => cb.checked);
+                    selectAllCheckbox.checked = allChecked;
+                });
+            });
+
+            // Check for existing heatmaps in localStorage
+            const existingHeatmaps = JSON.parse(localStorage.getItem('currentHeatmaps') || '{"filenames": [], "modelCardContent": "", "summaries": {}}');
+            console.log("file length");
+            console.log(existingHeatmaps.filenames.length);
+            if (existingHeatmaps.filenames.length > 0) {
+                console.log("heatmaps exist");
+                console.log(existingHeatmaps.filenames.length);
+                displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries);
+                heatmapContainer.style.display = 'block';
+                setTimeout(() => heatmapContainer.classList.add('show'), 100);
+            }
+
+            function parseMarkdownTable(markdown) {
+                const lines = markdown.trim().split('\n');
+                let html = '<table class="table">';
+                
+                // Process each line
+                lines.forEach((line, index) => {
+                    if (line.trim().startsWith('|')) {
+                        const cells = line.split('|').filter(cell => cell.trim() !== '');
+                        
+                        // Skip separator lines (containing only dashes and pipes)
+                        if (!/^[-|\s]+$/.test(line)) {
+                            const isHeader = index === 0;
+                            html += '<tr>';
+                            cells.forEach(cell => {
+                                if (isHeader) {
+                                    html += `<th>${cell.trim()}</th>`;
+                                } else {
+                                    html += `<td>${cell.trim()}</td>`;
+                                }
+                            });
+                            html += '</tr>';
+                        }
+                    }
+                });
+                
+                html += '</table>';
+                return html;
+            }
+
+            function displayHeatmaps(heatmapFilenames, modelCardContent, summaries, topLevelSummary, sectionSummaries) {
+                // Configure marked.js
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    headerIds: false
+                });
+
+                heatmapWrappers.innerHTML = '';
+                
+                // Create a single wrapper for the evaluation result
+                const evaluationWrapper = document.createElement('div');
+                evaluationWrapper.className = 'evaluation-wrapper mb-4';
+                
+                let evaluationHTML = '';
+
+                // Add the main title once
+                evaluationHTML += `
+                    <h3 class="mb-4 text-center">
+                        <i class="fas fa-chart-area"></i>
+                        Evaluation Result
+                    </h3>
+                `;
+
+                // Add top-level summary if available
+                if (topLevelSummary) {
+                    const renderedTopSummary = marked.parse(topLevelSummary);
+                    const cleanTopSummary = DOMPurify.sanitize(renderedTopSummary);
+                    evaluationHTML += `
+                        <div class="top-level-summary mb-4">
+                            <div class="summary-content">
+                                ${cleanTopSummary}
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // Add individual policy evaluations section with dropdown
+                evaluationHTML += `
+                    <div class="summary-section mb-4">
+                        <h4 class="section-title">
+                            <i class="fas fa-file-alt"></i>
+                            Individual Policy Evaluations
+                        </h4>
+                        <div class="policy-selector-dropdown">
+                            <select id="policySelector">
+                                <option value="">Select a policy to view its evaluation</option>
+                                ${Object.keys(summaries).map(policyName => 
+                                    `<option value="${policyName}">${policyName.replace('_table', '')}</option>`
+                                ).join('')}
+                            </select>
+                        </div>
+                        <div id="policyEvaluations">
+                `;
+                
+                // Add individual policy summaries (initially hidden)
+                if (summaries && Object.keys(summaries).length > 0) {
+                    Object.entries(summaries).forEach(([policyName, summary], index) => {
+                        const renderedMarkdown = marked.parse(summary || 'No analysis available');
+                        const cleanHTML = DOMPurify.sanitize(renderedMarkdown);
+                        
+                        evaluationHTML += `
+                            <div class="policy-evaluation ${index === 0 ? '' : ''}" data-policy="${policyName}">
+                                <div class="policy-summary mb-3">
+                                    <div class="policy-content">
+                                        <div class="summary-content">
+                                            ${cleanHTML}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                } else {
+                    evaluationHTML += '<div class="summary-content">No policy analysis available</div>';
+                }
+                
+                evaluationHTML += '</div></div>';
+                
+                // Add styles
+                const styles = `
+                    <style>
+                        .section-title {
+                            font-size: 1.2rem;
+                            color: var(--text-color);
+                            margin-bottom: 1.5rem;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        }
+                        
+                        .top-level-summary {
+                            background: linear-gradient(to right, #ffffff, #f8f9fa);
+                            padding: 2rem;
+                            border-radius: 12px;
+                            border: 1px solid #e9ecef;
+                            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                            margin-bottom: 2rem;
+                        }
+
+                        .top-level-summary h3 {
+                            color: var(--primary-color);
+                            font-size: 1.4rem;
+                            margin-bottom: 1.5rem;
+                        }
+
+                        .policy-summary {
+                            background: white;
+                            padding: 1.5rem;
+                            border-radius: 8px;
+                            margin-bottom: 1rem;
+                            border: 1px solid #e9ecef;
+                        }
+
+                        .section-summary {
+                            background: #f8f9fa;
+                            padding: 1rem;
+                            border-radius: 8px;
+                            border: 1px solid #e9ecef;
+                            font-size: 0.9rem;
+                        }
+
+                        .section-summary .summary-content {
+                            max-height: 200px;
+                            overflow: hidden;
+                            transition: max-height 0.3s ease-out;
+                        }
+
+                        .section-summary .summary-content.expanded {
+                            max-height: none;
+                        }
+
+                        .section-summary .show-more-wrapper {
+                            text-align: right;
+                            margin-top: 0.5rem;
+                        }
+                    </style>
+                `;
+                
+                evaluationWrapper.innerHTML = styles + evaluationHTML;
+                heatmapWrappers.appendChild(evaluationWrapper);
+
+                // Create a single model card content display
+                const modelCardWrapper = document.createElement('div');
+                modelCardWrapper.className = 'model-card-wrapper mb-4';
+                modelCardWrapper.innerHTML = `
+                    <div class="model-card-display">
+                        <div class="model-card-scroll">
+                            <div class="model-card-header">
+                                <h4 class="model-card-title">
+                                    <i class="fas fa-file-alt"></i>
+                                    Model Card Section Evaluation
+                                </h4>
+                                <div class="view-toggle">
+                                    <label>High Level View</label>
+                                    <label class="switch">
+                                        <input type="checkbox" class="view-toggle-input">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <label>Article View</label>
+                                </div>
+                            </div>
+                            <div class="model-card-content">
+                                <div class="model-card-table">
+                                    ${parseModelCardWithSummaries(modelCardContent, sectionSummaries, heatmapFilenames)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                heatmapWrappers.appendChild(modelCardWrapper);
+
+                // Add event listeners
+                const policySelector = document.querySelector('#policySelector');
+                const policyEvaluations = document.querySelectorAll('.policy-evaluation');
+                
+                policySelector.addEventListener('change', function(e) {
+                    const selectedPolicy = e.target.value;
+                    policyEvaluations.forEach(evaluation => {
+                        if (evaluation.dataset.policy === selectedPolicy) {
+                            evaluation.classList.add('active');
+                        } else {
+                            evaluation.classList.remove('active');
+                        }
+                    });
+                });
+
+                // Add event listener for view toggle
+                document.querySelector('.view-toggle-input').addEventListener('change', function(e) {
+                    const summaries = document.querySelectorAll('.section-summary');
+                    const heatmaps = document.querySelectorAll('.section-heatmap');
+                    
+                    summaries.forEach(summary => {
+                        summary.classList.toggle('active');
+                    });
+                    
+                    heatmaps.forEach(heatmap => {
+                        heatmap.classList.toggle('active');
+                        const iframe = heatmap.querySelector('iframe');
+                        if (iframe) {
+                            iframe.src = iframe.src;
+                        }
+                    });
+                });
+            }
+
+            function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames) {
+                const lines = markdown.trim().split('\n');
+                let html = '<table class="table">';
+                
+                html += `
+                    <tr height="20px">
+                        <th>Section</th>
+                        <th>Content</th>
+                        <th>
+                                <div style="display: flex; align-items: center; gap: 1rem;">
+                                    <div style="white-space: nowrap;">
+                                        Evaluation Summary 
+                                    </div>
+                                    <div class="color-bar">
+                                        <div class="color-segment">
+                                            <div class="tooltip">Score 1 - Probable Violation<br>Likely non-compliant behavior or strong risk indicators</div>
+                                        </div>
+                                        <div class="color-segment">
+                                            <div class="tooltip">Score 2 - Possible Risk<br>Behavior that could lead to violation</div>
+                                        </div>
+                                        <div class="color-segment">
+                                            <div class="tooltip">Score 3 - Ambiguous Risk<br>Unclear whether system avoids prohibited behavior</div>
+                                        </div>
+                                        <div class="color-segment">
+                                            <div class="tooltip">Score 4 - No Violation<br>No risks present, only minor clarification needed</div>
+                                        </div>
+                                        <div class="color-segment">
+                                            <div class="tooltip">Score 5 - Fully Aligned<br>Clearly avoids violations and satisfies policy intent</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                    </tr>
+                `;
+                
+                lines.forEach((line, index) => {
+                    if (line.trim().startsWith('|')) {
+                        // Split by | and remove empty strings, but keep spaces
+                        const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+                        
+                        // Skip separator lines and header
+                        if (cells.length >= 2 && 
+                            !/^[-|\s]+$/.test(line) && 
+                            index > 1 && 
+                            cells[0] !== 'Section' && 
+                            cells[1] !== 'Content') {
+                            
+                            const section = cells[0];
+                            const content = cells[1];
+                            
+                            // Only process if we have valid content
+                            if (section && content) {
+                                const sectionSummary = sectionSummaries && sectionSummaries[section] 
+                                    ? marked.parse(sectionSummaries[section])
+                                    : 'No evaluation available';
+                                
+                                // Find the matching heatmap filename for this section
+                                const sectionHeatmapFilename = heatmapFilenames.find(filename => 
+                                    filename.includes(section.toLowerCase().replace(/\s+/g, '_'))
+                                );
+                                
+                                html += `
+                                    <tr>
+                                        <td>${section}</td>
+                                        <td>${content}</td>
+                                        <td>
+                                            <div class="section-summary active">
+                                                <div class="summary-content collapsed">
+                                                    ${DOMPurify.sanitize(sectionSummary)}
+                                                </div>
+                                                <div class="show-more-wrapper">
+                                                    <button class="show-more-btn">
+                                                        Show More
+                                                        <i class="fas fa-chevron-down"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="section-heatmap">
+                                                ${sectionHeatmapFilename ? `
+                                                    <iframe src="/static/${sectionHeatmapFilename}" 
+                                                            frameborder="0" 
+                                                            style="border: none;"
+                                                            data-section="${section}">
+                                                    </iframe>
+                                                ` : ''}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                `;
+                            }
+                        }
+                    }
+                });
+                
+                html += '</table>';
+                return html;
+            }
+
+            fileInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    fileNameDisplay.textContent = this.files[0].name;
+                    fileNameDisplay.classList.add('show');
+                } else {
+                    fileNameDisplay.textContent = '';
+                    fileNameDisplay.classList.remove('show');
+                }
+            });
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                console.log('=== Form Submission Started ===');
+                
+                const formData = new FormData(form);
+                
+                // Add selected policies to form data
+                const selectedPolicies = Array.from(policyCheckboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.id.replace('policy_', ''));
+                
+                console.log('=== Debug Information ===');
+                console.log('Selected policies:', selectedPolicies);
+                console.log('File selected:', fileInput.files[0]?.name);
+                console.log('File size:', fileInput.files[0]?.size);
+                console.log('=======================');
+                
+                formData.append('selected_policies', JSON.stringify(selectedPolicies));
+                
+                loadingDiv.style.display = 'block';
+                heatmapContainer.style.display = 'none';
+                heatmapContainer.classList.remove('show');
+
+                try {
+                    console.log('Sending request to server...');
+                    const response = await fetch('/upload', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const data = await response.json();
+                    console.log('=== Server Response ===');
+                    console.log('Success:', data.success);
+                    console.log('Data:', data);
+                    console.log('=====================');
+                    
+                    if (data.success) {
+                        // Store the data in localStorage
+                        localStorage.setItem('currentHeatmaps', JSON.stringify({
+                            filenames: data.heatmap_filenames,
+                            modelCardContent: data.model_card_content,
+                            summaries: data.summaries,
+                            topLevelSummary: data.top_level_summary,
+                            sectionSummaries: data.section_summaries
+                        }));
+                        
+                        // Display the results
+                        displayHeatmaps(
+                            data.heatmap_filenames, 
+                            data.model_card_content, 
+                            data.summaries,
+                            data.top_level_summary,
+                            data.section_summaries
+                        );
+                        
+                        // Show the container
+                        heatmapContainer.style.display = 'block';
+                        setTimeout(() => heatmapContainer.classList.add('show'), 100);
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                } catch (error) {
+                    alert('Error uploading file: ' + error);
+                } finally {
+                    loadingDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

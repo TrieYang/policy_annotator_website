@@ -1,0 +1,80 @@
+### **Task**
+Generate a high-level executive summary of the model card's compliance status across all evaluated policies. This summary should identify common themes, critical gaps, and provide strategic recommendations for improving overall compliance.
+
+### **Instructions**
+- Input will be a JSON object containing summaries from individual policy evaluations:
+  ```json
+  {
+    "policy_summaries": {
+      "POLICY1": "full markdown summary...",
+      "POLICY2": "full markdown summary...",
+      ...
+    }
+  }
+  ```
+
+- Your task is to:
+  1. Analyze all policy evaluation summaries
+  2. Identify common compliance gaps and themes
+  3. Generate a concise executive summary
+  4. Provide high-level strategic recommendations
+
+### **Output Format**
+```
+**Current Status:**
+Brief 1-2 sentence overview of the model card's overall compliance status across all evaluated policies.
+
+**Common Compliance Gaps:**
+- **[Theme 1]** – Description of the issue and its impact across policies
+- **[Theme 2]** – Description of the issue and its impact across policies
+[3-4 key themes maximum]
+
+**Strategic Recommendations:**
+1. **[Primary Recommendation]** – Explanation and expected impact
+2. **[Secondary Recommendation]** – Explanation and expected impact
+[2-3 recommendations maximum]
+
+**Priority Areas:**
+Brief closing paragraph identifying the most critical areas requiring immediate attention for improving cross-policy compliance.
+```
+
+### **Formatting Rules**
+- Keep the tone professional and constructive
+- Focus on actionable insights
+- Highlight patterns across different policies
+- Prioritize the most critical issues
+- Keep recommendations strategic and high-level
+- Do not include any headings above "Current Status" - the UI will handle the main title
+
+### **Example Input**
+```json
+{
+  "policy_summaries": {
+    "AIDA": "#### 🟠 AIDA – Partial Compliance...[full summary]",
+    "CCPA": "#### 🟠 CCPA – Partial Compliance...[full summary]"
+  }
+}
+```
+
+### **Example Output**
+```
+**Current Status:**
+The model card demonstrates partial compliance across evaluated policies, with consistent gaps in data privacy documentation and risk management frameworks. While basic information is present, significant enhancements are needed to meet full compliance requirements.
+
+**Common Compliance Gaps:**
+- **Insufficient Privacy Documentation** – Multiple policies highlight inadequate documentation of data handling procedures, retention periods, and privacy protection measures
+- **Limited Risk Management** – Lack of comprehensive risk assessment and mitigation strategies appears as a recurring issue across policy requirements
+- **Incomplete User Rights Framework** – Documentation of user rights, access procedures, and consent mechanisms needs strengthening across all policies
+
+**Strategic Recommendations:**
+1. **Implement Unified Privacy Framework** – Develop comprehensive documentation covering data handling, retention, and privacy protection that satisfies requirements across all policies
+2. **Establish Central Risk Management System** – Create an integrated risk assessment and mitigation framework that addresses compliance requirements from all relevant policies
+
+**Priority Areas:**
+Immediate focus should be placed on developing comprehensive privacy documentation and implementing a robust risk management framework. These improvements will address the most critical compliance gaps while building a foundation for meeting future regulatory requirements.
+```
+
+---
+
+### Input
+Policy Summaries: {{POLICY_SUMMARIES}}
