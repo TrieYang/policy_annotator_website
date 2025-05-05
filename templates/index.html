@@ -192,7 +192,12 @@
         .color-bar {
             width: 300px;
             height: 32px;
-            overflow: visible;
+            overflow: hidden;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .color-bar.active {
             display: flex;
         }
 
@@ -384,7 +389,7 @@
         }
 
         .model-card-content {
-            padding: 0.3rem;
+            padding: 0.6rem;
             padding-top: 0;
         }
 
@@ -671,12 +676,10 @@
         }
 
         .model-card-table table {
-            width: 100%;
             border-collapse: collapse;
             margin-bottom: 1rem;
             font-size: 0.85rem;
             table-layout: fixed;
-            padding: 0.6rem;
         }
 
         .model-card-table th,
@@ -692,6 +695,8 @@
         .model-card-table th:nth-child(1),
         .model-card-table td:nth-child(1) {
             width: 15%;
+            padding-top: 7px;
+            padding-left: 7px;
         }
 
         .model-card-table tr td:nth-of-type(2),
@@ -726,6 +731,7 @@
             justify-content: space-between;
             padding: 1rem 1.5rem;
             border-bottom: 1px solid #e9ecef;
+            border: none;
         }
 
         .model-card-title {
@@ -1136,6 +1142,9 @@
                     const summaries = document.querySelectorAll('.section-summary');
                     const heatmaps = document.querySelectorAll('.section-heatmap');
                     const modelCardTable = document.querySelectorAll('.model-card-table');
+                    const colorBar = document.querySelector('.color-bar');
+                    colorBar.classList.toggle('active');
+
                     modelCardTable.forEach(table => {
                         table.classList.toggle('active');
                     })
