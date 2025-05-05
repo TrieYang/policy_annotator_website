@@ -180,9 +180,10 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)',
-        'displayModeBar': False
+        paper_bgcolor='rgba(0,0,0,0)'
     )
+    
+    fig.show(config={'displayModeBar': False})
 
     # Add more visual enhancements
     fig.update_traces(
