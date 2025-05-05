@@ -26,7 +26,11 @@ llm = ChatAnthropic(
 sections = [
     "System Name",
     "Versioning Information",
-    "Primary Developer/Org"
+    "Primary Developer/Org",
+    "Contact Info",
+    "System Overview",
+    "Primary intended uses",
+    "Primary intended users",
 ]
 
 def parse_model_card_content(model_card_content):
@@ -171,9 +175,9 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             showline=False,  # Hide y-axis line
             zeroline=False   # Hide zero line
         ),
-        width=600,
+        width=900,
         height=30,
-        margin=dict(l=5, r=5, t=0, b=0),
+        margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
@@ -192,8 +196,9 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     output_path = os.path.join(static_dir, output_filename)
     
     # Save with custom JavaScript
-    html_content = fig.to_html(include_plotlyjs=True, full_html=True)
-    
+    html_content = fig.to_html(include_plotlyjs='cdn', full_html=True, include_mathjax='cdn')
+    html_content = html_content.replace("<head>", "<head><style>html, body {margin: 0; padding: 0;}</style>")
+
     with open(output_path, 'w') as f:
         f.write(html_content)
         

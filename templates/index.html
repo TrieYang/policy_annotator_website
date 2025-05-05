@@ -694,13 +694,19 @@
             width: 15%;
         }
 
-        .model-card-table th:nth-child(2),
-        .model-card-table td:nth-child(2) {
+        .model-card-table tr td:nth-of-type(2),
+        .model-card-table tr th:nth-of-type(2) {
             width: 25%;  /* Reduced from 35% */
             height: 20px;            
             white-space: nowrap;        /* prevent text from wrapping */
             text-overflow: ellipsis;  
-            overflow: hidden;  
+            overflow: hidden; 
+            display: table-cell; 
+        }
+
+        .model-card-table.active th:nth-child(2),
+        .model-card-table.active td:nth-child(2) {
+            display: none; 
         }
 
         .model-card-table th:nth-child(3),
@@ -1129,7 +1135,10 @@
                 document.querySelector('.view-toggle-input').addEventListener('change', function(e) {
                     const summaries = document.querySelectorAll('.section-summary');
                     const heatmaps = document.querySelectorAll('.section-heatmap');
-                    
+                    const modelCardTable = document.querySelectorAll('.model-card-table');
+                    modelCardTable.forEach(table => {
+                        table.classList.toggle('active');
+                    })
                     summaries.forEach(summary => {
                         summary.classList.toggle('active');
                     });
@@ -1224,8 +1233,7 @@
                                             <div class="section-heatmap">
                                                 ${sectionHeatmapFilename ? `
                                                     <iframe src="/static/${sectionHeatmapFilename}" 
-                                                            frameborder="0" 
-                                                            style="border: none;"
+                                                            frameborder="0""
                                                             data-section="${section}">
                                                     </iframe>
                                                 ` : ''}
