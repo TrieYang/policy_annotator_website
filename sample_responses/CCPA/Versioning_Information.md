@@ -1,0 +1,7 @@
+| Article | Rating |
+|----------|---------|
+| 1798.100 | {"score": 3, "description": "The versioning information lacks details about data collection practices, retention periods, and security measures required by this article. To improve, add information about data handling procedures, retention policies, and security protocols implemented for each version."} |
+| 1798.105 | {"score": 3, "description": "The versioning section does not address consumer deletion rights or procedures for handling deletion requests across different versions. Include information about version-specific deletion capabilities and how historical data is managed across updates."} |
+| 1798.106 | {"score": 3, "description": "The versioning information does not specify how correction requests are handled across different versions. Add details about version compatibility for correction requests and how accuracy improvements are tracked across updates."} |
+| 1798.110 | {"score": 3, "description": "The versioning section lacks transparency about what personal information is collected and how it's used in different versions. Include version-specific details about data categories collected and their purposes."} |
+| 1798.115 | {"score": 3, "description": "The versioning information does not address how personal information sharing or disclosure practices have evolved across versions. Add details about version-specific data sharing practices and third-party disclosures."} | 
