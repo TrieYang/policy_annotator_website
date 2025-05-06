@@ -1219,9 +1219,15 @@
                                     : 'No evaluation available';
                                 
                                 // Find the matching heatmap filename for this section
-                                const sectionHeatmapFilename = heatmapFilenames.find(filename => 
-                                    filename.includes(section.toLowerCase().replace(/\s+/g, '_'))
-                                );
+                                const normalizedSection = section.toLowerCase()
+                                    .replace(/\s+/g, '_')
+                                    .replace(/\//g, '_');
+                                const sectionHeatmapFilename = heatmapFilenames.find(filename => {
+                                    const normalizedFilename = filename.toLowerCase()
+                                        .replace(/^heatmap_/, '')
+                                        .replace(/_\d+\.html$/, '');
+                                    return normalizedFilename === normalizedSection;
+                                });
                                 
                                 html += `
                                     <tr>

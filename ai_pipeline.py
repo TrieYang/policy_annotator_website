@@ -10,27 +10,70 @@ import matplotlib.pyplot as plt
 import numpy as np
 from policy_chunker import get_chunking_prompt, parse_chunk_response
 
+SAMPLE_RESPONSE_FOLDER = "./sample_responses"
+TESTING_MODE = True
+
+class FakeLLM:
+    def __init__(self, sample_folder):
+        self.sample_folder = sample_folder
+        self.current_policy = None
+        self.current_section = None
+
+    def set_context(self, policy, section):
+        self.current_policy = policy
+        self.current_section = section
+
+    def _section_to_filename(self, section):
+        # Convert section name to filename format
+        # e.g., "System Name" -> "System_Name"
+        # e.g., "Primary Developer/Org" -> "Primary_Developer_Org"
+        # e.g., "Out-of-scope use cases" -> "Out_of_scope_Use_Cases"
+        # First replace special characters with underscores
+        filename = section.replace(" ", "_").replace("/", "_").replace("-", "_")
+        # Then capitalize each word
+        words = filename.split("_")
+        capitalized_words = [word.capitalize() for word in words]
+        return "_".join(capitalized_words)
+
+    def invoke(self, messages):
+        if not self.current_policy or not self.current_section:
+            raise ValueError("Policy and section must be set before invoking FakeLLM")
+
+        filename = self._section_to_filename(self.current_section)
+        sample_file_path = os.path.join(self.sample_folder, self.current_policy, f"{filename}.md")
+        
+        if not os.path.exists(sample_file_path):
+            raise FileNotFoundError(f"Sample response not found: {sample_file_path}")
+
+        with open(sample_file_path, "r") as f:
+            content = f.read()
+
+        return type("Response", (object,), {
+            "content": content,
+            "usage_metadata": {"input_token_details": "mocked"}
+        })()
+
 # Load environment variables
 load_dotenv()
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
-# Initialize Claude model
+
+
+fakeLlm = FakeLLM(SAMPLE_RESPONSE_FOLDER)
+
 llm = ChatAnthropic(
-    model="claude-3-5-sonnet-20241022",
-    #model="claude-3-haiku-20240307",
-    anthropic_api_key=ANTHROPIC_API_KEY,
-    temperature=0.3
-)
+model="claude-3-5-sonnet-20241022",
+#model="claude-3-haiku-20240307",
+anthropic_api_key=ANTHROPIC_API_KEY,
+temperature=0.3)
+
+
 
 # Section names for iteration
 sections = [
     "System Name",
     "Versioning Information",
-    "Primary Developer/Org",
-    "Contact Info",
-    "System Overview",
-    "Primary intended uses",
-    "Primary intended users",
+
 ]
 
 def parse_model_card_content(model_card_content):
@@ -126,11 +169,14 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             description = wrapped_descriptions[i, j]
             section_content = section_contents.get(row, "No content available")
             wrapped_section_content = insert_line_breaks(section_content)
+            # If description is empty (fully compliant case), add default message
+            if not description:
+                description = "This section fully complies with this article, so no reasoning is added"
             # Include full article reference in hover data
             row_data.append([description, wrapped_section_content, col])
         customdata.append(row_data)
     customdata = np.array(customdata)
-
+    print(f'custom data is: {customdata}')
     fig = go.Figure(data=go.Heatmap(
         z=data_df.values,
         x=list(range(len(data_df.columns))),  # Use numeric indices for x-axis
@@ -151,13 +197,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
                       [1.0, 'rgb(8,88,158)']],
         hoverongaps=False,
         customdata=customdata,
-        hovertemplate=(
-            "Section: %{y}<br>" +
-            "Article: %{customdata[2]}<br>" +  # Show full article reference in hover
-            "Score: %{z}<br>" +
-            "Description: %{customdata[0]}" +
-            "<br><br><b>Model Card Content:</b><br>%{customdata[1]}<extra></extra>"
-        ),
+        hovertemplate="<b>Article:</b> %{customdata[2]} | <b>Score:</b> %{z} | <b>Reasoning:</b> %{customdata[0]}",
         showscale=False
     ))
 
@@ -182,8 +222,6 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)'
     )
-    
-    fig.show(config={'displayModeBar': False})
 
     # Add more visual enhancements
     fig.update_traces(
@@ -198,7 +236,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     output_path = os.path.join(static_dir, output_filename)
     
     # Save with custom JavaScript
-    html_content = fig.to_html(include_plotlyjs='cdn', full_html=True, include_mathjax='cdn')
+    html_content = fig.to_html(include_plotlyjs='cdn', full_html=True, include_mathjax='cdn', config={'displayModeBar': False})
     html_content = html_content.replace("<head>", "<head><style>html, body {margin: 0; padding: 0;}</style>")
 
     with open(output_path, 'w') as f:
@@ -324,49 +362,121 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 policy_path = os.path.join(policy_folder, policy_file)
                 async with aiofiles.open(policy_path, "r") as pf:
                     legal_doc_content = await pf.read()
-
-                # Get chunking strategy for this policy
-                chunking_prompt = get_chunking_prompt().replace("{{POLICY_DOC}}", legal_doc_content)
-                chunk_response = llm.invoke(chunking_prompt).content
-                print("\nChunking response:", chunk_response)
-                chunks = parse_chunk_response(chunk_response)
-                print(f"Policy {policy_file} will be evaluated in {len(chunks)} chunks")
-                print("Chunks:", chunks)
+                if not TESTING_MODE:
+                    # Get chunking strategy for this policy
+                    chunking_prompt = get_chunking_prompt().replace("{{POLICY_DOC}}", legal_doc_content)
+                    chunk_response = llm.invoke(chunking_prompt).content
+                    print("\nChunking response:", chunk_response)
+                    chunks = parse_chunk_response(chunk_response)
+                    print(f"Policy {policy_file} will be evaluated in {len(chunks)} chunks")
+                    print("Chunks:", chunks)
 
                 # Initialize section data for this policy
                 policy_section_scores = {section: {} for section in sections}
                 policy_section_descriptions = {section: {} for section in sections}
 
                 for section in sections:
-                    for chunk_start, chunk_end in chunks:
+                    if TESTING_MODE:
+                        # Set the context for FakeLLM
+                        fakeLlm.set_context(policy_file.split('.')[0], section)
+                        
+                        # Create the prompt without chunking
                         chunk_prompt = (
                             prompt_template
                             .replace("{{MODEL_CARD}}", model_card_content)
                             .replace("{{LEGAL_DOC}}", legal_doc_content)
                             .replace("{{SECTION}}", section)
-                            .replace("{{START_ART}}", str(chunk_start))
-                            .replace("{{END_ART}}", str(chunk_end))
+                            .replace("{{START_ART}}", "1")  # Use dummy values since we're not chunking
+                            .replace("{{END_ART}}", "999")  # Use dummy values since we're not chunking
                         )
-                        print(f"Evaluating {policy_file} section '{section}' for articles {chunk_start}-{chunk_end}...")
+                        
+                        print(f"Evaluating {policy_file} section '{section}' in testing mode...")
                         messages = [
+                            {
+                                "role": "system",
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": f"{legal_doc_content}",
+                                        "cache_control": {"type": "ephemeral"},
+                                    },
+                                ],
+                            },
+                            {
+                                "role": "user",
+                                "content": f"{chunk_prompt}",
+                            },
+                        ]
+                        response = fakeLlm.invoke(messages)
+                        print(f'fakeLlm response is: {response.content}')
+
+                        # Parse the markdown table to extract JSON content
+                        try:
+                            # Split the response into lines and find all data rows
+                            lines = response.content.strip().splitlines()
+                            # Get all rows except the separator row (the one with |---|---|)
+                            table_rows = [line for line in lines if line.startswith('|') and not line.startswith('|-')]
+                            if len(table_rows) < 2:  # Need at least header and one data row
+                                raise Exception("Invalid table format - missing header or data rows")
+                            
+                            # Skip header row (first row) and process each data row
+                            data_rows = table_rows[1:]  # Skip header row
+                            
+                            for data_row in data_rows:
+                                # Split row into cells and remove empty cells at start/end
+                                cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
+                                if len(cells) != 2:  # Should have exactly 2 columns
+                                    print(f"Warning: Row does not have 2 columns: {data_row}")
+                                    continue
+                                    
+                                try:
+                                    # First cell should be the article number
+                                    # Clean and standardize the article number format
+                                    article_num = cells[0].strip()
+                                    # Remove any 'Art.' prefix if it exists
+                                    article_num = article_num.replace('Art.', '').strip()
+                                    # Keep the original number format (don't convert to int)
+                                    
+                                    # Second cell should be the JSON data
+                                    json_data = json.loads(cells[1])
+                                    
+                                    policy_section_scores[section][article_num] = json_data['score']
+                                    policy_section_descriptions[section][article_num] = json_data.get('description', '')
+                                    print(f"Parsed article {article_num}: Score={json_data['score']}")
+                                except (ValueError, json.JSONDecodeError) as e:
+                                    print(f"Error parsing row {data_row}: {e}")
+                                    continue
+                        except Exception as e:
+                            print(f"Error processing response: {e}")
+                            print(f"Full response:\n{response}")
+                    else:
+                        for chunk_start, chunk_end in chunks:
+                            chunk_prompt = (
+                                prompt_template
+                                .replace("{{MODEL_CARD}}", model_card_content)
+                                .replace("{{LEGAL_DOC}}", legal_doc_content)
+                                .replace("{{SECTION}}", section)
+                                .replace("{{START_ART}}", str(chunk_start))
+                                .replace("{{END_ART}}", str(chunk_end))
+                            )
+                            print(f"Evaluating {policy_file} section '{section}' for articles {chunk_start}-{chunk_end}...")
+                            messages = [
+                                {
+                                    "role": "system",
+                                    "content": [
                                         {
-                                            "role": "system",
-                                            "content": [
-                                                {
-                                                    "type": "text",
-                                                    "text": f"{legal_doc_content}",
-                                                    "cache_control": {"type": "ephemeral"},
-                                                },
-                                            ],
+                                            "type": "text",
+                                            "text": f"{legal_doc_content}",
+                                            "cache_control": {"type": "ephemeral"},
                                         },
-                                        {
-                                            "role": "user",
-                                            "content": f"{chunk_prompt}",
-                                        },
-                                    ]
-                        response = llm.invoke(messages)
-                        print(response.content)
-                        print(response.usage_metadata["input_token_details"])
+                                    ],
+                                },
+                                {
+                                    "role": "user",
+                                    "content": f"{chunk_prompt}",
+                                },
+                            ]
+                            response = llm.invoke(messages)
 
                         # Parse the markdown table to extract JSON content
                         try:
@@ -431,9 +541,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                         return clean_art
                         
                 # Sort articles using the custom sorting function
-                sorted_articles = sorted(all_articles, key=article_to_sortable)
-                print(f"Debug - Sorted articles for {policy_name}:", sorted_articles)
-                
+                sorted_articles = sorted(all_articles, key=article_to_sortable)                
                 all_policy_data[policy_name] = {
                     'scores': policy_section_scores,
                     'descriptions': policy_section_descriptions,
@@ -446,6 +554,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                         'scores': policy_section_scores[section],
                         'descriptions': policy_section_descriptions[section]
                     }
+                
 
             except Exception as e:
                 print(f"Error processing policy file {policy_file}: {str(e)}")
