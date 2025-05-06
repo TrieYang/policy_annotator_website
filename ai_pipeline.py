@@ -161,23 +161,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     # Apply line wrapping to descriptions
     wrapped_descriptions = np.vectorize(insert_line_breaks)(safe_descriptions)
 
-    # Create customdata array
-    customdata = []
-    for i, row in enumerate(data_df.index):
-        row_data = []
-        for j, col in enumerate(data_df.columns):
-            description = wrapped_descriptions[i, j]
-            section_content = section_contents.get(row, "No content available")
-            wrapped_section_content = insert_line_breaks(section_content)
-            # If description is empty (fully compliant case), add default message
-            if not description:
-                description = "This section fully complies with this article, so no reasoning is added"
-            # Include full article reference in hover data
-            row_data.append([description, wrapped_section_content, col])
-        customdata.append(row_data)
-    customdata = np.array(customdata)
-    print(f'custom data is: {customdata}')
-    fig = go.Figure(data=go.Heatmap(
+    heatmap = go.Heatmap(
         z=data_df.values,
         x=list(range(len(data_df.columns))),  # Use numeric indices for x-axis
         y=data_df.index,
@@ -186,49 +170,83 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
         xgap=3,
         ygap=3,
         colorscale = [[0.0, 'rgb(255,255,204)'], 
-                      [0.2, 'rgb(255,255,204)'],
-                      [0.2, 'rgb(161,218,180)'],
-                      [0.4, 'rgb(161,218,180)'],
-                      [0.4, 'rgb(100,181,205)'],
-                      [0.6, 'rgb(100,181,205)'],
-                      [0.6, 'rgb(54,130,189)'],
-                      [0.8, 'rgb(54,130,189)'],
-                      [0.8, 'rgb(8,88,158)'],
-                      [1.0, 'rgb(8,88,158)']],
-        hoverongaps=False,
-        customdata=customdata,
-        hovertemplate="<b>Article:</b> %{customdata[2]} | <b>Score:</b> %{z} | <b>Reasoning:</b> %{customdata[0]}",
+                    [0.2, 'rgb(255,255,204)'],
+                    [0.2, 'rgb(161,218,180)'],
+                    [0.4, 'rgb(161,218,180)'],
+                    [0.4, 'rgb(100,181,205)'],
+                    [0.6, 'rgb(100,181,205)'],
+                    [0.6, 'rgb(54,130,189)'],
+                    [0.8, 'rgb(54,130,189)'],
+                    [0.8, 'rgb(8,88,158)'],
+                    [1.0, 'rgb(8,88,158)']],
+        hoverinfo="skip",  # <-- IMPORTANT: disable hover on heatmap so hover won't be covered
         showscale=False
-    ))
+    )
 
-    # Update layout with custom axis labels
+    # === Scatter overlay for hover ===
+    hover_x = []
+    hover_y = []
+    hover_text = []
+
+    # Create customdata array
+    customdata = []
+    for i, row in enumerate(data_df.index):
+        for j, col in enumerate(data_df.columns):
+            description = wrapped_descriptions[i, j]
+            section_content = section_contents.get(row, "No content available")
+            wrapped_section_content = insert_line_breaks(section_content)
+            if not description:
+                description = "This section fully complies with this article, so no reasoning is added"
+            
+            hover_x.append(j)
+            hover_y.append(row)
+            hover_str = f"<b>Article:</b> {col}<br><b>Score:</b> {data_df.values[i,j]}<br><b>Reasoning:</b> {description}<br><b>Section Content:</b> {wrapped_section_content}"
+            hover_text.append(hover_str)
+
+    scatter_hover = go.Scatter(
+        x=hover_x,
+        y=hover_y,
+        mode='markers',
+        marker=dict(size=20, opacity=0),  # Invisible markers
+        hoverinfo='text',
+        hovertext=hover_text,
+        showlegend=False
+    )
+
+    # === Combine traces ===
+    fig = go.Figure(data=[heatmap, scatter_hover])
+
+    # === Layout ===
     fig.update_layout(
         title=None,
+        autosize=True,
         xaxis=dict(
-            showticklabels=False,  # Hide x-axis labels
-            showline=False,  # Hide x-axis line
-            zeroline=False,  # Hide zero line
+            showticklabels=False,
+            showline=False,
+            zeroline=False,
             side='bottom'
         ),
         yaxis=dict(
-            showticklabels=False,  # Hide y-axis labels since they're redundant
-            showline=False,  # Hide y-axis line
-            zeroline=False   # Hide zero line
+            domain=[0.8, 1.0],
+            showticklabels=False,
+            showline=False,
+            zeroline=False
         ),
-        width=900,
-        height=30,
+        height=200,
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'
-    )
+        paper_bgcolor='rgba(0,0,0,0)'),
 
-    # Add more visual enhancements
-    fig.update_traces(
-        dict(
-            showscale=False  # Remove colorbar
+    fig.update_layout(
+        hoverlabel=dict(
+            font_size=10,
+            bgcolor="rgba(50, 50, 50, 0.95)",
+            bordercolor="white"
         )
     )
+
+
 
     # Save to HTML file in static folder
     static_dir = "static"
@@ -236,7 +254,15 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     output_path = os.path.join(static_dir, output_filename)
     
     # Save with custom JavaScript
-    html_content = fig.to_html(include_plotlyjs='cdn', full_html=True, include_mathjax='cdn', config={'displayModeBar': False})
+    html_content = fig.to_html(
+        include_plotlyjs='cdn',
+        full_html=True,
+        include_mathjax='cdn',
+        config={
+            'displayModeBar': False,
+            'scrollZoom': False
+        }
+    )
     html_content = html_content.replace("<head>", "<head><style>html, body {margin: 0; padding: 0;}</style>")
 
     with open(output_path, 'w') as f:
