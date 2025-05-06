@@ -192,7 +192,7 @@
         .color-bar {
             width: 300px;
             height: 32px;
-            overflow: hidden;
+            overflow: visible;
             border-radius: 10px;
             display: none;
         }
@@ -661,19 +661,58 @@
             width: 100%;
             max-height: 30px;
             display: none;
+            position: relative;
+            pointer-events: auto;
         }
 
         .section-heatmap.active {
             display: block;
         }
 
-        .section-summary.active {
-            display: block;
+        .section-heatmap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: relative;
+            z-index: 1;
+            pointer-events: auto;
         }
 
-        .section-summary {
-            display: none;
+        /* Add z-index to table rows to ensure proper layering */
+        .model-card-table tr {
+            position: relative;
         }
+
+        /* Make sure the table cells don't block pointer events */
+        .model-card-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.3rem;
+            text-align: left;
+            font-size: 0.85rem;
+            vertical-align: top;
+            height: 20px;
+            pointer-events: none;
+        }
+
+        .model-card-table tr:nth-child(2) { z-index: 100; }
+        .model-card-table tr:nth-child(3) { z-index: 99; }
+        .model-card-table tr:nth-child(4) { z-index: 98; }
+        .model-card-table tr:nth-child(5) { z-index: 97; }
+        .model-card-table tr:nth-child(6) { z-index: 96; }
+        .model-card-table tr:nth-child(7) { z-index: 95; }
+        .model-card-table tr:nth-child(8) { z-index: 94; }
+        .model-card-table tr:nth-child(9) { z-index: 93; }
+        .model-card-table tr:nth-child(10) { z-index: 92; }
+        .model-card-table tr:nth-child(11) { z-index: 91; }
+        .model-card-table tr:nth-child(12) { z-index: 90; }
+        .model-card-table tr:nth-child(13) { z-index: 89; }
+        .model-card-table tr:nth-child(14) { z-index: 88; }
+        .model-card-table tr:nth-child(15) { z-index: 87; }
+        .model-card-table tr:nth-child(16) { z-index: 86; }
+        .model-card-table tr:nth-child(17) { z-index: 85; }
+        .model-card-table tr:nth-child(18) { z-index: 84; }
+        .model-card-table tr:nth-child(19) { z-index: 83; }
+        .model-card-table tr:nth-child(20) { z-index: 82; }
 
         .model-card-table table {
             border-collapse: collapse;
@@ -717,12 +756,6 @@
         .model-card-table th:nth-child(3),
         .model-card-table td:nth-child(3) {
             width: 60%;  /* Increased from 50% */
-        }
-
-        .section-heatmap iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
         }
 
         .model-card-header {
@@ -792,6 +825,32 @@
 
         .policy-evaluation.active {
             display: block;
+        }
+
+        .section-summary.active {
+            display: block;
+        }
+
+        .section-summary {
+            display: none;
+        }
+
+        /* Only the third column (heatmap/summary) allows pointer events */
+        .model-card-table td:nth-child(3) {
+            position: relative;
+            /* pointer-events: auto;  // default is fine */
+        }
+
+        /* The heatmap container and iframe should allow pointer events */
+        .section-heatmap,
+        .section-heatmap iframe {
+            z-index: 2;
+            pointer-events: auto;
+        }
+
+        /* If you want to prevent pointer events on overlays above the heatmap, add: */
+        .section-summary {
+            pointer-events: none;
         }
     </style>
 </head>
