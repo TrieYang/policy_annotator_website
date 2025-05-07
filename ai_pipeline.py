@@ -71,8 +71,29 @@ temperature=0.3)
 
 # Section names for iteration
 sections = [
-    "System Name",
+        "System Name",
     "Versioning Information",
+    "Primary Developer/Org",
+    "Contact Info",
+    "System Overview",
+    "Primary intended uses",
+    "Primary intended users",
+    "Out-of-scope use cases", 
+    "Terms and conditions",  
+    "Current compliance status with relevant laws and standards", 
+    "Dataset Description",
+    "Collection Method",
+    "Bias Mitigation Measures",
+    "Usage Constraints",
+    "Summary of Performance Assessment",
+    "Disaggregated Performance", 
+    "Testing Contexts",
+    "Evaluations for Edge Cases or Adversarial Inputs",
+    "Potential Risks and Harms",
+    "Actions taken",
+    "Misuse Scenarios",
+    "Human Oversight", 
+    "Update Frequency" 
 
 ]
 
@@ -167,8 +188,8 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
         y=data_df.index,
         zmin=0,
         zmax=5,
-        xgap=3,
-        ygap=3,
+        xgap=3, 
+        ygap=7,
         colorscale = [[0.0, 'rgb(255,255,204)'], 
                     [0.2, 'rgb(255,255,204)'],
                     [0.2, 'rgb(161,218,180)'],
@@ -216,10 +237,10 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     # === Combine traces ===
     fig = go.Figure(data=[heatmap, scatter_hover])
 
+
     # === Layout ===
     fig.update_layout(
         title=None,
-        autosize=True,
         xaxis=dict(
             showticklabels=False,
             showline=False,
@@ -227,12 +248,12 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             side='bottom'
         ),
         yaxis=dict(
-            domain=[0.8, 1.0],
             showticklabels=False,
             showline=False,
-            zeroline=False
+            zeroline=False,
+            autorange='reversed'
         ),
-        height=200,
+        height=950,
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
         plot_bgcolor='rgba(0,0,0,0)',
@@ -245,7 +266,6 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             bordercolor="white"
         )
     )
-
 
 
     # Save to HTML file in static folder
@@ -323,7 +343,131 @@ async def generate_top_level_summary(policy_summaries):
 
 async def generate_section_summary(section_name, section_data):
     """Generate a summary of compliance evaluation results for a specific model card section"""
-    # Read the prompt template
+    if TESTING_MODE:
+        # Sample responses for testing mode
+        sample_responses = {
+            "System Name": """#### 🟢 System Name – Fully Compliant
+The system name is clearly defined and follows best practices for AI system identification.""",
+            
+            "Versioning Information": """#### 🟠 Versioning Information – Areas for Improvement
+Key Issues Identified:
+- Version numbering scheme not clearly defined
+- Release date format inconsistent
+- Missing changelog information""",
+            
+            "Primary Developer/Org": """#### 🟡 Primary Developer/Org – Partial Compliance
+Key Issues Identified:
+- Organization structure not fully detailed
+- Missing key stakeholder information
+- Team roles and responsibilities unclear""",
+            
+            "Contact Info": """#### 🟠 Contact Info – Areas for Improvement
+Key Issues Identified:
+- Missing AI-specific support channel
+- Response time standards undefined
+- Incomplete availability details""",
+            
+            "System Overview": """#### 🟢 System Overview – Fully Compliant
+The system overview provides comprehensive information about the AI system's capabilities and limitations.""",
+            
+            "Primary intended uses": """#### 🟡 Primary intended uses – Partial Compliance
+Key Issues Identified:
+- Use case descriptions lack specificity
+- Missing performance expectations
+- Limited information about user interactions""",
+            
+            "Primary intended users": """#### 🟠 Primary intended users – Areas for Improvement
+Key Issues Identified:
+- User demographics not clearly defined
+- Missing accessibility considerations
+- Limited information about user requirements""",
+            
+            "Out-of-scope use cases": """#### 🟢 Out-of-scope use cases – Fully Compliant
+Clear and comprehensive documentation of use cases outside the system's intended scope.""",
+            
+            "Terms and conditions": """#### 🟡 Terms and conditions – Partial Compliance
+Key Issues Identified:
+- Legal disclaimers need clarification
+- Usage restrictions not fully detailed
+- Missing information about data handling""",
+            
+            "Current compliance status with relevant laws and standards": """#### 🟠 Current compliance status with relevant laws and standards – Areas for Improvement
+Key Issues Identified:
+- Missing specific regulatory references
+- Compliance documentation incomplete
+- Limited information about ongoing compliance monitoring""",
+            
+            "Dataset Description": """#### 🟡 Dataset Description – Partial Compliance
+Key Issues Identified:
+- Data sources not fully documented
+- Missing information about data quality
+- Limited details about data preprocessing""",
+            
+            "Collection Method": """#### 🟠 Collection Method – Areas for Improvement
+Key Issues Identified:
+- Data collection procedures unclear
+- Missing information about sampling methods
+- Limited details about data validation""",
+            
+            "Bias Mitigation Measures": """#### 🟡 Bias Mitigation Measures – Partial Compliance
+Key Issues Identified:
+- Bias detection methods not fully described
+- Missing information about mitigation strategies
+- Limited details about ongoing monitoring""",
+            
+            "Usage Constraints": """#### 🟢 Usage Constraints – Fully Compliant
+Clear and comprehensive documentation of system usage limitations and restrictions.""",
+            
+            "Summary of Performance Assessment": """#### 🟠 Summary of Performance Assessment – Areas for Improvement
+Key Issues Identified:
+- Performance metrics not fully defined
+- Missing baseline comparisons
+- Limited information about evaluation methods""",
+            
+            "Disaggregated Performance": """#### 🟡 Disaggregated Performance – Partial Compliance
+Key Issues Identified:
+- Performance breakdowns incomplete
+- Missing information about subgroup analysis
+- Limited details about performance variations""",
+            
+            "Testing Contexts": """#### 🟢 Testing Contexts – Fully Compliant
+Comprehensive documentation of testing environments and conditions.""",
+            
+            "Evaluations for Edge Cases or Adversarial Inputs": """#### 🟠 Evaluations for Edge Cases or Adversarial Inputs – Areas for Improvement
+Key Issues Identified:
+- Edge case testing not fully documented
+- Missing information about adversarial testing
+- Limited details about robustness measures""",
+            
+            "Potential Risks and Harms": """#### 🟡 Potential Risks and Harms – Partial Compliance
+Key Issues Identified:
+- Risk assessment incomplete
+- Missing information about harm mitigation
+- Limited details about risk monitoring""",
+            
+            "Actions taken": """#### 🟢 Actions taken – Fully Compliant
+Clear documentation of actions taken to address identified issues and concerns.""",
+            
+            "Misuse Scenarios": """#### 🟠 Misuse Scenarios – Areas for Improvement
+Key Issues Identified:
+- Misuse scenarios not fully documented
+- Missing information about prevention measures
+- Limited details about detection methods""",
+            
+            "Human Oversight": """#### 🟡 Human Oversight – Partial Compliance
+Key Issues Identified:
+- Oversight procedures not fully defined
+- Missing information about human intervention
+- Limited details about monitoring processes""",
+            
+            "Update Frequency": """#### 🟢 Update Frequency – Fully Compliant
+Clear documentation of system update schedules and procedures."""
+        }
+        
+        return sample_responses.get(section_name, f"""#### ⚠️ {section_name} – No Evaluation Data
+Note: No evaluation data was provided for this section.""")
+    
+    # Original code for non-testing mode
     async with aiofiles.open("prompt_summarize_by_section.txt", "r") as f:
         prompt_template = await f.read()
 
@@ -643,26 +787,14 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         
         # Generate heatmaps for each section
         heatmap_filenames = []
-        for section in sections:
-            # Create DataFrames for just this section
-            section_scores_df = pd.DataFrame(index=[section], columns=all_columns)
-            section_descriptions_df = pd.DataFrame(index=[section], columns=all_columns)
-            
-            # Fill in the data for this section
-            for policy_name, policy_data in all_policy_data.items():
-                for article in policy_data['articles']:
-                    column = f"{policy_name}.Art.{article}"
-                    article_key = article.replace('Art.', '').strip()
-                    section_scores_df.loc[section, column] = policy_data['scores'][section].get(article_key, 0)
-                    section_descriptions_df.loc[section, column] = policy_data['descriptions'][section].get(article_key, "No evaluation")
-            
-            # Generate heatmap for this section
-            timestamp = int(time.time())
-            # Sanitize section name for filename by replacing problematic characters
-            safe_section_name = section.lower().replace(' ', '_').replace('/', '_').replace('\\', '_')
-            heatmap_filename = f"heatmap_{safe_section_name}_{timestamp}.html"
-            generate_interactive_heatmap(section_scores_df, section_descriptions_df, section, model_card_content, heatmap_filename)
-            heatmap_filenames.append(heatmap_filename)
+        # Create a single combined heatmap instead of individual ones
+        timestamp = int(time.time())
+        heatmap_filename = f"heatmap_combined_{timestamp}.html"
+        # Reindex DataFrames to match the order of the 'sections' list
+        scores_df = scores_df.reindex(sections)
+        descriptions_df = descriptions_df.reindex(sections)
+        generate_interactive_heatmap(scores_df, descriptions_df, "Combined", model_card_content, heatmap_filename)
+        heatmap_filenames.append(heatmap_filename)
 
         # Generate summaries for each policy
         summaries = {}

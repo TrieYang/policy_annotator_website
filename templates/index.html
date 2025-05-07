@@ -239,7 +239,6 @@
             transform: translateX(-50%);
             transition: all 0.2s ease;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            pointer-events: none;
             z-index: 1000;
         }
 
@@ -399,7 +398,7 @@
 
         #heatmapIframe {
             width: 100%;
-            height: 800px;
+            height: 950px;
             border: none;
             border-radius: 12px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -662,7 +661,6 @@
             max-height: 30px;
             display: none;
             position: relative;
-            pointer-events: auto;
         }
 
         .section-heatmap.active {
@@ -675,7 +673,6 @@
             border: none;
             position: relative;
             z-index: 1;
-            pointer-events: auto;
         }
 
         /* Add z-index to table rows to ensure proper layering */
@@ -691,7 +688,6 @@
             font-size: 0.85rem;
             vertical-align: top;
             height: 20px;
-            pointer-events: none;
         }
 
         .model-card-table tr:nth-child(2) { z-index: 100; }
@@ -756,6 +752,26 @@
         .model-card-table th:nth-child(3),
         .model-card-table td:nth-child(3) {
             width: 60%;  /* Increased from 50% */
+        }
+
+        /* Add new styles for the combined heatmap row */
+        .combined-heatmap-row {
+            display: none;
+        }
+
+        .combined-heatmap-row.active {
+            display: table-row;
+        }
+
+        .combined-heatmap-cell {
+            height: 400px !important;  /* Adjust height as needed */
+            padding: 0 !important;
+        }
+
+        .combined-heatmap-cell iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
         }
 
         .model-card-header {
@@ -845,12 +861,6 @@
         .section-heatmap,
         .section-heatmap iframe {
             z-index: 2;
-            pointer-events: auto;
-        }
-
-        /* If you want to prevent pointer events on overlays above the heatmap, add: */
-        .section-summary {
-            pointer-events: none;
         }
     </style>
 </head>
@@ -975,10 +985,13 @@
             if (existingHeatmaps.filenames.length > 0) {
                 console.log("heatmaps exist");
                 console.log(existingHeatmaps.filenames.length);
-                displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries);
+                displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries, window.currentViewMode);
                 heatmapContainer.style.display = 'block';
                 setTimeout(() => heatmapContainer.classList.add('show'), 100);
             }
+
+            // Store the current view mode globally
+            window.currentViewMode = 'highlevel'; // 'highlevel' or 'article'
 
             function parseMarkdownTable(markdown) {
                 const lines = markdown.trim().split('\n');
@@ -1009,7 +1022,7 @@
                 return html;
             }
 
-            function displayHeatmaps(heatmapFilenames, modelCardContent, summaries, topLevelSummary, sectionSummaries) {
+            function displayHeatmaps(heatmapFilenames, modelCardContent, summaries, topLevelSummary, sectionSummaries, viewMode = 'highlevel') {
                 // Configure marked.js
                 marked.setOptions({
                     breaks: true,
@@ -1165,7 +1178,7 @@
                                 <div class="view-toggle">
                                     <label>High Level View</label>
                                     <label class="switch">
-                                        <input type="checkbox" class="view-toggle-input">
+                                        <input type="checkbox" class="view-toggle-input" ${viewMode === 'article' ? 'checked' : ''}>
                                         <span class="slider"></span>
                                     </label>
                                     <label>Article View</label>
@@ -1173,7 +1186,7 @@
                             </div>
                             <div class="model-card-content">
                                 <div class="model-card-table">
-                                    ${parseModelCardWithSummaries(modelCardContent, sectionSummaries, heatmapFilenames)}
+                                    ${parseModelCardWithSummaries(modelCardContent, sectionSummaries, heatmapFilenames, viewMode)}
                                 </div>
                             </div>
                         </div>
@@ -1198,128 +1211,81 @@
 
                 // Add event listener for view toggle
                 document.querySelector('.view-toggle-input').addEventListener('change', function(e) {
-                    const summaries = document.querySelectorAll('.section-summary');
-                    const heatmaps = document.querySelectorAll('.section-heatmap');
-                    const modelCardTable = document.querySelectorAll('.model-card-table');
-                    const colorBar = document.querySelector('.color-bar');
-                    colorBar.classList.toggle('active');
-
-                    modelCardTable.forEach(table => {
-                        table.classList.toggle('active');
-                    })
-                    summaries.forEach(summary => {
-                        summary.classList.toggle('active');
-                    });
-                    
-                    heatmaps.forEach(heatmap => {
-                        heatmap.classList.toggle('active');
-                        const iframe = heatmap.querySelector('iframe');
-                        if (iframe) {
-                            iframe.src = iframe.src;
-                        }
-                    });
+                    window.currentViewMode = this.checked ? 'article' : 'highlevel';
+                    // Re-render the table with the new view mode
+                    const existingHeatmaps = JSON.parse(localStorage.getItem('currentHeatmaps') || '{"filenames": [], "modelCardContent": "", "summaries": {}}');
+                    displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries, window.currentViewMode);
                 });
             }
 
-            function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames) {
+            function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames, viewMode = 'highlevel') {
                 const lines = markdown.trim().split('\n');
                 let html = '<table class="table">';
                 
                 html += `
                     <tr height="20px">
                         <th>Section</th>
-                        <th>Content</th>
-                        <th>
-                                <div style="display: flex; align-items: center; gap: 1rem;">
-                                    <div style="white-space: nowrap;">
-                                        Evaluation Summary 
-                                    </div>
-                                    <div class="color-bar">
-                                        <div class="color-segment">
-                                            <div class="tooltip">Score 1 - Probable Violation<br>Likely non-compliant behavior or strong risk indicators</div>
-                                        </div>
-                                        <div class="color-segment">
-                                            <div class="tooltip">Score 2 - Possible Risk<br>Behavior that could lead to violation</div>
-                                        </div>
-                                        <div class="color-segment">
-                                            <div class="tooltip">Score 3 - Ambiguous Risk<br>Unclear whether system avoids prohibited behavior</div>
-                                        </div>
-                                        <div class="color-segment">
-                                            <div class="tooltip">Score 4 - No Violation<br>No risks present, only minor clarification needed</div>
-                                        </div>
-                                        <div class="color-segment">
-                                            <div class="tooltip">Score 5 - Fully Aligned<br>Clearly avoids violations and satisfies policy intent</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </th>
+                        <th>Evaluation Summary</th>
                     </tr>
                 `;
-                
+
+                // Parse section names and content
+                const sectionRows = [];
                 lines.forEach((line, index) => {
                     if (line.trim().startsWith('|')) {
-                        // Split by | and remove empty strings, but keep spaces
                         const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
-                        
-                        // Skip separator lines and header
                         if (cells.length >= 2 && 
                             !/^[-|\s]+$/.test(line) && 
                             index > 1 && 
                             cells[0] !== 'Section' && 
                             cells[1] !== 'Content') {
-                            
                             const section = cells[0];
                             const content = cells[1];
-                            
-                            // Only process if we have valid content
                             if (section && content) {
-                                const sectionSummary = sectionSummaries && sectionSummaries[section] 
-                                    ? marked.parse(sectionSummaries[section])
-                                    : 'No evaluation available';
-                                
-                                // Find the matching heatmap filename for this section
-                                const normalizedSection = section.toLowerCase()
-                                    .replace(/\s+/g, '_')
-                                    .replace(/\//g, '_');
-                                const sectionHeatmapFilename = heatmapFilenames.find(filename => {
-                                    const normalizedFilename = filename.toLowerCase()
-                                        .replace(/^heatmap_/, '')
-                                        .replace(/_\d+\.html$/, '');
-                                    return normalizedFilename === normalizedSection;
-                                });
-                                
-                                html += `
-                                    <tr>
-                                        <td>${section}</td>
-                                        <td>${content}</td>
-                                        <td>
-                                            <div class="section-summary active">
-                                                <div class="summary-content collapsed">
-                                                    ${DOMPurify.sanitize(sectionSummary)}
-                                                </div>
-                                                <div class="show-more-wrapper">
-                                                    <button class="show-more-btn">
-                                                        Show More
-                                                        <i class="fas fa-chevron-down"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            <div class="section-heatmap">
-                                                ${sectionHeatmapFilename ? `
-                                                    <iframe src="/static/${sectionHeatmapFilename}" 
-                                                            frameborder="0""
-                                                            data-section="${section}">
-                                                    </iframe>
-                                                ` : ''}
-                                            </div>
-                                        </td>
-                                    </tr>
-                                `;
+                                sectionRows.push({section, content});
                             }
                         }
                     }
                 });
-                
+
+                // Find the combined heatmap filename
+                const combinedHeatmapFilename = heatmapFilenames.find(filename => filename.includes('combined'));
+                const numSections = sectionRows.length;
+
+                // Render rows
+                sectionRows.forEach((row, idx) => {
+                    html += `<tr class="section-content-row">`;
+                    html += `<td>${row.section}</td>`;
+                    if (viewMode === 'article') {
+                        if (idx === 0 && combinedHeatmapFilename) {
+                            html += `<td class="combined-heatmap-cell" rowspan="${numSections}">
+                                <div style="height: 950px; width: 100%;">
+                                    <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
+                                </div>
+                            </td>`;
+                        }
+                    } else {
+                        // High level view: show summary for each section
+                        const sectionSummary = sectionSummaries && sectionSummaries[row.section] 
+                            ? marked.parse(sectionSummaries[row.section])
+                            : 'No evaluation available';
+                        html += `<td>
+                            <div class="section-summary active">
+                                <div class="summary-content collapsed">
+                                    ${DOMPurify.sanitize(sectionSummary)}
+                                </div>
+                                <div class="show-more-wrapper">
+                                    <button class="show-more-btn">
+                                        Show More
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>`;
+                    }
+                    html += `</tr>`;
+                });
+
                 html += '</table>';
                 return html;
             }
@@ -1385,7 +1351,8 @@
                             data.model_card_content, 
                             data.summaries,
                             data.top_level_summary,
-                            data.section_summaries
+                            data.section_summaries,
+                            window.currentViewMode
                         );
                         
                         // Show the container
