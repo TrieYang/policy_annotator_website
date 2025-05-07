@@ -71,7 +71,7 @@ temperature=0.3)
 
 # Section names for iteration
 sections = [
-        "System Name",
+    "System Name",
     "Versioning Information",
     "Primary Developer/Org",
     "Contact Info",
@@ -80,7 +80,7 @@ sections = [
     "Primary intended users",
     "Out-of-scope use cases", 
     "Terms and conditions",  
-    "Current compliance status with relevant laws and standards", 
+    "Current legal compliance status", 
     "Dataset Description",
     "Collection Method",
     "Bias Mitigation Measures",
