@@ -716,7 +716,7 @@
 
         .model-card-table tr td:nth-of-type(2),
         .model-card-table tr th:nth-of-type(2) {
-            width: 25%;  /* Reduced from 35% */
+            width: 85%;  /* Reduced from 35% */
             height: 20px;            
             white-space: nowrap;        /* prevent text from wrapping */
             text-overflow: ellipsis;  
@@ -724,25 +724,9 @@
             display: table-cell; 
         }
 
-        .model-card-table.active th:nth-child(2),
-        .model-card-table.active td:nth-child(2) {
-            display: none; 
-        }
-
-        .model-card-table th:nth-child(3),
-        .model-card-table td:nth-child(3) {
-            width: 60%;  /* Increased from 50% */
-        }
-
         .combined-heatmap-cell {
             height: 400px !important;  /* Adjust height as needed */
             padding: 0 !important;
-        }
-
-        .combined-heatmap-cell iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
         }
 
         .model-card-header {
