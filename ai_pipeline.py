@@ -94,7 +94,6 @@ sections = [
     "Misuse Scenarios",
     "Human Oversight", 
     "Update Frequency" 
-
 ]
 
 def parse_model_card_content(model_card_content):
