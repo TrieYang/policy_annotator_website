@@ -1,7 +1,18 @@
 | Article | Rating |
 |----------|---------|
-| 1798.100 | {"score": 3, "description": "The intended uses section lacks specific details about personal information processing purposes. Add comprehensive information about how personal data is used."} |
-| 1798.105 | {"score": 4, "description": "The section should include more details about data retention periods. Specify how long personal information is kept for each use case."} |
-| 1798.106 | {"score": 3, "description": "The intended uses do not address data accuracy requirements. Include information about how data accuracy is maintained for each use case."} |
-| 1798.110 | {"score": 4, "description": "The section should specify data collection purposes. Add details about why personal information is collected for each use case."} |
-| 1798.115 | {"score": 3, "description": "The intended uses lack information about data sharing purposes. Include details about when and why data is shared with third parties."} | 
+| 1798.100 | {"score": 3, "description": "The intended uses do not clearly indicate data processing capabilities. Add information about how the system handles personal information."} |
+| 1798.105 | {"score": 4, "description": "The intended uses should reflect data deletion capabilities. Include a reference to data management features."} |
+| 1798.106 | {"score": 3, "description": "The intended uses lack clarity about data correction features. Add information about data accuracy and correction capabilities."} |
+| 1798.110 | {"score": 4, "description": "The intended uses should indicate data collection purposes. Include a reference to data processing objectives."} |
+| 1798.115 | {"score": 3, "description": "The intended uses do not address data sharing practices. Add information about data disclosure capabilities."} |
+| 1798.120 | {"score": 3, "description": "The intended uses do not address data sales opt-out rights. Add information about consumer opt-out capabilities."} |
+| 1798.125 | {"score": 4, "description": "The intended uses should reflect financial incentive program compliance. Include a reference to consumer choice features."} |
+| 1798.130 | {"score": 5, "description": null} |
+| 1798.135 | {"score": 3, "description": "The intended uses should indicate data portability features. Add information about consumer data access capabilities."} |
+| 1798.140 | {"score": 4, "description": "The intended uses should reflect data minimization practices. Include a reference to limited data collection."} |
+| 1798.145 | {"score": 5, "description": null} |
+| 1798.150 | {"score": 3, "description": "The intended uses should address data security measures. Add information about protection capabilities."} |
+| 1798.155 | {"score": 4, "description": "The intended uses should indicate data breach response features. Include a reference to incident management."} |
+| 1798.160 | {"score": 5, "description": null} |
+| 1798.165 | {"score": 3, "description": "The intended uses should reflect data retention policies. Add information about data lifecycle management."} |
+| 1798.170 | {"score": 4, "description": "The intended uses should indicate data subject rights management. Include a reference to consumer rights features."} | 
