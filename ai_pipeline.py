@@ -181,10 +181,30 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     # Apply line wrapping to descriptions
     wrapped_descriptions = np.vectorize(insert_line_breaks)(safe_descriptions)
 
+    # === Y-axis label truncation ===
+    def truncate_label(label, max_len=20):
+        return label if len(label) <= max_len else label[:max_len] + '...'
+    truncated_y_labels = [truncate_label(lbl) for lbl in data_df.index]
+
+    # === X-axis: Only show policy names, centered ===
+    # Find the center index for each policy's articles
+    policy_to_indices = {}
+    for idx, col in enumerate(data_df.columns):
+        policy = col.split('.')[0].replace('_table', '')
+        if policy not in policy_to_indices:
+            policy_to_indices[policy] = []
+        policy_to_indices[policy].append(idx)
+    x_tickvals = []
+    x_ticktext = []
+    for policy, indices in policy_to_indices.items():
+        center = int(np.mean(indices))
+        x_tickvals.append(center)
+        x_ticktext.append(policy)
+
     heatmap = go.Heatmap(
         z=data_df.values,
         x=list(range(len(data_df.columns))),  # Use numeric indices for x-axis
-        y=data_df.index,
+        y=truncated_y_labels,  # Use truncated y labels
         zmin=0,
         zmax=5,
         xgap=3, 
@@ -217,10 +237,10 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             wrapped_section_content = insert_line_breaks(section_content)
             if not description:
                 description = "This section fully complies with this article, so no reasoning is added"
-            
+            # Add full section name to hover text
             hover_x.append(j)
-            hover_y.append(row)
-            hover_str = f"<b>Article:</b> {col}<br><b>Score:</b> {data_df.values[i,j]}<br><b>Reasoning:</b> {description}<br><b>Section Content:</b> {wrapped_section_content}"
+            hover_y.append(truncated_y_labels[i])
+            hover_str = f"<b>Section:</b> {row}<br><b>Article:</b> {col}<br><b>Score:</b> {data_df.values[i,j]}<br><b>Reasoning:</b> {description}<br><b>Section Content:</b> {wrapped_section_content}"
             hover_text.append(hover_str)
 
     scatter_hover = go.Scatter(
@@ -241,22 +261,27 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     fig.update_layout(
         title=None,
         xaxis=dict(
-            showticklabels=False,
-            showline=False,
+            showticklabels=True,
+            showline=True,
             zeroline=False,
-            side='bottom'
+            side='bottom',
+            tickvals=x_tickvals,  # Only show ticks at policy centers
+            ticktext=x_ticktext,  # Only show policy names
+            tickangle=0,
+            title='Policy',
         ),
         yaxis=dict(
-            showticklabels=False,
-            showline=False,
+            showticklabels=True,
+            showline=True,
             zeroline=False,
-            autorange='reversed'
+            autorange='reversed',
+            title='Section',
         ),
-        height=950,
+        autosize = True,
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
         plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0)'),
+        paper_bgcolor='rgba(0,0,0,0)')
 
     fig.update_layout(
         hoverlabel=dict(

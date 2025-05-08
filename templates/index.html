@@ -714,14 +714,22 @@
             padding-left: 7px;
         }
 
-        .model-card-table tr td:nth-of-type(2),
-        .model-card-table tr th:nth-of-type(2) {
-            width: 85%;  /* Reduced from 35% */
-            height: 20px;            
-            white-space: nowrap;        /* prevent text from wrapping */
-            text-overflow: ellipsis;  
-            overflow: hidden; 
-            display: table-cell; 
+        .model-card-table th:nth-child(2),
+        .model-card-table td:nth-child(2) {
+            width: 25%;
+            white-space: normal;
+            text-overflow: initial;
+            overflow: visible;
+            display: table-cell;
+        }
+
+        .model-card-table th:nth-child(3),
+        .model-card-table td:nth-child(3) {
+            width: 60%;
+            white-space: normal;
+            text-overflow: initial;
+            overflow: visible;
+            display: table-cell;
         }
 
         .combined-heatmap-cell {
@@ -1174,12 +1182,47 @@
             }
 
             function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames, viewMode = 'highlevel') {
+                // Parse the model card content table to map section names to their content
                 const lines = markdown.trim().split('\n');
+                let sectionContentMap = {};
+                lines.forEach((line, index) => {
+                    if (line.trim().startsWith('|')) {
+                        const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
+                        if (cells.length >= 2 &&
+                            !/^[-|\s]+$/.test(line) &&
+                            index > 1 &&
+                            cells[0] !== 'Section' &&
+                            cells[1] !== 'Content') {
+                            const section = cells[0];
+                            const content = cells[1];
+                            if (section && content) {
+                                sectionContentMap[section] = content;
+                            }
+                        }
+                    }
+                });
+
+                // Find the combined heatmap filename
+                const combinedHeatmapFilename = heatmapFilenames.find(filename => filename.includes('combined'));
+
+                // Article view: show only the heatmap with axis labels
+                if (viewMode === 'article') {
+                    if (combinedHeatmapFilename) {
+                        // Show only the heatmap iframe, full width, with axis labels (Plotly heatmap already has them)
+                        return `<div style="height: 950px; width: 100%;">
+                            <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
+                        </div>`;
+                    } else {
+                        return '<div>No heatmap available.</div>';
+                    }
+                }
+
+                // High level view: render table with extra column
                 let html = '<table class="table">';
-                
                 html += `
                     <tr height="20px">
                         <th>Section</th>
+                        <th>Model Card Content</th>
                         <th>Evaluation Summary</th>
                     </tr>
                 `;
@@ -1189,10 +1232,10 @@
                 lines.forEach((line, index) => {
                     if (line.trim().startsWith('|')) {
                         const cells = line.split('|').map(cell => cell.trim()).filter(cell => cell !== '');
-                        if (cells.length >= 2 && 
-                            !/^[-|\s]+$/.test(line) && 
-                            index > 1 && 
-                            cells[0] !== 'Section' && 
+                        if (cells.length >= 2 &&
+                            !/^[-|\s]+$/.test(line) &&
+                            index > 1 &&
+                            cells[0] !== 'Section' &&
                             cells[1] !== 'Content') {
                             const section = cells[0];
                             const content = cells[1];
@@ -1203,41 +1246,28 @@
                     }
                 });
 
-                // Find the combined heatmap filename
-                const combinedHeatmapFilename = heatmapFilenames.find(filename => filename.includes('combined'));
-                const numSections = sectionRows.length;
-
-                // Render rows
-                sectionRows.forEach((row, idx) => {
+                sectionRows.forEach((row) => {
                     html += `<tr class="section-content-row">`;
                     html += `<td>${row.section}</td>`;
-                    if (viewMode === 'article') {
-                        if (idx === 0 && combinedHeatmapFilename) {
-                            html += `<td class="combined-heatmap-cell" rowspan="${numSections}">
-                                <div style="height: 950px; margin-top: -40px; width: 100%;">
-                                    <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
-                                </div>
-                            </td>`;
-                        }
-                    } else {
-                        // High level view: show summary for each section
-                        const sectionSummary = sectionSummaries && sectionSummaries[row.section] 
-                            ? marked.parse(sectionSummaries[row.section])
-                            : 'No evaluation available';
-                        html += `<td>
-                            <div class="section-summary active">
-                                <div class="summary-content collapsed">
-                                    ${DOMPurify.sanitize(sectionSummary)}
-                                </div>
-                                <div class="show-more-wrapper">
-                                    <button class="show-more-btn">
-                                        Show More
-                                        <i class="fas fa-chevron-down"></i>
-                                    </button>
-                                </div>
+                    // Model Card Content column
+                    html += `<td>${DOMPurify.sanitize(marked.parse(sectionContentMap[row.section] || 'No content'))}</td>`;
+                    // Evaluation Summary column
+                    const sectionSummary = sectionSummaries && sectionSummaries[row.section]
+                        ? marked.parse(sectionSummaries[row.section])
+                        : 'No evaluation available';
+                    html += `<td>
+                        <div class="section-summary active">
+                            <div class="summary-content collapsed">
+                                ${DOMPurify.sanitize(sectionSummary)}
                             </div>
-                        </td>`;
-                    }
+                            <div class="show-more-wrapper">
+                                <button class="show-more-btn">
+                                    Show More
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>`;
                     html += `</tr>`;
                 });
 
