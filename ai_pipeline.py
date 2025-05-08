@@ -181,10 +181,24 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     # Apply line wrapping to descriptions
     wrapped_descriptions = np.vectorize(insert_line_breaks)(safe_descriptions)
 
-    # === Y-axis label truncation ===
-    def truncate_label(label, max_len=20):
-        return label if len(label) <= max_len else label[:max_len] + '...'
-    truncated_y_labels = [truncate_label(lbl) for lbl in data_df.index]
+    # === Y-axis label wrapping ===
+    def wrap_label(label, max_len=20):
+        words = label.split()
+        lines = []
+        current = ''
+        for word in words:
+            if len(current) + len(word) + 1 <= max_len:
+                if current:
+                    current += ' ' + word
+                else:
+                    current = word
+            else:
+                lines.append(current)
+                current = word
+        if current:
+            lines.append(current)
+        return '<br>'.join(lines)
+    wrapped_y_labels = [wrap_label(lbl) for lbl in data_df.index]
 
     # === X-axis: Only show policy names, centered ===
     # Find the center index for each policy's articles
@@ -204,7 +218,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     heatmap = go.Heatmap(
         z=data_df.values,
         x=list(range(len(data_df.columns))),  # Use numeric indices for x-axis
-        y=truncated_y_labels,  # Use truncated y labels
+        y=wrapped_y_labels,  # Use wrapped y labels
         zmin=0,
         zmax=5,
         xgap=3, 
@@ -239,7 +253,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
                 description = "This section fully complies with this article, so no reasoning is added"
             # Add full section name to hover text
             hover_x.append(j)
-            hover_y.append(truncated_y_labels[i])
+            hover_y.append(wrapped_y_labels[i])
             hover_str = f"<b>Section:</b> {row}<br><b>Article:</b> {col}<br><b>Score:</b> {data_df.values[i,j]}<br><b>Reasoning:</b> {description}<br><b>Section Content:</b> {wrapped_section_content}"
             hover_text.append(hover_str)
 
