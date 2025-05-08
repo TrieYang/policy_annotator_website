@@ -278,25 +278,24 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             showticklabels=True,
             showline=True,
             zeroline=False,
-            side='bottom',
+            side='top',
             tickvals=x_tickvals,  # Only show ticks at policy centers
-            ticktext=x_ticktext,  # Only show policy names
-            tickangle=0,
-            title='Policy',
+            ticktext=x_ticktext,  # Only show policy names    
+
+            # title='Policy',  # Removed axis title
         ),
         yaxis=dict(
             showticklabels=True,
             showline=True,
             zeroline=False,
             autorange='reversed',
-            title='Section',
+            tickfont = dict(size=10),
         ),
         autosize = True,
         margin=dict(l=0, r=0, t=0, b=0),
         showlegend=False,
         plot_bgcolor='rgba(0,0,0,0)',
         paper_bgcolor='rgba(0,0,0,0)')
-
     fig.update_layout(
         hoverlabel=dict(
             font_size=10,
@@ -315,11 +314,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     html_content = fig.to_html(
         include_plotlyjs='cdn',
         full_html=True,
-        include_mathjax='cdn',
-        config={
-            'displayModeBar': False,
-            'scrollZoom': False
-        }
+        include_mathjax='cdn'
     )
     html_content = html_content.replace("<head>", "<head><style>html, body {margin: 0; padding: 0;}</style>")
 
