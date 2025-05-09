@@ -48,7 +48,7 @@ You are evaluating how well a **model card section** aligns with a **specific po
 4. **If the section is irrelevant to the policy**, but doesn't introduce risk, assign 5.
 5. **If unclear**, check **OTHER** model card sections for clarification. If ambiguity remains, score 3.
 6. **If the section avoids all risk**, even if brief or indirect, assign 4 or 5 depending on clarity and confidence.
-7. **Justify the score** briefly in 1–2 sentences.
+7. **Justify the score if it is under 5 and provide actionable items to improve score to 5** briefly in 1–3 sentences.
 
 ---
 
