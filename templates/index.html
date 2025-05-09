@@ -288,6 +288,7 @@
             position: relative;
             display: inline-flex;
             align-items: center;
+            margin-bottom: 25px;
         }
 
         .info-tooltip {
@@ -825,6 +826,15 @@
         .section-heatmap iframe {
             z-index: 2;
         }
+
+        .policy-selector-card select:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 0.15rem rgba(74, 144, 226, 0.15);
+            outline: none;
+        }
+        .policy-selector-card select:hover {
+            border-color: #6C63FF;
+        }
     </style>
 </head>
 <body>
@@ -1202,23 +1212,64 @@
                     }
                 });
 
-                // Find the combined heatmap filename
-                const combinedHeatmapFilename = heatmapFilenames.find(filename => filename.includes('combined'));
-
-                // Article view: show only the heatmap with axis labels
-                if (viewMode === 'article') {
-                    if (combinedHeatmapFilename) {
-                        // Show only the heatmap iframe, full width, with axis labels (Plotly heatmap already has them)
-                        return `<div style="height: 700px; width: 100%;">
-                            <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
-                        </div>`;
-                    } else {
-                        return '<div>No heatmap available.</div>';
-                    }
+                // Find available policy keys from the first JSON section summary
+                let policyKeys = ['Overall'];
+                for (const section of Object.keys(sectionSummaries)) {
+                    try {
+                        const json = JSON.parse(sectionSummaries[section]);
+                        if (json && typeof json === 'object') {
+                            policyKeys = Object.keys(json);
+                            break;
+                        }
+                    } catch {}
                 }
 
-                // High level view: render table with extra column
-                let html = '<table class="table">';
+                // Add the global dropdown and explanation beside the view toggle (only in highlevel view)
+                let globalDropdownHtml = '';
+                if (viewMode === 'highlevel' && policyKeys.length > 0) {
+                    globalDropdownHtml = `
+                        <div class="policy-selector-bar" style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-bottom: 1.2rem;">
+                            <div class="policy-selector-dropdown" style="min-width: 220px; max-width: 300px;">
+                                <select id="globalPolicySelector" style="width: 100%; padding: 0.7em 1em; border-radius: 8px; border: 2px solid #e9ecef; font-size: 1rem; background: white;">
+                                    ${policyKeys.map(key => `<option value="${key}">${key}</option>`).join('')}
+                                </select>
+                            </div>
+                            <span class="info-icon policy-info-tooltip-trigger" tabindex="0" style="color: #4A90E2; font-size: 1.3rem; cursor: pointer; position: relative;">
+                                <i class="fas fa-info-circle"></i>
+                                <span class="policy-info-tooltip">Select a policy to view specific advice for improving compliance with that policy.</span>
+                            </span>
+                        </div>
+                        <style>
+                            .policy-info-tooltip {
+                                visibility: hidden;
+                                opacity: 0;
+                                width: 270px;
+                                background: #2C3E50;
+                                color: #fff;
+                                text-align: left;
+                                border-radius: 8px;
+                                padding: 0.8em 1em;
+                                position: absolute;
+                                z-index: 100;
+                                top: 120%;
+                                right: 0;
+                                font-size: 0.95rem;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+                                transition: opacity 0.2s, visibility 0.2s;
+                                pointer-events: none;
+                            }
+                            .policy-info-tooltip-trigger:hover .policy-info-tooltip,
+                            .policy-info-tooltip-trigger:focus .policy-info-tooltip {
+                                visibility: visible;
+                                opacity: 1;
+                                pointer-events: auto;
+                            }
+                        </style>
+                    `;
+                }
+
+                let html = globalDropdownHtml;
+                html += '<table class="table">';
                 html += `
                     <tr height="20px">
                         <th>Section</th>
@@ -1252,19 +1303,22 @@
                     // Model Card Content column
                     html += `<td>${DOMPurify.sanitize(marked.parse(sectionContentMap[row.section] || 'No content'))}</td>`;
                     // Evaluation Summary column
-                    const sectionSummary = sectionSummaries && sectionSummaries[row.section]
-                        ? marked.parse(sectionSummaries[row.section])
+                    const sectionSummaryRaw = sectionSummaries && sectionSummaries[row.section]
+                        ? sectionSummaries[row.section]
                         : 'No evaluation available';
+                    let summaryJson = null;
+                    try { summaryJson = JSON.parse(sectionSummaryRaw); } catch {}
+                    // Use a data attribute to store the JSON for later updates
                     html += `<td>
                         <div class="section-summary active">
-                            <div class="summary-content collapsed">
-                                ${DOMPurify.sanitize(sectionSummary)}
-                            </div>
-                            <div class="show-more-wrapper">
-                                <button class="show-more-btn">
-                                    Show More
-                                    <i class="fas fa-chevron-down"></i>
-                                </button>
+                            <div class="summary-content collapsed section-summary-content"
+                                 data-section="${row.section}"
+                                 data-summary-json='${summaryJson ? JSON.stringify(summaryJson).replace(/'/g, "&apos;") : ""}'>
+                                ${
+                                    (viewMode === 'highlevel' && summaryJson && summaryJson[policyKeys[0]])
+                                        ? DOMPurify.sanitize(marked.parse(summaryJson[policyKeys[0]]))
+                                        : DOMPurify.sanitize(marked.parse(sectionSummaryRaw))
+                                }
                             </div>
                         </div>
                     </td>`;
@@ -1272,6 +1326,27 @@
                 });
 
                 html += '</table>';
+
+                // After rendering, add event listener for the global dropdown
+                setTimeout(() => {
+                    const globalDropdown = document.getElementById('globalPolicySelector');
+                    if (globalDropdown) {
+                        globalDropdown.addEventListener('change', function() {
+                            const selected = this.value;
+                            document.querySelectorAll('.section-summary-content').forEach(div => {
+                                const summaryJsonStr = div.getAttribute('data-summary-json');
+                                let summaryJson = null;
+                                try { summaryJson = JSON.parse(summaryJsonStr.replace(/&apos;/g, "'")); } catch {}
+                                if (summaryJson && summaryJson[selected]) {
+                                    div.innerHTML = DOMPurify.sanitize(marked.parse(summaryJson[selected]));
+                                } else if (summaryJson && summaryJson['Overall']) {
+                                    div.innerHTML = DOMPurify.sanitize(marked.parse(summaryJson['Overall']));
+                                }
+                            });
+                        });
+                    }
+                }, 0);
+
                 return html;
             }
 
