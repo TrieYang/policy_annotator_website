@@ -1,43 +1,56 @@
 ### **Task**  
-Summarize the **Model Card Section Compliance Evaluation Results** into a concise and human-readable format that highlights key weaknesses and provides actionable suggestions. This output is intended for end-users viewing results on a web platform and must be easily scannable.
+Given JSON-formatted evaluation results for a specific model card section, return a JSON object mapping "Overall" and each policy to its respective markdown-formatted summary. The markdown-formatted summary will be a
 
 ---
+
+### **Definition**
+- Model Card Section: A part of a model card, which is a documentation format used to describe key details about an AI system. Each section focuses on a specific area, such as system overview, training data, performance, risks, etc., to help developers and stakeholders understand how the model works and where it may have limitations.
+- Policy Article: A specific clause or numbered requirement within an AI policy or regulation (e.g., EU AI Act, AIDA). Each article outlines a legal or ethical obligation that AI systems must meet—such as transparency, data privacy, or human oversight.
+- NVAM score: An integer score from 0-5 describing how well a **model card section** aligns with a **specific policy article/paragraph**
+
+
 
 ### **Instructions**
 - Input will be a JSON array containing evaluation results for a specific model card section across all policies, where each item has:
-  - `policy`: The policy being evaluated
-  - `article`: The policy article number
-  - `score`: The compliance score (0–5)
-  - `description`: A short explanation of the issue or deficiency if `score < 5`
+  1. `policy`: The policy being evaluated
+  2. `article`: The specific article number in the policy 
+  3. `score`: NVAM score (0–5)
+  4. `description`: A short explanation of the issue or deficiency if `score < 5` and what can be done to improve the score to 5
+- Step by step guide:
+1, **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
+2, Group remaining items by policy
+3, For each policy:
+  Create a markdown block titled: #### **Issues and Fixes:**
+4, For each item:
+5, Use a bullet with bold summary of the issue (from description)
+6, On the next line, write a ↳ fix: rephrase the description into a constructive action
+7, Keep each pair short, readable, and action-oriented
+8, After per-policy summaries, generate one "Overall" block:
+9, Return as a JSON object mapping policy names and "Overall" to their markdown string.
 
----
-
-- Your task is to:
-  1. **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
-  2. For items with `score < 5`, group them by **common themes** or **policy requirements**.
-  3. Generate a summary with the following format:
+  #### **Output Format Example**
+  ```
+  {
+  "Overall": "#### **Issues and Fixes:**\n- **Missing Risk Categorization**  
+  ↳ *Add a risk classification label to the system design, using terms defined in major AI regulations (e.g., 'high-risk').*\n\n- **No Audit Trails**  
+  ↳ *Describe how audit logs are generated, stored, and reviewed to meet transparency standards.*",
   
----
+  "EU AI Act": "#### **Issues and Fixes:**\n- **Missing Risk Categorization**  
+  ↳ *Clearly identify system risk level based on EU AI Act definitions, and list controls for high-risk categories.*",
 
-### **Output Format**
-```
-#### 🟠 {{SECTION_NAME}} – Areas for Improvement
+  "AIDA": "#### **Issues and Fixes:**\n- **No Audit Trails**  
+  ↳ *Include explanations of data traceability, access monitoring, and audit logging to comply with AIDA.*"
+  }
+  ```
 
-**Key Issues Identified:**
-- **[Short Bold Summary of Issue]** – One-line explanation (from description)
-- ...
-- [Add 3–6 bullet points max]
+  ---
+- You are not generating new analysis or recommendations. Your job is to extract, rephrase, and organize the provided information into a user-friendly format:
+  1, Combine similar or redundant items into a single clear point when appropriate.
+  2, Do not add speculative content or invent new issues.
+  3. The goal is to improve readability and reduce duplication, not to expand the scope of evaluation.
 
-**Suggested Improvements:**  
-Summarize the main areas needing improvement for this section, using clear and constructive language. This paragraph should be 2–3 sentences suggesting what can be added or improved to help this section achieve better compliance across all policies.
-```
-
----
-
-### **Formatting Rules**
-- Do NOT show raw JSON data.
+### **Response Formatting Rules**
 - Do NOT include any extra conversational phrasing or meta commentary. This output will be displayed directly on the frontend and should be ready for users to read without modification.
-- Keep bullet points to **6 or fewer** for clarity.
 - Keep the tone **neutral, informative, and professional**.
 
 ---
@@ -62,21 +75,6 @@ Summarize the main areas needing improvement for this section, using clear and c
   ]
 }
 ```
-
----
-
-### **Example Output**
-```
-#### 🟠 System Overview – Areas for Improvement
-
-**Key Issues Identified:**
-- **Insufficient data processing documentation** – Lacks detailed explanation of data handling methods and procedures
-- **Privacy measures undefined** – Missing clear documentation of user privacy protection mechanisms
-
-**Suggested Improvements:**  
-The System Overview section should be enhanced with comprehensive documentation of data processing workflows and privacy protection measures. Adding specific details about data handling procedures, collection methods, and privacy safeguards will help address compliance requirements across multiple policies.
-```
----
 
 ### Input
 

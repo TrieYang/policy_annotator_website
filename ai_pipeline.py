@@ -391,128 +391,172 @@ async def generate_section_summary(section_name, section_data):
     if TESTING_MODE:
         # Sample responses for testing mode
         sample_responses = {
-            "System Name": """#### 🟢 System Name – Fully Compliant
-The system name is clearly defined and follows best practices for AI system identification.""",
-            
-            "Versioning Information": """#### 🟠 Versioning Information – Areas for Improvement
-Key Issues Identified:
-- Version numbering scheme not clearly defined
-- Release date format inconsistent
-- Missing changelog information""",
-            
-            "Primary Developer/Org": """#### 🟡 Primary Developer/Org – Partial Compliance
-Key Issues Identified:
-- Organization structure not fully detailed
-- Missing key stakeholder information
-- Team roles and responsibilities unclear""",
-            
-            "Contact Info": """#### 🟠 Contact Info – Areas for Improvement
-Key Issues Identified:
-- Missing AI-specific support channel
-- Response time standards undefined
-- Incomplete availability details""",
-            
-            "System Overview": """#### 🟢 System Overview – Fully Compliant
-The system overview provides comprehensive information about the AI system's capabilities and limitations.""",
-            
-            "Primary intended uses": """#### 🟡 Primary intended uses – Partial Compliance
-Key Issues Identified:
-- Use case descriptions lack specificity
-- Missing performance expectations
-- Limited information about user interactions""",
-            
-            "Primary intended users": """#### 🟠 Primary intended users – Areas for Improvement
-Key Issues Identified:
-- User demographics not clearly defined
-- Missing accessibility considerations
-- Limited information about user requirements""",
-            
-            "Out-of-scope use cases": """#### 🟢 Out-of-scope use cases – Fully Compliant
-Clear and comprehensive documentation of use cases outside the system's intended scope.""",
-            
-            "Terms and conditions": """#### 🟡 Terms and conditions – Partial Compliance
-Key Issues Identified:
-- Legal disclaimers need clarification
-- Usage restrictions not fully detailed
-- Missing information about data handling""",
-            
-            "Current compliance status with relevant laws and standards": """#### 🟠 Current compliance status with relevant laws and standards – Areas for Improvement
-Key Issues Identified:
-- Missing specific regulatory references
-- Compliance documentation incomplete
-- Limited information about ongoing compliance monitoring""",
-            
-            "Dataset Description": """#### 🟡 Dataset Description – Partial Compliance
-Key Issues Identified:
-- Data sources not fully documented
-- Missing information about data quality
-- Limited details about data preprocessing""",
-            
-            "Collection Method": """#### 🟠 Collection Method – Areas for Improvement
-Key Issues Identified:
-- Data collection procedures unclear
-- Missing information about sampling methods
-- Limited details about data validation""",
-            
-            "Bias Mitigation Measures": """#### 🟡 Bias Mitigation Measures – Partial Compliance
-Key Issues Identified:
-- Bias detection methods not fully described
-- Missing information about mitigation strategies
-- Limited details about ongoing monitoring""",
-            
-            "Usage Constraints": """#### 🟢 Usage Constraints – Fully Compliant
-Clear and comprehensive documentation of system usage limitations and restrictions.""",
-            
-            "Summary of Performance Assessment": """#### 🟠 Summary of Performance Assessment – Areas for Improvement
-Key Issues Identified:
-- Performance metrics not fully defined
-- Missing baseline comparisons
-- Limited information about evaluation methods""",
-            
-            "Disaggregated Performance": """#### 🟡 Disaggregated Performance – Partial Compliance
-Key Issues Identified:
-- Performance breakdowns incomplete
-- Missing information about subgroup analysis
-- Limited details about performance variations""",
-            
-            "Testing Contexts": """#### 🟢 Testing Contexts – Fully Compliant
-Comprehensive documentation of testing environments and conditions.""",
-            
-            "Evaluations for Edge Cases or Adversarial Inputs": """#### 🟠 Evaluations for Edge Cases or Adversarial Inputs – Areas for Improvement
-Key Issues Identified:
-- Edge case testing not fully documented
-- Missing information about adversarial testing
-- Limited details about robustness measures""",
-            
-            "Potential Risks and Harms": """#### 🟡 Potential Risks and Harms – Partial Compliance
-Key Issues Identified:
-- Risk assessment incomplete
-- Missing information about harm mitigation
-- Limited details about risk monitoring""",
-            
-            "Actions taken": """#### 🟢 Actions taken – Fully Compliant
-Clear documentation of actions taken to address identified issues and concerns.""",
-            
-            "Misuse Scenarios": """#### 🟠 Misuse Scenarios – Areas for Improvement
-Key Issues Identified:
-- Misuse scenarios not fully documented
-- Missing information about prevention measures
-- Limited details about detection methods""",
-            
-            "Human Oversight": """#### 🟡 Human Oversight – Partial Compliance
-Key Issues Identified:
-- Oversight procedures not fully defined
-- Missing information about human intervention
-- Limited details about monitoring processes""",
-            
-            "Update Frequency": """#### 🟢 Update Frequency – Fully Compliant
-Clear documentation of system update schedules and procedures."""
-        }
+                "System Name": """{
+            "Overall": "#### Issues and Fixes:\\n- **Ambiguous system name**  \\n↳ *Clarify the system name to avoid confusion with other tools or versions.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Missing unique identifier**  \\n↳ *Include a distinct and traceable system name or code to support regulatory filing.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Inconsistent system labeling**  \\n↳ *Ensure the system name is uniform across all public and internal documentation.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Name not tied to consumer-facing functionality**  \\n↳ *Clearly indicate which services use this AI system so consumers understand its presence.*"
+            }""",
+
+                "Versioning Information": """{
+            "Overall": "#### Issues and Fixes:\\n- **No version history provided**  \\n↳ *Add a versioning scheme and log of major changes to the system.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Insufficient version traceability**  \\n↳ *Document each deployed version to support accountability during audits.*",
+            "AIDA": "#### Issues and Fixes:\\n- **No link between updates and risk**  \\n↳ *Explain how version updates are assessed for potential risk impacts.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Consumer-impacting updates unclear**  \\n↳ *Highlight changes that affect data use, privacy, or user-facing behavior.*"
+            }""",
+
+                "Primary Developer/Org": """{
+            "Overall": "#### Issues and Fixes:\\n- **Missing organization accountability**  \\n↳ *Specify the developing organization and responsible departments.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Provider identity vague**  \\n↳ *Clearly state the system provider and outline their responsibilities.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Lack of developer governance info**  \\n↳ *Include governance structures and responsible individuals for oversight.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Contact identity missing**  \\n↳ *Ensure users know who operates the system and how to reach them.*"
+            }""",
+
+                "Contact Info": """{
+            "Overall": "#### Issues and Fixes:\\n- **Missing support channel**  \\n↳ *Provide a clear contact for technical support and ethical concerns.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No incident reporting mechanism**  \\n↳ *Add a process for users to report potential harm or system failures.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Accountability contact undefined**  \\n↳ *Specify a person or team responsible for compliance communications.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No contact for data requests**  \\n↳ *Include a channel for users to request data access or deletion.*"
+            }""",
+                "System Overview": """{
+            "Overall": "#### Issues and Fixes:\\n- **High-level functionality unclear**  \\n↳ *Include a concise summary of what the AI system does and its boundaries.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Missing risk categorization**  \\n↳ *State whether the system qualifies as high-risk under Annex III of the EU AI Act.*",
+            "AIDA": "#### Issues and Fixes:\\n- **No reference to intended impact**  \\n↳ *Describe the anticipated effects on individuals and society as required by AIDA.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Lacks mention of user data flow**  \\n↳ *Clarify how personal data moves through the system, if applicable.*"
+            }""",
+
+                "Primary intended uses": """{
+            "Overall": "#### Issues and Fixes:\\n- **Intended use too vague**  \\n↳ *Clarify the real-world tasks or decisions the system is meant to support.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No mapping to risk categories**  \\n↳ *Indicate whether any intended uses relate to high-risk applications under the regulation.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Societal impact not articulated**  \\n↳ *Describe how these use cases may influence people’s rights or access to services.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Use cases lack privacy dimension**  \\n↳ *Explain how each use case relates to data collection or user profiling.*"
+            }""",
+
+                "Primary intended users": """{
+            "Overall": "#### Issues and Fixes:\\n- **User roles not defined**  \\n↳ *Specify who the system is designed for—experts, consumers, or institutions.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No human oversight mapping**  \\n↳ *Explain how user roles affect control over the AI system.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Accessibility needs not considered**  \\n↳ *Account for inclusion of marginalized or underserved user groups.*",
+            "CCPA": "#### Issues and Fixes:\\n- **End-user data rights undefined**  \\n↳ *Clarify how user roles affect data visibility or deletion options.*"
+            }""",
+
+                "Out-of-scope use cases": """{
+            "Overall": "#### Issues and Fixes:\\n- **No constraints listed**  \\n↳ *Document scenarios where system use is not advised or disallowed.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No safeguards against misuse**  \\n↳ *Describe restrictions that prevent the AI system from being used in prohibited contexts.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Potential for repurposing unacknowledged**  \\n↳ *List common misuses and provide warnings or disclaimers.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No restriction on behavioral tracking**  \\n↳ *Clarify that system is not intended for unconsented behavioral analytics.*"
+            }""",
+
+                "Terms and conditions": """{
+            "Overall": "#### Issues and Fixes:\\n- **Missing licensing terms**  \\n↳ *Add legal conditions under which the system can be accessed and used.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **User responsibilities undefined**  \\n↳ *Define who is responsible for compliance depending on deployment context.*",
+            "AIDA": "#### Issues and Fixes:\\n- **No liability disclaimer**  \\n↳ *Include legal notices about AI-related harm and mitigation duties.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No consent-related language**  \\n↳ *State how consent is obtained or revoked under usage terms.*"
+            }""",
+
+                "Current legal compliance status": """{
+            "Overall": "#### Issues and Fixes:\\n- **No mention of applicable regulations**  \\n↳ *List which data, consumer, or AI regulations the system adheres to.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No reference to conformity assessment**  \\n↳ *Document status of required assessments under EU AI Act Title III.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Lack of risk-based compliance review**  \\n↳ *Note if the system underwent algorithmic impact assessment (AIA).*",
+            "CCPA": "#### Issues and Fixes:\\n- **No disclosure of privacy policies**  \\n↳ *State whether the system has been reviewed for CCPA compliance.*"
+            }""",
+
+                "Dataset Description": """{
+            "Overall": "#### Issues and Fixes:\\n- **Data origin unclear**  \\n↳ *Provide source details and licensing terms of the datasets used.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No discussion of representativeness**  \\n↳ *Explain how datasets reflect the population where the system is used.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Unclear data collection process**  \\n↳ *Indicate whether data was collected directly, indirectly, or scraped.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Lack of personal data flagging**  \\n↳ *Identify if any data used is considered personal under CCPA definitions.*"
+            }""",
+
+                "Collection Method": """{
+            "Overall": "#### Issues and Fixes:\\n- **Unspecified collection procedure**  \\n↳ *Describe how and where data was collected, including devices or APIs used.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Collection timeframe omitted**  \\n↳ *Specify when the data was obtained, as timing affects validity.*",
+            "AIDA": "#### Issues and Fixes:\\n- **No consent method disclosed**  \\n↳ *Explain how user consent was obtained for data collection.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No opt-out capability for users**  \\n↳ *Document if users could reject participation or data tracking.*"
+            }""",
+
+                "Bias Mitigation Measures": """{
+            "Overall": "#### Issues and Fixes:\\n- **Limited bias reduction explanation**  \\n↳ *Provide details on pre-processing, in-processing, or post-processing methods.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No fairness audits described**  \\n↳ *Include results from any bias testing required for high-risk systems.*",
+            "AIDA": "#### Issues and Fixes:\\n- **No documentation of systemic risk**  \\n↳ *Explain whether the model was reviewed for disproportionate harm.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Protected group flags missing**  \\n↳ *Indicate if system treats sensitive data differently to mitigate bias.*"
+            }""",
+
+                "Usage Constraints": """{
+            "Overall": "#### Issues and Fixes:\\n- **System limits not defined**  \\n↳ *Clarify technical and policy constraints on system usage.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No usage boundary conditions**  \\n↳ *Define operating conditions to prevent deployment beyond scope.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Lack of policy-driven usage checks**  \\n↳ *Specify measures that prevent harmful overuse or repurposing.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No data use limitations documented**  \\n↳ *Clearly list what data may not be used or retained under CCPA.*"
+            }""",
+
+                "Summary of Performance Assessment": """{
+            "Overall": "#### Issues and Fixes:\\n- **No baseline or benchmark provided**  \\n↳ *Add quantitative metrics with comparisons to industry baselines.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Performance for critical tasks unclear**  \\n↳ *Report accuracy, robustness, and reliability for key functions.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Impact of errors unaddressed**  \\n↳ *Discuss how model performance affects individuals or groups.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No indication of error in personal data usage**  \\n↳ *Include performance metrics relevant to privacy and personalization.*"
+            }""",
+
+                "Disaggregated Performance": """{
+            "Overall": "#### Issues and Fixes:\\n- **Subgroup performance not reported**  \\n↳ *Present how the system performs across different demographic or user groups.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No fairness performance shown**  \\n↳ *Include subgroup error rates as required for high-risk classification.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Equity implications not explored**  \\n↳ *Report whether performance gaps might cause harm or exclusion.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Demographic bias impact not measured**  \\n↳ *Evaluate if personalization varies by age, race, or other protected attributes.*"
+            }""",
+
+                "Testing Contexts": """{
+            "Overall": "#### Issues and Fixes:\\n- **Unclear test environment**  \\n↳ *List environments and inputs used during testing, including edge cases.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Real-world conditions missing**  \\n↳ *Simulate and document tests under intended operational settings.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Testing fails to simulate harms**  \\n↳ *Use representative conditions that reflect potential risk.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Data flow not validated in tests**  \\n↳ *Ensure tests cover scenarios involving personal data handling.*"
+            }""",
+
+                "Evaluations for Edge Cases or Adversarial Inputs": """{
+            "Overall": "#### Issues and Fixes:\\n- **Limited adversarial testing**  \\n↳ *Expand test cases to include abnormal, unexpected, or hostile inputs.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Robustness testing incomplete**  \\n↳ *Evaluate resilience to edge cases as part of high-risk system obligations.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Potential for harm under-tested**  \\n↳ *Identify how unusual inputs may cause discriminatory or dangerous outcomes.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Adversarial misuse affecting personal data unaddressed**  \\n↳ *Include tests for manipulative attacks that affect privacy or output.*"
+            }""",
+
+                "Potential Risks and Harms": """{
+            "Overall": "#### Issues and Fixes:\\n- **No risk assessment framework provided**  \\n↳ *List foreseeable risks, likelihoods, and severity, with mitigation strategies.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Annex III risk types not mapped**  \\n↳ *Align identified risks with EU AI Act high-risk categories.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Individual rights impact vague**  \\n↳ *Explain how the system may affect autonomy, dignity, or social inclusion.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No disclosure of potential data misuse**  \\n↳ *Describe possible misuse of personal data and safeguards in place.*"
+            }""",
+
+                "Actions taken": """{
+            "Overall": "#### Issues and Fixes:\\n- **Mitigations not linked to identified risks**  \\n↳ *Clearly show how specific actions address known risks or deficiencies.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **Corrective actions not documented**  \\n↳ *Include risk reduction efforts taken during design and testing phases.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Unclear alignment with accountability obligations**  \\n↳ *Highlight ongoing governance or improvement steps tied to compliance.*",
+            "CCPA": "#### Issues and Fixes:\\n- **No action noted on user complaints**  \\n↳ *Mention any steps taken in response to access, correction, or deletion requests.*"
+            }""",
+
+                "Misuse Scenarios": """{
+            "Overall": "#### Issues and Fixes:\\n- **Misuse potential not documented**  \\n↳ *Describe how the system could be exploited or misunderstood.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No prohibited use warnings**  \\n↳ *Include disclaimers for banned or high-risk uses, such as surveillance.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Misuse detection strategies missing**  \\n↳ *Explain how the system monitors or responds to unintended applications.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Data misuse not discussed**  \\n↳ *Identify how unauthorized access or repurposing of personal data is prevented.*"
+            }""",
+
+                "Human Oversight": """{
+            "Overall": "#### Issues and Fixes:\\n- **Oversight mechanisms poorly defined**  \\n↳ *Specify when and how humans can intervene in system operation.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No oversight protocol for high-risk decisions**  \\n↳ *Establish human review and override paths for sensitive outcomes.*",
+            "AIDA": "#### Issues and Fixes:\\n- **Unclear if humans have meaningful control**  \\n↳ *Document how human judgment supplements or monitors automation.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Lack of manual appeal process for users**  \\n↳ *Ensure users can request human handling of automated decisions.*"
+            }""",
+
+                "Update Frequency": """{
+            "Overall": "#### Issues and Fixes:\\n- **Update cadence not disclosed**  \\n↳ *Describe how often and under what conditions the model or system is updated.*",
+            "EU AI Act": "#### Issues and Fixes:\\n- **No monitoring triggers for retraining**  \\n↳ *Indicate how performance drift or data changes lead to updates.*",
+            "AIDA": "#### Issues and Fixes:\\n- **No link between updates and risk**  \\n↳ *Explain how update decisions incorporate harm prevention logic.*",
+            "CCPA": "#### Issues and Fixes:\\n- **Versioning not tied to data retention**  \\n↳ *Clarify whether updates reset or affect data collection timelines.*"
+            }"""
+            }
+
         
         return sample_responses.get(section_name, f"""#### ⚠️ {section_name} – No Evaluation Data
 Note: No evaluation data was provided for this section.""")
     
-    # Original code for non-testing mode
+    # non-testing mode
     async with aiofiles.open("prompt_summarize_by_section.txt", "r") as f:
         prompt_template = await f.read()
 
