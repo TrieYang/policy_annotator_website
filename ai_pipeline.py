@@ -222,7 +222,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
         zmin=0,
         zmax=5,
         xgap=3, 
-        ygap=7,
+        ygap=3,
         colorscale = [[0.0, 'rgb(255,255,204)'], 
                     [0.2, 'rgb(255,255,204)'],
                     [0.2, 'rgb(161,218,180)'],
@@ -270,6 +270,18 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     # === Combine traces ===
     fig = go.Figure(data=[heatmap, scatter_hover])
 
+    # === Add vertical lines for policy boundaries using add_vline ===
+    policy_names = list(policy_to_indices.keys())
+    for i in range(1, len(policy_names)):
+        prev_indices = policy_to_indices[policy_names[i-1]]
+        boundary = max(prev_indices) + 0.5
+        fig.add_vline(
+            x=boundary,
+            line_width=2,
+            line_dash="dash",
+            line_color="rgba(0,0,0,0.3)",
+            layer="above"
+        )
 
     # === Layout ===
     fig.update_layout(

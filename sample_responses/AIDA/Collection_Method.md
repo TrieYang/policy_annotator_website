@@ -4,4 +4,15 @@
 | 2 | {"score": 3, "description": "The collection method section lacks details about data acquisition procedures. Add comprehensive information about data gathering processes and protocols."} |
 | 3 | {"score": 4, "description": "The section should include more details about data validation during collection. Specify quality checks and validation procedures."} |
 | 4 | {"score": 5, "description": null} |
-| 5 | {"score": 3, "description": "The collection section does not address data privacy measures. Include information about privacy protection during data collection."} | 
+| 5 | {"score": 3, "description": "The collection section does not address data privacy measures. Include information about privacy protection during data collection."} |
+| 57 | {"score": 3, "description": "Collection method should include certification history details. Add information about past records."} |
+| 58 | {"score": 4, "description": "Collection method should include certification verification details. Add information about validation."} |
+| 59 | {"score": 5, "description": "Collection method should include certification documentation details. Add information about records."} |
+| 60 | {"score": 3, "description": "Collection method should include certification maintenance details. Add information about upkeep."} |
+| 61 | {"score": 4, "description": "Collection method should include certification review details. Add information about assessment."} |
+| 62 | {"score": 5, "description": "Collection method should include certification update details. Add information about changes."} |
+| 63 | {"score": 3, "description": "Collection method should include certification transfer details. Add information about portability."} |
+| 64 | {"score": 4, "description": "Collection method should include certification suspension details. Add information about temporary halt."} |
+| 65 | {"score": 5, "description": "Collection method should include certification renewal details. Add information about extension."} |
+| 66 | {"score": 3, "description": "Collection method should include certification scope details. Add information about coverage."} |
+| 67 | {"score": 4, "description": "Collection method should include certification authority details. Add information about governance."} | 
