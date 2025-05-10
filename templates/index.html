@@ -195,6 +195,7 @@
             overflow: visible;
             border-radius: 10px;
             display: none;
+            margin-right: 30px;
         }
 
         .color-bar.active {
@@ -835,6 +836,35 @@
         .policy-selector-card select:hover {
             border-color: #6C63FF;
         }
+
+        .color-segment { position: relative; }
+        .color-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            background: #2C3E50;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 0.7em 1em;
+            position: absolute;
+            z-index: 100;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transition: opacity 0.2s, visibility 0.2s;
+            min-width: 180px;
+            max-width: 260px;
+            pointer-events: none;
+            font-weight: 500;
+        }
+        .color-segment:hover .color-tooltip,
+        .color-segment:focus .color-tooltip {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
@@ -1192,6 +1222,71 @@
             }
 
             function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames, viewMode = 'highlevel') {
+                // Restore heatmap in Article View
+                const combinedHeatmapFilename = heatmapFilenames.find(filename => filename.includes('combined'));
+                if (viewMode === 'article') {
+                    // Color bar legend with tooltips
+                    const colorBarHtml = `
+                        <div class="color-bar active" style="margin-bottom: 1.2rem; margin-top: 0.5rem; margin-left: auto; margin-right: 30px;">
+                            <div class="color-segment">
+                                <div class="color-tooltip">0 – Clear Violation<br><span style='font-weight:400;'>The section directly contradicts a policy requirement or explicitly engages in prohibited behavior.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">1 – Probable Violation<br><span style='font-weight:400;'>The section suggests behavior that is likely non-compliant or leaves strong indications of harm or risk.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">2 – Possible Risk<br><span style='font-weight:400;'>The section does not directly violate the policy, but it implies or permits behavior that could plausibly lead to a violation.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">3 – Ambiguous or Unclear Risk<br><span style='font-weight:400;'>There is not enough information to confirm safety or violation. It's unclear whether the system avoids the prohibited behavior, and other sections do not clarify.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">4-5: No Violation (Minor Ambiguity)<br><span style='font-weight:400;'>All requirements met, no significant issues.</span></div>
+                            </div>
+                        </div>
+                        <style>
+                            .color-segment { position: relative; }
+                            .color-tooltip {
+                                visibility: hidden;
+                                opacity: 0;
+                                background: #2C3E50;
+                                color: #fff;
+                                text-align: left;
+                                border-radius: 8px;
+                                padding: 0.7em 1em;
+                                position: absolute;
+                                z-index: 100;
+                                top: 120%;
+                                left: 50%;
+                                transform: translateX(-50%);
+                                font-size: 0.95rem;
+                                box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+                                transition: opacity 0.2s, visibility 0.2s;
+                                min-width: 180px;
+                                max-width: 260px;
+                                pointer-events: none;
+                                font-weight: 500;
+                            }
+                            .color-segment:hover .color-tooltip,
+                            .color-segment:focus .color-tooltip {
+                                visibility: visible;
+                                opacity: 1;
+                                pointer-events: auto;
+                            }
+                        </style>
+                    `;
+                    if (combinedHeatmapFilename) {
+                        return `
+                            ${colorBarHtml}
+                            <div style="height: 700px; width: 100%;">
+                                <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
+                            </div>
+                        `;
+                    } else {
+                        return `${colorBarHtml}<div>No heatmap available.</div>`;
+                    }
+                }
+
                 // Parse the model card content table to map section names to their content
                 const lines = markdown.trim().split('\n');
                 let sectionContentMap = {};
