@@ -1,14 +1,8 @@
 import os
 import time
 import json
-from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 import aiofiles
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-from policy_chunker import get_chunking_prompt, parse_chunk_response
 
 async def generate_section_summary(section_name, section_data, llm):
     """Generate a summary of compliance evaluation results for a specific model card section"""
