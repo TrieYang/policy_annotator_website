@@ -12,6 +12,7 @@ from policy_chunker import get_chunking_prompt, parse_chunk_response
 from utils.section_summary import generate_section_summary
 from utils.top_level_summary import generate_top_level_summary
 from utils.interactive_heatmap import generate_interactive_heatmap
+from utils.policy_summary import generate_policy_summary
 
 SAMPLE_RESPONSE_FOLDER = "./sample_responses"
 TESTING_MODE = True
@@ -122,36 +123,6 @@ def parse_model_card_content(model_card_content):
         sections_content[current_section] = '\n'.join(current_content)
     
     return sections_content
-
-async def generate_policy_summary(policy_name, policy_data, model_card_content):
-    """Generate a summary of policy compliance evaluation results"""
-    # Read the prompt template
-    async with aiofiles.open("prompt_summarize.txt", "r") as f:
-        prompt_template = await f.read()
-
-    # Format the evaluation results for the prompt
-    evaluation_results = []
-    for section in sections:
-        for article, score in policy_data['scores'][section].items():
-            if score < 5:  # Only include non-compliant items
-                description = policy_data['descriptions'][section].get(article, "No description available")
-                evaluation_results.append({
-                    "section": section,
-                    "article": article,
-                    "score": score,
-                    "description": description
-                })
-
-    # Format the evaluation results as a string
-    evaluation_str = json.dumps(evaluation_results, indent=2)
-
-    # Prepare the prompt
-    prompt = prompt_template.replace("{{POLICY_DOC_NAME}}", policy_name)
-    prompt = prompt.replace("{{EVALUATION_RESULT}}", evaluation_str)
-
-    # Get summary from Claude
-    response = llm.invoke(prompt)
-    return response.content.strip()
 
 async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_policies=None):
     try:
@@ -386,15 +357,11 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         # First, create a list of all columns (policy.article combinations)
         all_columns = []
         for policy_name, policy_data in all_policy_data.items():
-            print(f"\nDebug - Processing columns for {policy_name}")
             print(f"Available articles:", policy_data['articles'])
             for article in policy_data['articles']:
                 # Ensure consistent article naming format
                 column = f"{policy_name}.Art.{article}"
-                print(f"Debug - Adding column: {column}")
                 all_columns.append(column)
-
-        print("\nDebug - Final column list:", all_columns)
         
         # Create empty DataFrames
         scores_df = pd.DataFrame(index=sections, columns=all_columns)
@@ -408,34 +375,8 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                     # Remove any 'Art.' prefix from the article number when accessing the data
                     article_key = article.replace('Art.', '').strip()
                     
-                    # Debug print for problematic articles
-                    if article in ['6', '2'] and policy_name in ['AIDA_table', 'EU_table']:
-                        print(f"\nDebug - Processing problematic article:")
-                        print(f"Policy: {policy_name}")
-                        print(f"Article: {article}")
-                        print(f"Column name: {column}")
-                        print(f"Article key: {article_key}")
-                        print(f"Available scores: {policy_data['scores'][section].keys()}")
-                    
                     scores_df.loc[section, column] = policy_data['scores'][section].get(article_key, 0)
                     descriptions_df.loc[section, column] = policy_data['descriptions'][section].get(article_key, "No evaluation")
-
-        # Print parsed data information
-        print("\n=== Parsed Scores Data ===")
-        print("\nScores DataFrame Structure:")
-        print(scores_df.info())
-        print("\nScores DataFrame Contents:")
-        print(scores_df)
-        print("\nScores Shape:", scores_df.shape)
-        print("=== End of Scores Data ===\n")
-
-        print("\n=== Parsed Descriptions Data ===")
-        print("\nDescriptions DataFrame Structure:")
-        print(descriptions_df.info())
-        print("\nDescriptions DataFrame Contents:")
-        print(descriptions_df)
-        print("\nDescriptions Shape:", descriptions_df.shape)
-        print("=== End of Descriptions Data ===\n")
         
         # Generate heatmaps for each section
         heatmap_filenames = []
@@ -456,7 +397,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 if policy_name in all_policy_data:
                     policy_data = all_policy_data[policy_name]
                     print(f"\nGenerating summary for policy: {policy_name}")
-                    summary = await generate_policy_summary(policy_name, policy_data, model_card_content)
+                    summary = await generate_policy_summary(policy_name, policy_data, model_card_content, llm, sections)
                     summaries[policy_name] = summary
                     print(f"Generated summary for {policy_name}")
             except Exception as e:
@@ -484,7 +425,7 @@ Note: No evaluation data was provided for this section. This could indicate that
 
 Please ensure this section exists and contains the necessary information."""
                 else:
-                    summary = await generate_section_summary(section, section_data[section], llm)
+                    summary = await generate_section_summary(section, section_data[section], llm, TESTING_MODE)
                     section_summaries[section] = summary
                     print(f"Generated summary for section: {section}")
             except Exception as e:

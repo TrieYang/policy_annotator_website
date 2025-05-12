@@ -4,7 +4,7 @@ import json
 from dotenv import load_dotenv
 import aiofiles
 
-async def generate_section_summary(section_name, section_data, llm):
+async def generate_section_summary(section_name, section_data, llm, TESTING_MODE):
     """Generate a summary of compliance evaluation results for a specific model card section"""
     if TESTING_MODE:
         # Sample responses for testing mode
