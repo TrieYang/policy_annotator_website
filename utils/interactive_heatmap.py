@@ -175,6 +175,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
     fig.update_layout(
         title=None,
         xaxis=dict(
+            title='Policy',
             showticklabels=True,
             showline=True,
             zeroline=False,
@@ -185,6 +186,7 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
             # title='Policy',  # Removed axis title
         ),
         yaxis=dict(
+            title='Model Card Section',
             showticklabels=True,
             showline=True,
             zeroline=False,
