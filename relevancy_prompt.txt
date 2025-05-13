@@ -1,5 +1,5 @@
 ### **Task**  
-Compare the **Model Card Information** with the **Legal Document Information**, both provided in markdown table format. Determine whether the AI system complies with the legal document by assigning compliance levels to each model card section and assessing the significance of each section in determining compliance.
+Compare the **Model Card Information** with the **Legal Document Information**, both provided in markdown table format. Determine whether the AI system complies with this legal document by assigning compliance levels to each model card section and assessing the significance of each section in determining compliance.
 
 ### **Instructions**
 - Assign a **Compliance Level** (0-5) based on how well the model card information satisfies legal document requirements.

@@ -138,7 +138,6 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                     # Get chunking strategy for this policy
                     chunking_prompt = get_chunking_prompt().replace("{{POLICY_DOC}}", legal_doc_content)
                     chunk_response = llm.invoke(chunking_prompt).content
-                    print("\nChunking response:", chunk_response)
                     chunks = parse_chunk_response(chunk_response)
                     print(f"Policy {policy_file} will be evaluated in {len(chunks)} chunks")
                     print("Chunks:", chunks)
