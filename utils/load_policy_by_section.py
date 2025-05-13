@@ -19,8 +19,7 @@ def load_policy_by_section(file_path):
 
 # Example usage
 if __name__ == "__main__":
-    file_path = "policies/CCPA.txt"  
+    file_path = "policies/AIDA.txt"  
     policy_dict = load_policy_by_section(file_path)
 
-
-    print(policy_dict)
+    print(policy_dict['1'])
