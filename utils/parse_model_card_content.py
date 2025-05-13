@@ -22,5 +22,5 @@ def parse_model_card_content(model_card_content):
     # Add the last section
     if current_section and current_content:
         sections_content[current_section] = '\n'.join(current_content)
-    
+    print(f"sections_content is {sections_content}")
     return sections_content
