@@ -2,16 +2,16 @@
 Compare the **Model Card Information** with the **Legal Document Information**, both provided in markdown table format. Determine whether the AI system complies with this legal document by assigning compliance levels to each model card section and assessing the significance of each section in determining compliance.
 
 ### **Instructions**
+- IMPORTANT: Only evaluate model card section "{{START_SECTION}}" to "{{END_SECTION}}" for the compliance contribution . The complete model card is just provided to aid with the evaluation process, the resulting score should be for only the selected sections.
+- IMPORTANT: Only evaluate policy articles {{START_ART}} through {{END_ART}} in this evaluation. But also don't forget/skip any articles within [{{START_ART}}, {{END_ART}}] even your evaluation results for them can be zero sometimes.
+- Compare model card section to chosen legal document article/section.
 - Assign a **Compliance Level** (0-5) based on how well the model card information satisfies legal document requirements.
 - Provide reasoning for the compliance level assigned.
 - Assign a **Compliance Contribution Score** (0-5) to indicate how critical this section of the model card is for determining compliance with the **specific provided** legal policy document.  
-- Provide specific reasoning for the **Compliance Contribution Score** assigned. List which policy article/section/paragraph the section is relevant to with a good amount of detail. If the Compliance Contribution Score is under 5, explicitly state why it is only partially contributory.
-- Assess each section provided in the model card—**do not skip any section even if its Compliance Contribution Score is 0**.
-- Only evaluate model card section from "{{START}}" to "{{FINISH}}".
-- Ensure the final output is in a **Markdown Table Format**.
-- Your output would be 2 separate tables.
-- There are 25 sections to each model card. Please evaluate all 25 sections. Do not miss any.
-
+- Ensure the final output is in a **Markdown Table Format**. It would be one markdown table for one model card section section.
+- Do not include **ANY** extra wording except for the table itself and the title indicating what model section the table is for. 
+- Strictly follow the example output format provided below. Do not include multiple articles in one row. One row should be the evaluation between one model card section and one policy article.
+- Policy Article is the level of division right under policy. So for example, for CCPA, 1798.100(c), 1798.100(2) are not articles, they are points under one article 1798.100. So all of these should be under one row in your evaluation.
 ---
 
 ### **What is Compliance Contribution Score?**
@@ -26,8 +26,7 @@ It is scored based on **how much the absence of this section would hinder compli
 ---
 
 ### **Inputs**
-#### **Model Card Information**: {{MODEL_CARD}}  
-#### **Legal Document Information**: {{LEGAL_DOC}}  
+#### **Entire Model Card**: {{MODEL_CARD}}   
 
 ---
 
@@ -46,23 +45,26 @@ It is scored based on **how much the absence of this section would hinder compli
 |------------------------|------------------|---------|
 | Article 9 | 1 | content placeholder |
 | Article 9 | 2 | content placeholder |
+| Article 10 | 1 | content placeholder |
+| Article 10 | 2 | content placeholder |
+| Article 11 | 1 | content placeholder |
 
 ---
 
-#### **Example Output Format(this is only provided as a reference for output formatting, its actual content/writing should be ignored)**
-###### **Table 1: Compliance Evaluation**
-| Model Card Section | Compliance Level (0-5) | Reasoning |
-|-------------------|------------------------|-----------|
-| System Overview | 3 | placeholder for reasoning |
-| Primary Intended Uses | 3 | placeholder for reasoning|
-| Bias Mitigation Measures | 4 | placeholder for reasoning |
+#### **Example Output Format of comparing section System Overview to Primary Intended Uses to Article 9-11(this is only provided as a reference for output formatting, its actual content/writing should be ignored)**
+- Section: System Overview
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 9 | 3 | placeholder for reasoning | 3 |
+| 10 | 3 | placeholder for reasoning| 4 |
+| 11 | 4 | placeholder for reasoning | 5 |
 
-###### **Table 2: Compliance Contribution Score**
-| Model Card Section | Compliance Contribution Score (0-5) | Reasoning |
-|-------------------|------------------------|-----------|
-| System Overview | 3 | placeholder for reasoning |
-| Primary Intended Uses | 4 | placeholder for reasoning |
-| Bias Mitigation Measures | 5 | placeholder for reasoning |
+- Section: Primary Intended Uses
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 9 | 3 | placeholder for reasoning | 3 |
+| 10 | 3 | placeholder for reasoning| 4 |
+| 11 | 4 | placeholder for reasoning | 5 |
 
 ---
 
