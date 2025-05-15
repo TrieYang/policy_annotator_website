@@ -2,7 +2,8 @@ import re
 from collections import defaultdict
 
 def parse_policy_scores_to_zero(filepath):
-    zero_score_articles = defaultdict(list)
+    # Create a nested defaultdict structure: policy -> section -> articles
+    zero_score_articles = defaultdict(lambda: defaultdict(list))
     current_section = None
     current_policy = None
 
@@ -31,14 +32,15 @@ def parse_policy_scores_to_zero(filepath):
                 # Check for contribution score of 0
                 if contribution_score == '0':
                     article_id = f"{current_policy}.Art.{article_no}"
-                    zero_score_articles[current_section].append(article_id)
+                    zero_score_articles[current_policy][current_section].append(article_id)
 
-    return dict(zero_score_articles)
+    # Convert defaultdict to regular dict for JSON serialization
+    result = {policy: dict(sections) for policy, sections in zero_score_articles.items()}
+    return result
 
 # === Run it ===
 file_path = "relevancy_rating.txt"  # <- your input file
 zero_score_summary = parse_policy_scores_to_zero(file_path)
-
 
 import json
 print(json.dumps(zero_score_summary, indent=2))
