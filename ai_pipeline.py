@@ -13,7 +13,6 @@ from utils.section_summary import generate_section_summary
 from utils.top_level_summary import generate_top_level_summary
 from utils.interactive_heatmap import generate_interactive_heatmap
 from utils.policy_summary import generate_policy_summary
-from utils.parse_model_card_content import parse_model_card_content
 
 SAMPLE_RESPONSE_FOLDER = "./sample_responses"
 TESTING_MODE = True

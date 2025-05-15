@@ -1,0 +1,360 @@
+
+================================================================================
+Policy: AIDA.txt
+Articles: Article 1-Article 3
+Response:
+- Section: System Name
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 3 | The name clearly identifies it as an AI system, aligning with the Act's purpose | 2 |
+| 2 | 4 | The name indicates it's a technological system that processes data for decisions, matching the AI system definition | 3 |
+| 3 | 3 | Helps identify if system falls under exemptions, though more details needed | 2 |
+
+- Section: Versioning Information
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 2 | Provides basic tracking information but not directly relevant to Act's purpose | 1 |
+| 2 | 2 | Version tracking helps with system accountability but not directly tied to definition | 1 |
+| 3 | 2 | Helps track system changes but minimal relevance to exemptions | 1 |
+
+- Section: Primary Developer/Org
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 3 | Identifies responsible entity under the Act | 3 |
+| 2 | 4 | Establishes the "person" developing the AI system per definitions | 4 |
+| 3 | 4 | Essential for determining if system falls under governmental exemptions | 4 |
+
+- Section: Contact Info
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 3 | Provides accountability information but not directly tied to Act's purpose | 2 |
+| 2 | 3 | Helps identify the "person" responsible but not crucial for definition | 2 |
+| 3 | 3 | Aids in determining organizational responsibility for exemptions | 2 |
+
+================================================================================
+Policy: AIDA.txt
+Articles: Article 1-Article 3
+Response:
+- Section: System Overview
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the Act's name, no compliance requirements to evaluate | 0 |
+| 2 | 4 | The system description clearly indicates it is an AI system that processes data to make decisions and recommendations, aligning with the definition in Article 2 | 5 |
+| 3 | 4 | The system appears to be for private sector use (not government controlled), falling within the Act's scope | 4 |
+
+- Section: Primary intended uses
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the Act's name, no compliance requirements to evaluate | 0 |
+| 2 | 4 | The intended uses clearly demonstrate autonomous processing of data for making decisions and recommendations, matching the AI system definition | 5 |
+| 3 | 4 | Uses indicate private sector application, confirming it falls within scope of the Act | 4 |
+
+- Section: Primary intended users
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the Act's name, no compliance requirements to evaluate | 0 |
+| 2 | 3 | Users list helps confirm this is a system used by private entities, aligning with definition | 3 |
+| 3 | 4 | Clearly shows private sector users, confirming applicability of the Act | 4 |
+
+- Section: Out-of-scope use cases
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the Act's name, no compliance requirements to evaluate | 0 |
+| 2 | 3 | Helps clarify system limitations and scope of autonomous decision-making | 3 |
+| 3 | 3 | Confirms system is not intended for government use cases | 3 |
+
+- Section: Terms and conditions
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the Act's name, no compliance requirements to evaluate | 0 |
+| 2 | 2 | Only provides link without content, insufficient to fully assess definition compliance | 2 |
+| 3 | 2 | Limited information to assess scope compliance | 2 |
+
+================================================================================
+Policy: AIDA.txt
+Articles: Article 1-Article 3
+Response:
+Section: Current legal compliance status
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 2 | Shows awareness of compliance requirements but doesn't specifically address AIDA | 3 |
+| 2 | 3 | Demonstrates compliance with data protection standards which aligns with AI system definition requirements | 4 |
+| 3 | 1 | Does not specifically address exemptions or government institution requirements | 3 |
+
+Section: Usage Constraints
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 3 | Constraints align with basic regulatory requirements but don't specifically reference AIDA | 4 |
+| 2 | 4 | Clear constraints on personal data processing align with AI system definition and requirements | 5 |
+| 3 | 2 | Does not explicitly address government institution exclusions | 3 |
+
+================================================================================
+Policy: AIDA.txt
+Articles: Article 1-Article 3
+Response:
+Section: Summary of Performance Assessment
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 0 | The section provides performance metrics but has no relevance to the Act's naming | 0 |
+| 2 | 4 | The performance metrics demonstrate the system's autonomous processing capabilities and decision-making abilities, aligning with the AI system definition | 3 |
+| 3 | 0 | Performance metrics are not relevant to government institution exemptions | 0 |
+
+Section: Disaggregated Performance
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 0 | Disaggregated metrics have no relevance to the Act's naming | 0 |
+| 2 | 4 | The detailed breakdown of performance across different demographics demonstrates the system's autonomous processing and decision-making capabilities | 3 |
+| 3 | 0 | Performance breakdowns are not relevant to government institution exemptions | 0 |
+
+Section: Testing Contexts
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 0 | Testing contexts have no relevance to the Act's naming | 0 |
+| 2 | 3 | Testing information provides evidence of the system's autonomous processing capabilities across different contexts | 2 |
+| 3 | 0 | Testing contexts are not relevant to government institution exemptions | 0 |
+
+Section: Evaluations for Edge Cases or Adversarial Inputs
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 0 | Edge case evaluations have no relevance to the Act's naming | 0 |
+| 2 | 3 | Edge case testing demonstrates the system's handling of complex data processing scenarios | 2 |
+| 3 | 0 | Edge case evaluations are not relevant to government institution exemptions | 0 |
+
+Section: Potential Risks and Harms
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1 | 0 | Risk assessment has no relevance to the Act's naming | 0 |
+| 2 | 4 | The identified risks directly relate to the system's autonomous processing and decision-making capabilities | 4 |
+| 3 | 0 | Risk assessment is not relevant to government institution exemptions | 0 |
+
+================================================================================
+Policy: AIDA.txt
+Articles: Article 1-Article 3
+Response:
+- Section: Actions taken
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the title of the Act, no compliance requirements to evaluate | 0 |
+| 2 | 4 | The actions taken demonstrate the system processes data autonomously for making decisions and recommendations, aligning with the AI system definition. Regular calibration and bias detection show active system management | 4 |
+| 3 | 0 | Article 3 specifies exemptions for government institutions and specific departments, which is not relevant to this private sector AI system | 0 |
+
+- Section: Misuse Scenarios
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the title of the Act, no compliance requirements to evaluate | 0 |
+| 2 | 3 | The identification of potential misuse scenarios helps understand the system's autonomous decision-making capabilities and risks, relating to the AI system definition | 3 |
+| 3 | 0 | Article 3 specifies exemptions for government institutions and specific departments, which is not relevant to this private sector AI system | 0 |
+
+- Section: Human Oversight
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the title of the Act, no compliance requirements to evaluate | 0 |
+| 2 | 4 | The human oversight measures demonstrate how the system operates "partly autonomously" rather than fully autonomously, aligning with the AI system definition | 4 |
+| 3 | 0 | Article 3 specifies exemptions for government institutions and specific departments, which is not relevant to this private sector AI system | 0 |
+
+- Section: Update Frequency
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1 | 0 | Article 1 only contains the title of the Act, no compliance requirements to evaluate | 0 |
+| 2 | 3 | Regular updates and monitoring demonstrate the ongoing maintenance of the AI system's data processing and decision-making capabilities | 3 |
+| 3 | 0 | Article 3 specifies exemptions for government institutions and specific departments, which is not relevant to this private sector AI system | 0 |
+
+================================================================================
+Policy: CCPA.txt
+Articles: 1798.100-1798.115
+Response:
+Section: System Name
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 1 | Only provides the name without any details about data collection or processing practices | 1 |
+| 1798.105 | 0 | Does not provide any information related to deletion rights | 0 |
+| 1798.106 | 0 | Does not address correction rights | 0 |
+| 1798.110 | 1 | Only identifies the system without details about data collection | 1 |
+| 1798.115 | 0 | Does not provide information about data sharing or selling | 0 |
+
+Section: Versioning Information
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 2 | Provides timeline information that can help track data collection periods but lacks specific details | 2 |
+| 1798.105 | 1 | Version tracking could help with deletion requests but provides minimal direct relevance | 1 |
+| 1798.106 | 1 | Version history could assist with correction tracking but provides minimal direct relevance | 1 |
+| 1798.110 | 1 | Version information provides minimal context for data collection disclosure | 1 |
+| 1798.115 | 1 | Version tracking could help with data sharing records but provides minimal direct relevance | 1 |
+
+Section: Primary Developer/Org
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 2 | Identifies the business controlling data collection but lacks specific details | 3 |
+| 1798.105 | 2 | Identifies the entity responsible for deletion requests | 3 |
+| 1798.106 | 2 | Identifies the entity responsible for correction requests | 3 |
+| 1798.110 | 2 | Identifies the business collecting information | 3 |
+| 1798.115 | 2 | Identifies the potential data seller/sharer | 3 |
+
+Section: Contact Info
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 3 | Provides complete contact information for the business controlling data collection | 4 |
+| 1798.105 | 3 | Provides means for consumers to submit deletion requests | 4 |
+| 1798.106 | 3 | Provides means for consumers to submit correction requests | 4 |
+| 1798.110 | 3 | Provides contact methods for information requests | 4 |
+| 1798.115 | 3 | Provides contact information for data sharing/selling inquiries | 4 |
+
+================================================================================
+Policy: CCPA.txt
+Articles: 1798.100-1798.115
+Response:
+- Section: System Overview
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 3 | System overview provides basic information about data collection and processing but lacks detailed information about retention periods and security measures | 4 |
+| 1798.105 | 2 | Overview mentions data analysis but doesn't address deletion rights or processes | 3 |
+| 1798.106 | 1 | No mention of data correction capabilities or processes | 2 |
+| 1798.110 | 3 | Provides general information about data collection and processing purposes but lacks specifics about categories of information | 4 |
+| 1798.115 | 2 | Mentions API integration but doesn't specify details about data sharing or third-party disclosure | 3 |
+
+- Section: Primary intended uses
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 4 | Clearly outlines the purposes for which personal information is collected and processed | 5 |
+| 1798.105 | 1 | Does not address deletion rights or processes | 2 |
+| 1798.106 | 1 | No mention of correction rights or processes | 2 |
+| 1798.110 | 4 | Clearly specifies business purposes for collecting and using personal information | 5 |
+| 1798.115 | 2 | Does not specify information about data sharing or sales | 3 |
+
+- Section: Primary intended users
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 3 | Identifies who will be processing the data but lacks detail on their responsibilities | 4 |
+| 1798.105 | 1 | Does not address user rights regarding deletion | 2 |
+| 1798.106 | 1 | No mention of correction rights | 2 |
+| 1798.110 | 3 | Identifies categories of users who will access personal information | 4 |
+| 1798.115 | 2 | Does not specify third-party sharing details | 3 |
+
+- Section: Out-of-scope use cases
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 4 | Clearly defines limitations of data use and processing | 4 |
+| 1798.105 | 2 | Indirectly relates to data usage limitations but doesn't address deletion rights | 2 |
+| 1798.106 | 1 | No mention of correction rights | 2 |
+| 1798.110 | 3 | Helps clarify purposes for which data will not be used | 3 |
+| 1798.115 | 2 | Partially addresses limitations on data sharing but lacks specifics | 3 |
+
+- Section: Terms and conditions
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 2 | Only provides link to terms without specific content about data collection and use | 3 |
+| 1798.105 | 2 | Reference only, no specific information about deletion rights | 3 |
+| 1798.106 | 2 | No specific information about correction rights | 3 |
+| 1798.110 | 2 | Lacks direct information about disclosure rights | 3 |
+| 1798.115 | 2 | No specific information about data sharing practices | 3 |
+
+================================================================================
+Policy: CCPA.txt
+Articles: 1798.100-1798.115
+Response:
+- Section: Current legal compliance status
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 2 | While it mentions certifications for data processing and security management, it lacks specific details about CCPA compliance and data handling practices required by this article | 3 |
+| 1798.105 | 1 | No mention of consumer deletion rights or related compliance measures | 4 |
+| 1798.106 | 0 | No information about consumer rights to correct inaccurate information | 4 |
+| 1798.110 | 1 | Does not address requirements for disclosing information collection practices | 4 |
+| 1798.115 | 1 | No mention of compliance with requirements regarding selling or sharing personal information | 4 |
+
+- Section: Usage Constraints
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 4 | Explicitly addresses consent requirements and data retention limits, aligning with data collection and processing requirements | 5 |
+| 1798.105 | 3 | Data retention limit of 180 days partially addresses deletion requirements, but doesn't fully specify deletion processes | 4 |
+| 1798.106 | 1 | Does not specifically address correction of inaccurate information | 3 |
+| 1798.110 | 2 | Mentions transparency notice requirement but lacks detail on specific disclosures | 4 |
+| 1798.115 | 2 | Addresses some aspects of data sharing but doesn't fully detail compliance with sharing/selling requirements | 4 |
+
+================================================================================
+Policy: CCPA.txt
+Articles: 1798.100-1798.115
+Response:
+Section: Summary of Performance Assessment
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 3 | The performance metrics provide evidence of reasonable security procedures and data handling capabilities, but don't fully address all security requirements specified in the article | 3 |
+| 1798.105 | 2 | While showing system capabilities, doesn't specifically address deletion request handling or accuracy | 2 |
+| 1798.106 | 4 | High accuracy rates (92% qualification matching, 89% skills extraction) suggest capability to maintain accurate information | 4 |
+| 1798.110 | 1 | Performance metrics don't address information disclosure requirements | 1 |
+| 1798.115 | 1 | Metrics don't specifically address data sharing or disclosure capabilities | 1 |
+
+Section: Disaggregated Performance
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 3 | Breakdown by demographics shows attention to data handling across different groups, but doesn't fully address security requirements | 3 |
+| 1798.105 | 1 | Performance metrics by group don't address deletion capabilities | 1 |
+| 1798.106 | 4 | Detailed accuracy metrics across different demographics demonstrate ability to maintain accurate information | 4 |
+| 1798.110 | 1 | Doesn't address information disclosure requirements | 0 |
+| 1798.115 | 1 | Doesn't address data sharing or disclosure requirements | 0 |
+
+Section: Testing Contexts
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 3 | Testing across various companies and formats shows robust data handling, but doesn't fully address security requirements | 3 |
+| 1798.105 | 2 | Testing scenarios don't specifically address deletion capabilities | 2 |
+| 1798.106 | 3 | Validation against human decisions shows attention to accuracy | 3 |
+| 1798.110 | 1 | Testing contexts don't address information disclosure requirements | 1 |
+| 1798.115 | 1 | Doesn't address data sharing or disclosure requirements | 1 |
+
+Section: Evaluations for Edge Cases or Adversarial Inputs
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 4 | Edge case testing demonstrates robust security measures and data handling capabilities | 4 |
+| 1798.105 | 2 | Edge case handling doesn't specifically address deletion requirements | 2 |
+| 1798.106 | 4 | Testing of non-standard cases shows capability to maintain accurate information | 4 |
+| 1798.110 | 1 | Edge case evaluation doesn't address information disclosure requirements | 1 |
+| 1798.115 | 1 | Doesn't address data sharing or disclosure requirements | 1 |
+
+Section: Potential Risks and Harms
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------|------------------------|----------------------------------------|-------------------------------------|
+| 1798.100 | 4 | Identifies potential risks in data handling and security | 4 |
+| 1798.105 | 2 | Risk assessment doesn't specifically address deletion-related risks | 2 |
+| 1798.106 | 4 | Identifies risks related to data accuracy and interpretation | 4 |
+| 1798.110 | 2 | Limited coverage of information disclosure risks | 2 |
+| 1798.115 | 2 | Limited coverage of data sharing risks | 2 |
+
+================================================================================
+Policy: CCPA.txt
+Articles: 1798.100-1798.115
+Response:
+- Section: Actions taken
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 4 | Actions demonstrate implementation of security procedures and practices through regular bias audits and calibration, but lacks explicit mention of data protection measures | 4 |
+| 1798.105 | 0 | No information about deletion procedures or consumer rights to deletion | 0 |
+| 1798.106 | 2 | Monthly calibration suggests some ability to correct information, but doesn't specifically address consumer correction rights | 2 |
+| 1798.110 | 0 | No information about disclosure of collected information | 0 |
+| 1798.115 | 0 | No information about disclosure of sold or shared information | 0 |
+
+- Section: Misuse Scenarios
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 3 | Identifies potential misuse related to data protection but doesn't fully address all security aspects | 3 |
+| 1798.105 | 0 | No mention of deletion rights misuse | 0 |
+| 1798.106 | 0 | No mention of correction rights misuse | 0 |
+| 1798.110 | 0 | No mention of disclosure rights misuse | 0 |
+| 1798.115 | 0 | No mention of sale/share disclosure misuse | 0 |
+
+- Section: Human Oversight
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 4 | Regular audit reviews and human oversight demonstrate commitment to proper data handling and security | 4 |
+| 1798.105 | 0 | No information about oversight of deletion requests | 0 |
+| 1798.106 | 2 | Human review process could support correction requests but not explicitly mentioned | 2 |
+| 1798.110 | 0 | No mention of oversight for information disclosure requests | 0 |
+| 1798.115 | 0 | No mention of oversight for sale/share disclosure requests | 0 |
+
+- Section: Update Frequency
+| Article No. | Compliance Level (0-5) | Reasoning to Compliance Level Assigned | Compliance Contribution Score (0-5) |
+|-------------------|------------------------|-----------|------------------------|
+| 1798.100 | 4 | Regular updates, monitoring, and compliance checks demonstrate ongoing maintenance of security measures | 4 |
+| 1798.105 | 0 | No mention of updates related to deletion processes | 0 |
+| 1798.106 | 2 | Regular updates could support correction capabilities but not explicitly addressed | 2 |
+| 1798.110 | 0 | No mention of updates related to information disclosure processes | 0 |
+| 1798.115 | 0 | No mention of updates related to sale/share disclosure processes | 0 |
