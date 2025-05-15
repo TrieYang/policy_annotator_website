@@ -12,10 +12,11 @@ Return ONLY a JSON array of chunk boundaries in the format:
 Rules:
 1. An "Article" is defined as **all rows that share the same first column value** (e.g., "Article 3"). 
    - **Do not** treat each row as a separate article. For example, if "Article 3" appears in 68 rows, it still counts as **one single Article**.
-2. Each chunk must contain between 10 and 20 such Articles (not rows).
+2. Each chunk must contain between 5 and 10 such Articles (not rows).
 3. Keep related Articles together if possible.
 
-Return only the JSON array. No extra text.
+Return only the JSON array. 
+**Do not include any extra text than a single JSON array**.
 
 Policy Document:
 {{POLICY_DOC}}

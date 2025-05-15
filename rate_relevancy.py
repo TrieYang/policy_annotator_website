@@ -51,9 +51,10 @@ sections = [
 sections_pairs = [
     ["System Name", "Contact Info"],
     ["System Overview","Terms and conditions"],
-    ["Current legal compliance status", "Usage Constraints"],
-    ["Summary of Performance Assessment", "Potential Risks and Harms"],
-    ["Actions taken", "Update Frequency"]
+    ["Current legal compliance status", "Bias Mitigation Measures"],
+    ["Usage Constraints","Testing Contexts"],
+    ["Evaluations for Edge Cases or Adversarial Inputs", "Actions taken"],
+    ["Misuse Scenarios", "Update Frequency"]
 ]
 
 async def rate_relevancy():
@@ -80,6 +81,7 @@ async def rate_relevancy():
                     # Get chunking strategy for this policy
                     chunking_prompt = get_chunking_prompt().replace("{{POLICY_DOC}}", legal_doc_content)
                     chunk_response = llm.invoke(chunking_prompt).content
+                    print(chunk_response)
                     chunks = parse_chunk_response(chunk_response)
                     print(f"Policy {policy_file} will be evaluated in {len(chunks)} chunks")
                     print("Chunks:", chunks)
