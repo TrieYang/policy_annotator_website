@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Model Card</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #F8F9FA;
+            color: #2C3E50;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+        }
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 1rem 0;
+            margin-bottom: 3rem;
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #4A90E2 !important;
+        }
+        .navbar-brand i {
+            margin-right: 0.5rem;
+            color: #6C63FF;
+        }
+        .form-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .info-icon {
+            cursor: pointer;
+            color: #4A90E2;
+            font-size: 1rem;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+        .info-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2C3E50 transparent transparent transparent;
+        }
+        .info-icon:hover .info-tooltip,
+        .info-icon:focus .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .form-control {
+            border: 2px solid #e9ecef;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #2C3E50;
+        }
+        .form-control:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.15);
+        }
+        .btn-primary {
+            background-color: #4A90E2;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #6C63FF;
+            transform: translateY(-2px);
+        }
+        .title-icon {
+            font-size: 1.5rem;
+        }
+        .main-title {
+            font-size: 1.6rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-brain"></i>
+                AI Policy Annotator
+            </a>
+        </div>
+    </nav>
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8">
+                <div class="form-section">
+                    <h3 class="mb-4 text-center main-title" style="margin-bottom: 3rem !important;">
+                        <i class="fas fa-plus-circle title-icon"></i> Create a New Model Card
+                    </h3>
+                    <form id="modelCardForm">
+                        <!-- Fields will be inserted here -->
+                        <div id="fieldsContainer"></div>
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Save Model Card
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Field definitions from the Policy Annotator Project Doc
+        const fields = [
+            { section: 'General Information', title: 'System Name', description: '', example: 'RetailVisionAI' },
+            { section: 'General Information', title: 'Versioning Information', description: "Date of system's first release Latest version Latest release date Include details of how versions are being tracked and updated", example: 'First release: 2022-03-01\nLatest version: 2.1.0\nLatest release date: 2024-05-15\nVersioning is tracked via semantic versioning and updates are logged in a public changelog.' },
+            { section: 'General Information', title: 'Primary Developer/Org', description: 'Individual/Org developing the system', example: 'Visionary Analytics Inc.' },
+            { section: 'General Information', title: 'Contact Info', description: 'Email/phone number/address of the primary Developer/Org', example: 'support@visionaryanalytics.com\n+1-800-555-0199\n1234 Market St, Suite 500, San Francisco, CA 94103' },
+            { section: 'General Information', title: 'System Overview', description: 'Short description of uses and the system itself(e.g., AI models, datasets, APIs) and their roles)', example: 'AI-powered customer tracking system that uses computer vision models to analyze video streams from security cameras for customer traffic, dwell time, and queue analytics without facial recognition. It processes data through on-premise edge computing and cloud-based APIs (Azure AI Vision), providing real-time heatmaps and automated alerts via a retail analytics dashboard.' },
+            { section: 'Intended Purpose and Scope', title: 'Primary intended uses', description: '', example: 'Customer Flow Optimization: Identifying high-traffic zones to improve store layouts. Queue Management: Monitoring waiting times at checkout counters to optimize staffing. Dwell Time Analysis: Measuring how long customers spend in different sections of the store.' },
+            { section: 'Intended Purpose and Scope', title: 'Primary intended users', description: '', example: 'Retail Store Managers & Owners: Optimizing store layout and staffing based on foot traffic data. Marketing & Operations Teams: Understanding customer movement for better promotions and engagement. Security Teams: Monitoring occupancy levels in compliance with safety regulations.' },
+            { section: 'Intended Purpose and Scope', title: 'Out-of-scope use cases', description: 'Use cases where system is not applicable', example: 'Facial Recognition or Identifiable Tracking: System is not designed to track or identify specific individuals. Employee Productivity Monitoring: Not intended for surveillance of staff performance. Law Enforcement & Surveillance: Cannot be used for forensic tracking or law enforcement without explicit regulatory approval.' },
+            { section: 'Existing doc', title: 'Terms and conditions', description: 'Existing terms and conditions document: e.g. Usage Terms, Limitations of Liability, License Type, Third-party, Dependencies, Privacy and Data Handling,  Compliance Acknowledgment', example: 'Use of RetailVisionAI is subject to the End User License Agreement (EULA). The system is licensed for commercial use only. Liability is limited to the cost of the software. Third-party libraries are listed in the documentation. Data privacy is governed by our Privacy Policy. Compliance with local regulations is the responsibility of the user.' },
+            { section: 'Existing doc', title: 'Current legal compliance status', description: 'Existing legal assessment result for policy compliance(if any), e.g., risk level', example: 'GDPR (EU General Data Protection Regulation): Compliant with privacy-by-design principles, ensuring no personally identifiable information (PII) is stored. ISO/IEC 27701 (Privacy Information Management): Meets privacy management system standards.' },
+            { section: 'Training Data Information', title: 'Dataset Description', description: 'Summarization of dataset used for training/validation, e.g. purpose/size/key/ characteristics', example: 'Comprises 1.2 million hours of video footage from publicly available surveillance datasets, synthetic video augmentation, and licensed proprietary sources.' },
+            { section: 'Training Data Information', title: 'Collection Method', description: 'Details how the dataset was collected, including the sources, consent processes and methodologies (e.g., scraping, surveys)', example: 'The primary sources include:  DIVA Dataset (DARPA Video Analysis Benchmark) – Provides annotated surveillance footage for activity recognition tasks. AI City Challenge Dataset (NVIDIA) – Contains retail and urban surveillance videos for pedestrian tracking. Synthetic Data (Computer-Generated Simulations) – Used to generate edge cases (e.g., varied lighting, occlusions). Licensed Data from Partner Retailers – Video collected with explicit business agreements ensuring customer privacy protections. The dataset does not store personally identifiable information (PII) and follows privacy-preserving techniques such as blurring and anonymization.' },
+            { section: 'Training Data Information', title: 'Bias Mitigation Measures', description: 'Steps taken to identify and address potential biases in the dataset, e.g. over/underrep', example: 'Balanced dataset collection from stores in different socioeconomic regions. Model testing across diverse lighting conditions, store layouts, and cultural contexts to prevent bias in movement detection. Hired third-party audits to assess potential biases in crowd flow predictions.' },
+            { section: 'Training Data Information', title: 'Usage Constraints', description: 'Short description of licensing restrictions/privacy concerns/appropriate application domains', example: 'Cannot be used for individual tracking or face recognition. Retailers must disclose AI usage to customers via in-store notices.' },
+            { section: 'Model Performance and Evaluation', title: 'Summary of Performance Assessment', description: 'Quantitative measures to evaluate how well the model performs its intended task, e.g. accuracy/precision/recall/fairness scores.', example: 'Customer Movement Detection Accuracy: 94.2% Queue Length Estimation Error: +-2 people per queue Dwell Time Measurement Accuracy: +-5% compared to human-annotated benchmarks' },
+            { section: 'Model Performance and Evaluation', title: 'Disaggregated Performance（Mitchell et al）', description: 'Performance results broken down by demographic subgroups or other relevant categories to identify biases or disparities.', example: 'Average Adult (5\'4\" – 6\'2\"): 94.5%\nShorter Adults (<5\'4\"): 91.2%\nTall Adults (>6\'2\"): 92.8%\nChildren (<4\'5\"): 87.3%\nPeople in Wheelchairs: 85.6%\nCrowded Environments: 88.9%\nObstructed Views: 86.4%' },
+            { section: 'Model Performance and Evaluation', title: 'Testing Contexts', description: 'Describes the scenarios, environments, or specific use cases where the model was tested, ensuring relevance to real-world applications', example: 'Evaluated across 50+ retail locations to test model consistency. Tested for peak and off-peak hours to measure real-time performance fluctuations. Validated for indoor, semi-outdoor, and open-space environments.' },
+            { section: 'Model Performance and Evaluation', title: 'Evaluations for Edge Cases or Adversarial Inputs', description: 'Testing the model on rare or challenging scenarios, including adversarial inputs designed to probe weaknesses.', example: 'Performance under crowd surges: Stress-tested with synthetic and real event footage. Occlusion handling: Tested for movement detection in cases where multiple customers overlap in view. Adversarial spoofing (fake humans, mannequins): Model showed resilience against false positives.' },
+            { section: 'Ethical Considerations', title: 'Potential Risks and Harms', description: 'Any risks or harms that could arise from the model\'s use, e.g. unintended consequences/ failures in high-stakes applications.', example: 'Risk of Privacy Violations: Potential for system misuse in surveillance applications. Crowd Prediction Errors: Incorrect analysis could result in misallocation of store resources. Algorithmic Bias: Risk of skewed customer behavior analysis due to underrepresented store types in training data.' },
+            { section: 'Ethical Considerations', title: 'Actions taken', description: 'Outline any steps taken to address the above issues.', example: 'Ensuring accessibility for disabled individuals: Training data includes footage of wheelchair users to ensure fair detection. Minimizing retail discrimination risks: The system does not infer customer demographics, age, or gender. Regulatory Review Mechanisms: Quarterly audits ensure no unintended discriminatory outcomes.' },
+            { section: 'Ethical Considerations', title: 'Misuse Scenarios', description: 'Describe scenarios where the model could be used but misused, either intentionally or unintentionally, and explain actions taken to minimize risks', example: 'Unauthorized Employee Tracking: Retailers cannot use the system for employee surveillance. Use in Public Spaces Without Consent Integration with Facial Recognition: The system does not support or process identifiable personal data. Mitigation: Implemented strict access controls and compliance audits.' },
+            { section: 'Maintenance and Monitoring', title: 'Human Oversight', description: 'Details the role of humans in monitoring and intervening', example: 'Store managers have real-time dashboards to monitor predictions and override incorrect detections. Anomaly detection alerts notify human operators of unusual behavior patterns. Independent human reviews ensure that crowd flow assessments remain unbiased.' },
+            { section: 'Maintenance and Monitoring', title: 'Update Frequency', description: 'Description of how often the system or model is updated(Post-deployment Monitoring)', example: 'Model retraining every 6 months to incorporate new data from partner retailers. Compliance reviews every 12 months to ensure alignment with evolving privacy regulations. Real-time bug monitoring system for immediate performance issue detection.' }
+        ];
+        // Group fields by section
+        const grouped = {};
+        fields.forEach(f => {
+            if (!grouped[f.section]) grouped[f.section] = [];
+            grouped[f.section].push(f);
+        });
+        const fieldsContainer = document.getElementById('fieldsContainer');
+        Object.entries(grouped).forEach(([section, fields]) => {
+            const sectionDiv = document.createElement('div');
+            sectionDiv.className = 'mb-4';
+            sectionDiv.innerHTML = `<h5 class="mb-3">${section}</h5>`;
+            // Special layout for General Information
+            if (section === 'General Information') {
+                sectionDiv.innerHTML += '<div class="row">';
+                const systemNameEx = fields[0].example || '';
+                const versioningEx = fields[1].example || '';
+                const primaryDevEx = fields[2].example || '';
+                const contactInfoEx = fields[3].example || '';
+                sectionDiv.innerHTML += `<div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="system_name" class="form-label">
+                        System Name
+                        <span class="info-icon" tabindex="0">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="info-tooltip">No description provided.</span>
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" id="system_name" name="system_name" placeholder="${systemNameEx.replace(/"/g, '&quot;')}" style="color: #6c757d;" />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="versioning_information" class="form-label">
+                        Versioning Information
+                        <span class="info-icon" tabindex="0">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="info-tooltip">Date of system's first release Latest version Latest release date Include details of how versions are being tracked and updated</span>
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" id="versioning_information" name="versioning_information" placeholder="${versioningEx.replace(/"/g, '&quot;')}" style="color: #6c757d;" />
+                  </div>
+                </div>`;
+                // Second row: Primary Developer/Org & Contact Info
+                sectionDiv.innerHTML += `<div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="primary_developerorg" class="form-label">
+                        Primary Developer/Org
+                        <span class="info-icon" tabindex="0">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="info-tooltip">Individual/Org developing the system</span>
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" id="primary_developerorg" name="primary_developerorg" placeholder="${primaryDevEx.replace(/"/g, '&quot;')}" style="color: #6c757d;" />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="contact_info" class="form-label">
+                        Contact Info
+                        <span class="info-icon" tabindex="0">
+                            <i class="fas fa-info-circle"></i>
+                            <span class="info-tooltip">Email/phone number/address of the primary Developer/Org</span>
+                        </span>
+                    </label>
+                    <input type="text" class="form-control" id="contact_info" name="contact_info" placeholder="${contactInfoEx.replace(/"/g, '&quot;')}" style="color: #6c757d;" />
+                  </div>
+                </div>`;
+                // Add the rest of the General Information fields (if any)
+                fields.slice(4).forEach(field => {
+                    const id = field.title.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+                    const example = field.example || '';
+                    const placeholder = example ? example.replace(/"/g, '&quot;') : '';
+                    const rows = example ? Math.max(2, example.split('\n').length) : 2;
+                    const infoIcon = field.description ? `<span class="info-icon" tabindex="0">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="info-tooltip">${field.description}</span>
+                    </span>` : '';
+                    sectionDiv.innerHTML += `
+                        <div class="mb-3">
+                            <label for="${id}" class="form-label">
+                                ${field.title}
+                                ${infoIcon}
+                            </label>
+                            <textarea class="form-control" id="${id}" name="${id}" rows="${rows}" placeholder="${placeholder}" style="color: #6c757d;"></textarea>
+                        </div>
+                    `;
+                });
+            } else {
+                fields.forEach(field => {
+                    const id = field.title.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_]/g, '').toLowerCase();
+                    const example = field.example || '';
+                    const placeholder = example ? example.replace(/"/g, '&quot;') : '';
+                    const rows = example ? Math.max(2, example.split('\n').length) : 2;
+                    const infoIcon = field.description ? `<span class="info-icon" tabindex="0">
+                        <i class="fas fa-info-circle"></i>
+                        <span class="info-tooltip">${field.description}</span>
+                    </span>` : '';
+                    sectionDiv.innerHTML += `
+                        <div class="mb-3">
+                            <label for="${id}" class="form-label">
+                                ${field.title}
+                                ${infoIcon}
+                            </label>
+                            <textarea class="form-control" id="${id}" name="${id}" rows="${rows}" placeholder="${placeholder}" style="color: #6c757d;"></textarea>
+                        </div>
+                    `;
+                });
+            }
+            fieldsContainer.appendChild(sectionDiv);
+        });
+        // Optional: handle form submission (e.g., save as txt or send to backend)
+        document.getElementById('modelCardForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Gather form data and process as needed
+            alert('Model card saved! (Implement backend logic as needed)');
+        });
+        // Auto-adjust textarea height to fit placeholder
+        setTimeout(() => {
+            document.querySelectorAll('textarea.form-control').forEach(textarea => {
+                if (textarea.placeholder) {
+                    textarea.value = textarea.placeholder;
+                    textarea.style.height = 'auto';
+                    textarea.style.height = textarea.scrollHeight + 'px';
+                    textarea.value = '';
+                }
+            });
+        }, 0);
+        });
+    </script>
+</body>
+</html> 
