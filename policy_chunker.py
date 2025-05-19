@@ -16,48 +16,50 @@ def get_chunking_prompt(sections=None):
     sections_str = json.dumps(sections)
     return f"""Analyze the following markdown table policy document and split it into chunks for the specified model card sections.
 
-Return ONLY a JSON object where each key is a model card section and the value is an array of chunk boundaries in the format:
-{{
-  "System Name": [
-    {{ "s": "Article X", "e": "Article Y" }},
+    Return ONLY a JSON object where each key is a model card section and the value is an array of chunk boundaries in the format:
+    {{
+    "System Name": [
+        {{ "s": "Article X", "e": "Article Y" }},
+        ...
+    ],
+    "Contact Info": [
+        {{ "s": "Article X", "e": "Article Y" }},
+        ...
+    ],
     ...
-  ],
-  "Contact Info": [
-    {{ "s": "Article X", "e": "Article Y" }},
-    ...
-  ],
-  ...
-}}
+    }}
 
-**s means start, e means end**
+    **s means start, e means end**
 
-Rules:
-1. An "Article" is defined as **all rows that share the same first column value** (e.g., "Article 3"). 
-   - **Do not** treat each row as a separate article. For example, if "Article 3" appears in 68 rows, it still counts as **one single Article**.
-2. Each chunk must contain between 5 and 10 such Articles (not rows).
-3. Keep related Articles together if possible.
+    Definitions and Rules:
 
-4. **CRITICAL - Handling Irrelevant Articles:**
-   - You will receive a list of irrelevant articles for each section
-   - You MUST NOT include any irrelevant articles in your chunk boundaries
-   - If an article is in the irrelevant list, you must skip it entirely
-   - Example 1: If a policy has Articles 1-5 and Article 3 is irrelevant, valid chunks would be:
-     * {{"s": "Article 1", "e": "Article 2"}}
-     * {{"s": "Article 4", "e": "Article 5"}}
-   - Example 2: If a policy has Articles 1-10 and Articles 3,7 are irrelevant, valid chunks would be:
-     * {{"s": "Article 1", "e": "Article 2"}}
-     * {{"s": "Article 4", "e": "Article 6"}}
-     * {{"s": "Article 8", "e": "Article 10"}}
+    1. An **Article** is defined as **all rows that share the same first column value** (e.g., "Article 3").  
+    - If "Article 3" appears in multiple rows, it still counts as **one Article**.
+    - You must process articles by their article numbers, not by rows.
 
-5. Make sure to include ALL relevant articles that are not in the irrelevant list.
-6. If a section has no relevant articles (all are irrelevant), return an empty array for that section.
-7. Only process the following sections: {sections_str}
-8. 
-Policy Document: {{POLICY_DOC}}
-Section-Specific Irrelevant Article Lists: {{IRRE_LIST}}
-Return only the JSON object. 
-**Do not include any extra text than a single JSON object**.
-"""
+    2. Each chunk must contain between **5 and 10 Articles** (not rows), **unless articles are isolated due to irrelevance filtering**, in which case **smaller chunks or single-article chunks are acceptable**.
+
+    3. **CRITICAL: Chunk boundaries must not span irrelevant articles.**
+    - If only Article 7 and Article 11 are relevant, then valid chunks would be:
+        * `{{"s": "Article 7", "e": "Article 7"}}`
+        * `{{"s": "Article 11", "e": "Article 11"}}`
+    - NOT `{{"s": "Article 7", "e": "Article 11"}}`, because that wrongly includes Articles 8–10.
+
+    4. Keep adjacent relevant articles grouped where possible — as long as no irrelevant articles are in between.
+
+    5. Only include articles that are **not listed as irrelevant** for that section. Irrelevant articles **must be excluded entirely**.
+
+    6. If a section has no relevant articles, return an empty array: `[]`.
+
+    7. Only process the following sections: {sections_str}
+
+    Input:
+    - `Policy Document:` {{POLICY_DOC}}
+    - `Section-Specific Irrelevant Article Lists:` {{IRRE_LIST}}
+
+    Output:
+    - **Return ONLY the JSON object** as described. **Do NOT include any explanation or extra text.**
+    """
 
 def parse_chunk_response(response):
     """Parse Claude's chunking response into a dictionary of section-specific chunk boundaries."""
