@@ -112,7 +112,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
             model_card_content = await f.read()
 
         # Read prompt template
-        prompt_template_path = "prompt.txt"
+        prompt_template_path = "new_prompt.txt"
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
             prompt_template = await f.read()
 
