@@ -61,7 +61,7 @@ async def rate_relevancy():
         policy_folder = 'policies'
         policy_files = sorted(os.listdir(policy_folder))
         prompt_template_path = "relevancy_prompt.txt"
-        model_card_path = "model_cards/ai_resume_screening_tool_model_card.txt"  
+        model_card_path = "model_cards/mc8.txt"  
         
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
             prompt_template = await f.read()
@@ -79,10 +79,10 @@ async def rate_relevancy():
                         legal_doc_content = await pf.read()
                     
                     # Get chunking strategy for this policy
-                    chunking_prompt = get_chunking_prompt().replace("{{POLICY_DOC}}", legal_doc_content)
+                    chunking_prompt = get_chunking_prompt(irre=False).replace("{POLICY_DOC}", legal_doc_content)
                     chunk_response = llm.invoke(chunking_prompt).content
                     print(chunk_response)
-                    chunks = parse_chunk_response(chunk_response)
+                    chunks = parse_chunk_response(chunk_response, irre=False)
                     print(f"Policy {policy_file} will be evaluated in {len(chunks)} chunks")
                     print("Chunks:", chunks)
 
