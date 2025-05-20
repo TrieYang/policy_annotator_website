@@ -1,4 +1,5 @@
 import re
+import json
 from collections import defaultdict
 
 def parse_policy_scores_to_zero(filepath):
@@ -38,11 +39,13 @@ def parse_policy_scores_to_zero(filepath):
     result = {policy: dict(sections) for policy, sections in zero_score_articles.items()}
     return result
 
-# === Run it ===
-file_path = "relevancy_rating.txt"  # <- your input file
+
+file_path = "mc8_relevancy_rating.txt"  # <- your input file
 zero_score_summary = parse_policy_scores_to_zero(file_path)
 
-import json
-print(json.dumps(zero_score_summary, indent=2))
+# Save to txt file
+output_path = "mc8_summary.txt"
+with open(output_path, 'w', encoding='utf-8') as f:
+    json.dump(zero_score_summary, f, indent=2)
 
-
+print(f"Output saved to {output_path}")
