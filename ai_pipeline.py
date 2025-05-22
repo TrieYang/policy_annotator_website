@@ -107,9 +107,20 @@ sections = [
 
 async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_policies=None):
     try:
-        # Load model card content
-        async with aiofiles.open(model_card_path, "r", encoding="utf-8") as f:
-            model_card_content = await f.read()
+        # Load model card content from CSV and convert to markdown table format
+        df = pd.read_csv(model_card_path)
+        
+        # Create markdown table content
+        markdown_content = "| Section | Content |\n| ------- | ------- |\n"
+        
+        # Iterate through rows and create markdown table rows
+        for _, row in df.iterrows():
+            section = row['Section']
+            content = row['Your Response']
+            if pd.notna(section) and pd.notna(content):  # Skip empty rows
+                markdown_content += f"| {section} | {content} |\n"
+        
+        model_card_content = markdown_content
 
         # Read prompt template
         prompt_template_path = "new_prompt.txt"
