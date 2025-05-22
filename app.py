@@ -25,6 +25,14 @@ async def upload():
         form = await request.form
         file = (await request.files)['model_card']
         filename = f"{uuid.uuid4()}_{file.filename}"
+        
+        # Check if file is a CSV
+        if not filename.lower().endswith('.csv'):
+            return jsonify({
+                'success': False,
+                'error': 'Only CSV files are allowed. Please upload a CSV file.'
+            }), 400
+            
         upload_path = os.path.join(UPLOAD_FOLDER, filename)
         await file.save(upload_path)
 
