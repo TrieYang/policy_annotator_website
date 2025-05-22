@@ -116,7 +116,7 @@ def parse_chunk_response(response, irre=True):
             print(f"Error parsing chunk response: {e}")
 
 def get_section_groups():
-    """Split sections into two groups for processing."""
+    """Split sections into five groups for processing."""
     all_sections = [
         "System Name", "Versioning Information", "Primary Developer/Org",
         "Contact Info", "System Overview", "Primary intended uses",
@@ -128,9 +128,17 @@ def get_section_groups():
         "Actions taken", "Misuse Scenarios", "Human Oversight", "Update Frequency"
     ]
     
-    # Split sections into two roughly equal groups
-    mid_point = len(all_sections) // 2
-    group1 = all_sections[:mid_point]
-    group2 = all_sections[mid_point:]
-    
-    return group1, group2 
+    total = len(all_sections)
+    base = total // 5
+    remainder = total % 5
+
+    groups = []
+    start = 0
+    for i in range(5):
+        end = start + base + (1 if i < remainder else 0)
+        groups.append(all_sections[start:end])
+        start = end
+
+    return groups  # returns [group1, group2, ..., group5]
+
+

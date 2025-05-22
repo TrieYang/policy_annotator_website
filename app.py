@@ -64,9 +64,5 @@ async def upload():
 async def serve_static(filename):
     return await send_file(os.path.join(STATIC_FOLDER, filename))
 
-@app.route('/create-model-card')
-async def create_model_card():
-    return await render_template('create_model_card.html')
-
 if __name__ == '__main__':
     app.run(port=8000)

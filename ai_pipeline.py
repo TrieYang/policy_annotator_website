@@ -132,7 +132,8 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         section_data = {section: {} for section in sections}
         
         # Get irrelevant articles for each policy and section
-        irrelevant_articles = parse_policy_scores_to_zero("relevancy_rating.txt")
+        with open("universal_irrelevancy_map.json", "r", encoding="utf-8") as f:
+            irrelevant_articles = json.load(f)
         
         for policy_file in policy_files:
             try:
@@ -144,35 +145,29 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                     policy_name = policy_file.split('.')[0]
                     section_irrelevant_articles = irrelevant_articles.get(policy_name, {})
                     
-                    # Get section groups
-                    group1, group2 = get_section_groups()
-                    
-                    # Process first group of sections
-                    chunking_prompt1 = get_chunking_prompt(group1)
-                    chunking_prompt1 = chunking_prompt1.replace("{POLICY_DOC}", legal_doc_content)
-                    chunking_prompt1 = chunking_prompt1.replace("{IRRE_LIST}", json.dumps(section_irrelevant_articles))
-                    print("Irrelevant articles for first group:", json.dumps(section_irrelevant_articles))
-                    print("First group chunking prompt:", chunking_prompt1)
-                    chunk_response1 = llm.invoke(chunking_prompt1).content
-                    print("First group chunking response received")
-                    print(chunk_response1)
-                    section_chunks1 = parse_chunk_response(chunk_response1)
-                    
-                    # Process second group of sections
-                    chunking_prompt2 = get_chunking_prompt(group2)
-                    chunking_prompt2 = chunking_prompt2.replace("{POLICY_DOC}", legal_doc_content)
-                    chunking_prompt2 = chunking_prompt2.replace("{IRRE_LIST}", json.dumps(section_irrelevant_articles))
-                    print("Irrelevant articles for second group:", json.dumps(section_irrelevant_articles))
-                    print("Second group chunking prompt:", chunking_prompt2)
-                    chunk_response2 = llm.invoke(chunking_prompt2).content
-                    print("Second group chunking response received")
-                    print(chunk_response2)
-                    section_chunks2 = parse_chunk_response(chunk_response2)
-                    
-                    # Combine the results
-                    section_chunks = {**section_chunks1, **section_chunks2}
+                    # Get 5 section groups
+                    groups = get_section_groups()
+
+                    # Process all groups in loop
+                    section_chunks = {}
+
+                    for i, group in enumerate(groups, start=1):
+                        prompt = get_chunking_prompt(group)
+                        prompt = prompt.replace("{POLICY_DOC}", legal_doc_content)
+                        prompt = prompt.replace("{IRRE_LIST}", json.dumps(section_irrelevant_articles))
+                        
+                        response = llm.invoke(prompt).content
+                        print(f"Response for group {i} received")
+                        print(response)
+
+                        chunks = parse_chunk_response(response)
+                        section_chunks.update(chunks)
+
+                    # Final combined result
                     print(f"Policy {policy_file} will be evaluated with section-specific chunks")
                     print("Section chunks:", section_chunks)
+
+
 
                 # Initialize section data for this policy
                 policy_section_scores = {section: {} for section in sections}
