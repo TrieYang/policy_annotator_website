@@ -48,4 +48,3 @@ output_path = "mc8_summary.txt"
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(zero_score_summary, f, indent=2)
 
-print(f"Output saved to {output_path}")
