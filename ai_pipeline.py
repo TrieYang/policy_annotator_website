@@ -14,7 +14,6 @@ from utils.section_summary import generate_section_summary
 from utils.top_level_summary import generate_top_level_summary
 from utils.interactive_heatmap import generate_interactive_heatmap
 from utils.policy_summary import generate_policy_summary
-from irrelevant_policy import parse_policy_scores_to_zero
 
 SAMPLE_RESPONSE_FOLDER = "./sample_responses"
 TESTING_MODE = False
@@ -125,7 +124,12 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         # Read prompt template
         prompt_template_path = "new_prompt.txt"
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
-            prompt_template = await f.read()
+            chunk_prompt = await f.read()
+            
+        # Read prompt template
+        prompt_template_path = "new_prompt_second.txt"
+        async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
+            chunk_prompt_second = await f.read()
 
         # Get list of policy files and filter based on selection
         policy_files = sorted(os.listdir(policy_folder))
@@ -192,9 +196,8 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                             continue
                             
                         for chunk_start, chunk_end in section_specific_chunks:
-                            chunk_prompt = (
-                                prompt_template
-                                .replace("{{MODEL_CARD}}", model_card_content)
+                            chunk_prompt_second = (
+                                chunk_prompt_second
                                 .replace("{{LEGAL_DOC}}", legal_doc_content)
                                 .replace("{{SECTION}}", section)
                                 .replace("{{START_ART}}", str(chunk_start))
@@ -210,11 +213,21 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                             "text": f"{legal_doc_content}",
                                             "cache_control": {"type": "ephemeral"},
                                         },
+                                        {
+                                            "type": "text",
+                                            "text": f"{chunk_prompt}",
+                                            "cache_control": {"type": "ephemeral"},
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": f"{model_card_content}",
+                                            "cache_control": {"type": "ephemeral"},
+                                        },
                                     ],
                                 },
                                 {
                                     "role": "user",
-                                    "content": f"{chunk_prompt}",
+                                    "content": f"{chunk_prompt_second}",
                                 },
                             ]
                             response = llm.invoke(messages)
