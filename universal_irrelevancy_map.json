@@ -32,7 +32,12 @@
       "AIDA.Art.35",
       "AIDA.Art.36",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.10",
+      "AIDA.AIDA.15",
+      "AIDA.AIDA.17",
+      "AIDA.AIDA.18",
+      "AIDA.AIDA.36"
     ],
     "Versioning Information": [
       "AIDA.Art.1",
@@ -52,7 +57,10 @@
       "AIDA.Art.35",
       "AIDA.Art.38",
       "AIDA.Art.39",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.25",
+      "AIDA.AIDA.29",
+      "AIDA.AIDA.34"
     ],
     "Primary Developer/Org": [
       "AIDA.Art.1",
@@ -62,7 +70,9 @@
       "AIDA.Art.32",
       "AIDA.Art.33",
       "AIDA.Art.34",
-      "AIDA.Art.35"
+      "AIDA.Art.35",
+      "AIDA.AIDA.34",
+      "AIDA.AIDA.6"
     ],
     "Contact Info": [
       "AIDA.Art.1",
@@ -72,7 +82,8 @@
       "AIDA.Art.33",
       "AIDA.Art.34",
       "AIDA.Art.35",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.33"
     ],
     "System Overview": [
       "AIDA.Art.1",
@@ -93,7 +104,11 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.16",
+      "AIDA.AIDA.25",
+      "AIDA.AIDA.26",
+      "AIDA.AIDA.27"
     ],
     "Primary intended uses": [
       "AIDA.Art.1",
@@ -112,7 +127,10 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.16",
+      "AIDA.AIDA.25",
+      "AIDA.AIDA.27"
     ],
     "Primary intended users": [
       "AIDA.Art.1",
@@ -131,7 +149,9 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.16",
+      "AIDA.AIDA.27"
     ],
     "Out-of-scope use cases": [
       "AIDA.Art.1",
@@ -148,7 +168,9 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.16",
+      "AIDA.AIDA.25"
     ],
     "Terms and conditions": [
       "AIDA.Art.1",
@@ -242,7 +264,8 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.20"
     ],
     "Summary of Performance Assessment": [
       "AIDA.Art.1",
@@ -257,7 +280,8 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.20"
     ],
     "Disaggregated Performance": [
       "AIDA.Art.1",
@@ -272,7 +296,8 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.20"
     ],
     "Testing Contexts": [
       "AIDA.Art.1",
@@ -286,7 +311,8 @@
       "AIDA.Art.34",
       "AIDA.Art.35",
       "AIDA.Art.37",
-      "AIDA.Art.40"
+      "AIDA.Art.40",
+      "AIDA.AIDA.20"
     ],
     "Evaluations for Edge Cases or Adversarial Inputs": [
       "AIDA.Art.1",
@@ -487,7 +513,13 @@
       "CCPA.Art.1798.199.85",
       "CCPA.Art.1798.199.90",
       "CCPA.Art.1798.199.95",
-      "CCPA.Art.1798.199.100"
+      "CCPA.Art.1798.199.100",
+      "CCPA.CCPA.1798.125",
+      "CCPA.CCPA.1798.145",
+      "CCPA.CCPA.1798.150",
+      "CCPA.CCPA.1798.185",
+      "CCPA.CCPA.1798.199.10",
+      "CCPA.CCPA.1798.199.40"
     ],
     "Versioning Information": [
       "CCPA.Art.1798.115",
@@ -527,7 +559,10 @@
       "CCPA.Art.1798.199.80",
       "CCPA.Art.1798.199.85",
       "CCPA.Art.1798.199.90",
-      "CCPA.Art.1798.199.95"
+      "CCPA.Art.1798.199.95",
+      "CCPA.CCPA.1798.126",
+      "CCPA.CCPA.1798.146",
+      "CCPA.CCPA.1798.155"
     ],
     "Primary Developer/Org": [
       "CCPA.Art.1798.105",
@@ -541,7 +576,9 @@
       "CCPA.Art.1798.199.30",
       "CCPA.Art.1798.199.35",
       "CCPA.Art.1798.199.60",
-      "CCPA.Art.1798.199.95"
+      "CCPA.Art.1798.199.95",
+      "CCPA.CCPA.1798.155",
+      "CCPA.CCPA.1798.199.60"
     ],
     "Contact Info": [
       "CCPA.Art.1798.145",
@@ -549,7 +586,10 @@
       "CCPA.Art.1798.199.20",
       "CCPA.Art.1798.199.25",
       "CCPA.Art.1798.199.30",
-      "CCPA.Art.1798.199.35"
+      "CCPA.Art.1798.199.35",
+      "CCPA.CCPA.1798.125",
+      "CCPA.CCPA.1798.180",
+      "CCPA.CCPA.1798.199.60"
     ],
     "System Overview": [
       "CCPA.Art.1798.105",
@@ -655,7 +695,8 @@
       "CCPA.Art.1798.199.80",
       "CCPA.Art.1798.199.85",
       "CCPA.Art.1798.199.95",
-      "CCPA.Art.1798.199.100"
+      "CCPA.Art.1798.199.100",
+      "CCPA.CCPA.1798.135"
     ],
     "Out-of-scope use cases": [
       "CCPA.Art.1798.105",
@@ -675,7 +716,8 @@
       "CCPA.Art.1798.199.50",
       "CCPA.Art.1798.199.60",
       "CCPA.Art.1798.199.65",
-      "CCPA.Art.1798.199.70"
+      "CCPA.Art.1798.199.70",
+      "CCPA.CCPA.1798.135"
     ],
     "Terms and conditions": [
       "CCPA.Art.1798.146"
@@ -713,7 +755,9 @@
       "CCPA.Art.1798.199.80",
       "CCPA.Art.1798.199.85",
       "CCPA.Art.1798.199.95",
-      "CCPA.Art.1798.199.100"
+      "CCPA.Art.1798.199.100",
+      "CCPA.CCPA.1798.180",
+      "CCPA.CCPA.1798.194"
     ],
     "Collection Method": [
       "CCPA.Art.1798.155",
@@ -752,7 +796,9 @@
       "CCPA.Art.1798.199.50",
       "CCPA.Art.1798.199.60",
       "CCPA.Art.1798.199.65",
-      "CCPA.Art.1798.199.70"
+      "CCPA.Art.1798.199.70",
+      "CCPA.CCPA.1798.155",
+      "CCPA.CCPA.1798.180"
     ],
     "Current legal compliance status": [
       "CCPA.Art.1798.160",
@@ -783,7 +829,8 @@
       "CCPA.Art.1798.199.75",
       "CCPA.Art.1798.199.80",
       "CCPA.Art.1798.199.85",
-      "CCPA.Art.1798.199.95"
+      "CCPA.Art.1798.199.95",
+      "CCPA.CCPA.1798.160"
     ],
     "Summary of Performance Assessment": [
       "CCPA.Art.1798.100",
@@ -881,7 +928,9 @@
       "CCPA.Art.1798.199.50",
       "CCPA.Art.1798.199.60",
       "CCPA.Art.1798.199.65",
-      "CCPA.Art.1798.199.70"
+      "CCPA.Art.1798.199.70",
+      "CCPA.CCPA.1798.105",
+      "CCPA.CCPA.1798.106"
     ],
     "Usage Constraints": [
       "CCPA.Art.1798.160",
@@ -913,7 +962,8 @@
       "CCPA.Art.1798.199.80",
       "CCPA.Art.1798.199.85",
       "CCPA.Art.1798.199.95",
-      "CCPA.Art.1798.199.100"
+      "CCPA.Art.1798.199.100",
+      "CCPA.CCPA.1798.194"
     ],
     "Evaluations for Edge Cases or Adversarial Inputs": [
       "CCPA.Art.1798.105",
@@ -1202,7 +1252,15 @@
       "EU.Art.110",
       "EU.Art.111",
       "EU.Art.112",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.10",
+      "EU.EU.12",
+      "EU.EU.14",
+      "EU.EU.15",
+      "EU.EU.4",
+      "EU.EU.43",
+      "EU.EU.82",
+      "EU.EU.86"
     ],
     "Versioning Information": [
       "EU.Art.5",
@@ -1267,7 +1325,15 @@
       "EU.Art.107",
       "EU.Art.108",
       "EU.Art.109",
-      "EU.Art.110"
+      "EU.Art.110",
+      "EU.EU.38",
+      "EU.EU.5",
+      "EU.EU.59",
+      "EU.EU.61",
+      "EU.EU.63",
+      "EU.EU.74",
+      "EU.EU.76",
+      "EU.EU.86"
     ],
     "Primary Developer/Org": [
       "EU.Art.4",
@@ -1334,7 +1400,12 @@
       "EU.Art.109",
       "EU.Art.110",
       "EU.Art.112",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.38",
+      "EU.EU.5",
+      "EU.EU.76",
+      "EU.EU.84",
+      "EU.EU.90"
     ],
     "Contact Info": [
       "EU.Art.5",
@@ -1379,7 +1450,9 @@
       "EU.Art.107",
       "EU.Art.108",
       "EU.Art.109",
-      "EU.Art.110"
+      "EU.Art.110",
+      "EU.EU.76",
+      "EU.EU.84"
     ],
     "System Overview": [
       "EU.Art.7",
@@ -1436,7 +1509,9 @@
       "EU.Art.108",
       "EU.Art.109",
       "EU.Art.110",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.44",
+      "EU.EU.48"
     ],
     "Primary intended uses": [
       "EU.Art.7",
@@ -1590,7 +1665,10 @@
       "EU.Art.98",
       "EU.Art.100",
       "EU.Art.101",
-      "EU.Art.102"
+      "EU.Art.102",
+      "EU.EU.12",
+      "EU.EU.77",
+      "EU.EU.78"
     ],
     "Current legal compliance status": [
       "EU.Art.7",
@@ -1633,7 +1711,8 @@
       "EU.Art.107",
       "EU.Art.108",
       "EU.Art.109",
-      "EU.Art.110"
+      "EU.Art.110",
+      "EU.EU.37"
     ],
     "Dataset Description": [
       "EU.Art.7",
@@ -1690,7 +1769,8 @@
       "EU.Art.108",
       "EU.Art.109",
       "EU.Art.110",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.113"
     ],
     "Collection Method": [
       "EU.Art.7",
@@ -1744,7 +1824,8 @@
       "EU.Art.108",
       "EU.Art.109",
       "EU.Art.110",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.113"
     ],
     "Bias Mitigation Measures": [
       "EU.Art.7",
@@ -1775,7 +1856,8 @@
       "EU.Art.100",
       "EU.Art.101",
       "EU.Art.102",
-      "EU.Art.103"
+      "EU.Art.103",
+      "EU.EU.113"
     ],
     "Usage Constraints": [
       "EU.Art.7",
@@ -2043,7 +2125,10 @@
       "EU.Art.108",
       "EU.Art.109",
       "EU.Art.110",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.2",
+      "EU.EU.24",
+      "EU.EU.3"
     ],
     "Potential Risks and Harms": [
       "EU.Art.3",
@@ -2105,7 +2190,8 @@
       "EU.Art.108",
       "EU.Art.109",
       "EU.Art.110",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.3"
     ],
     "Actions taken": [
       "EU.Art.3",
@@ -2165,7 +2251,8 @@
       "EU.Art.108",
       "EU.Art.109",
       "EU.Art.110",
-      "EU.Art.113"
+      "EU.Art.113",
+      "EU.EU.3"
     ],
     "Misuse Scenarios": [
       "EU.Art.10",
@@ -2361,4 +2448,3 @@
     ]
   }
 }
-

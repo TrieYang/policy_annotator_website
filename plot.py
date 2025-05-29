@@ -5,20 +5,20 @@ import matplotlib.pyplot as plt
 df = pd.read_excel("section_article_scores_summary.xlsx")
 
 # Convert columns to numeric, force errors to NaN
-df['Mean'] = pd.to_numeric(df['Mean'], errors='coerce')
+df['Max'] = pd.to_numeric(df['Max'], errors='coerce')
 df['StdDev'] = pd.to_numeric(df['StdDev'], errors='coerce')
 
 # Drop rows where either value is missing
-df_clean = df.dropna(subset=['Mean', 'StdDev'])
+df_clean = df.dropna(subset=['Max', 'StdDev'])
 
 # Extract data
-all_means = df_clean['Mean'].values
+all_maxs = df_clean['Max'].values
 all_sds = df_clean['StdDev'].values
 
-# Plot histogram of Mean scores
-plt.hist(all_means, bins=20, color='skyblue', edgecolor='black')
-plt.title("Distribution of Mean Scores")
-plt.xlabel("Mean")
+# Plot histogram of Max scores
+plt.hist(all_maxs, bins=20, color='skyblue', edgecolor='black')
+plt.title("Distribution of Max Scores")
+plt.xlabel("Max")
 plt.ylabel("Frequency")
 plt.grid(True)
 plt.show()
@@ -31,32 +31,19 @@ plt.ylabel("Frequency")
 plt.grid(True)
 plt.show()
 
-# For Mean thresholding
-Q1_mean = df_clean['Mean'].quantile(0.25)
-Q3_mean = df_clean['Mean'].quantile(0.75)
-IQR_mean = Q3_mean - Q1_mean
-low_mean_threshold = max(0, Q1_mean - 1.5 * IQR_mean)  # truncate negative values to 0
 
-# For SD thresholding
-Q1_sd = df_clean['StdDev'].quantile(0.25)
-Q3_sd = df_clean['StdDev'].quantile(0.75)
-IQR_sd = Q3_sd - Q1_sd
-high_sd_threshold = Q3_sd + 1.5 * IQR_sd
 
-print(f"Low Mean Threshold: {low_mean_threshold:.2f}")
-print(f"High SD Threshold: {high_sd_threshold:.2f}")
-
-sorted_means = sorted(df_clean['Mean'])
-plt.plot(sorted_means)
-plt.title("Sorted Mean Scores")
+sorted_maxs = sorted(df_clean['Max'])
+plt.plot(sorted_maxs)
+plt.title("Sorted Max Scores")
 plt.xlabel("Data Point Index")
-plt.ylabel("Mean Score")
+plt.ylabel("Max Score")
 plt.grid(True)
 plt.show()
 
-low_mean_threshold = df_clean['Mean'].quantile(0.10)  # bottom 10%
+low_max_threshold = df_clean['Max'].quantile(0.10)  # bottom 10%
 high_sd_threshold = df_clean['StdDev'].quantile(0.90)  # top 10%
 
-print(f"10th Percentile of Mean: {low_mean_threshold:.2f}")
+print(f"10th Percentile of Max: {low_max_threshold:.2f}")
 print(f"90th Percentile of SD: {high_sd_threshold:.2f}")
 

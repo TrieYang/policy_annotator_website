@@ -56,13 +56,13 @@ ws = wb.active
 ws.title = "Compliance Summary"
 
 # Write header
-ws.append(["Section", "Article", "Mean", "StdDev"])
+ws.append(["Section", "Article", "Max", "StdDev"])
 
 # Write data
 for key in sorted(scores):
     section, full_article = key
     values = scores[key]
-    mean = np.mean(values)
+    mean = np.max(values)
     std = np.std(values)
     ws.append([section, full_article, round(mean, 2), round(std, 2)])
 
