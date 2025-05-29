@@ -6,8 +6,7 @@ Compare a **specific Model Card Section** with relevant **Legal Document Article
 
 ### **Instructions**
 
-* Evaluate only the model card section labeled `"{{SECTION}}"` against the specified policy articles ({{START\_ART}}–{{END\_ART}}).
-Certainly! Here's the revised version of just the relevant **Instructions** section, with your emphasized scope logic and the *System Name* example embedded:
+* Evaluate only the model card section that is chosen against the specified policy articles that are chosen.
 * Your evaluation must remain strictly within the **scope, intent, and expected content of the selected section**:
   * Each model card section serves a specific, limited purpose. You are not judging overall system compliance — only whether this one section contributes to or avoids policy violations.
   * **Do not penalize the section** for missing details that should appear in other sections.
@@ -70,14 +69,6 @@ Certainly! Here's the revised version of just the relevant **Instructions** sect
 
 > ⚠️ **Do not combine or skip rows**
 > ⚠️ **Only include the markdown table — no extra text, no explanations outside the table**
-
----
-
-### **Inputs**
-
-* **Model Card Section to Evaluate**: `{{SECTION}}`
-* **Entire Model Card (for limited context only)**: `{{MODEL_CARD}}`
-* **Policy Articles**: `{{START_ART}}` to `{{END_ART}}`
 
 ---
 
