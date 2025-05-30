@@ -129,7 +129,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         # Read prompt template
         prompt_template_path = "new_prompt_second.txt"
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
-            chunk_prompt_second = await f.read()
+            chunk_prompt_temp = await f.read()
 
         # Get list of policy files and filter based on selection
         policy_files = sorted(os.listdir(policy_folder))
@@ -197,7 +197,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                             
                         for chunk_start, chunk_end in section_specific_chunks:
                             chunk_prompt_second = (
-                                chunk_prompt_second
+                                chunk_prompt_temp
                                 .replace("{{LEGAL_DOC}}", legal_doc_content)
                                 .replace("{{SECTION}}", section)
                                 .replace("{{START_ART}}", str(chunk_start))
@@ -231,13 +231,9 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                 },
                             ]
                             response = llm.invoke(messages)
-                            print("llm request sent")
-                            print(response)
                             # Parse the markdown table to extract JSON content
                             try:
                                 # Split the response into lines and find all data rows
-                                print("try to parse")
-                                print(response)
                                 lines = response.content.strip().splitlines()
                                 # Get all rows except the separator row (the one with |---|---|)
                                 table_rows = [line for line in lines if line.startswith('|') and not line.startswith('|-')]
@@ -275,6 +271,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                 print("something went wrong")
                                 print(f"Error processing response: {e}")
                                 print(f"Full response:\n{response}")
+                           
 
                 # Store the data for this policy
                 policy_name = policy_file.split('.')[0]
