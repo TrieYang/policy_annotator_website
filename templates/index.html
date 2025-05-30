@@ -215,11 +215,13 @@
         }
 
         /* Color segments */
-        .color-segment:nth-child(1) { background-color: rgb(255,255,204); }
-        .color-segment:nth-child(2) { background-color: rgb(161,218,180); }
-        .color-segment:nth-child(3) { background-color: rgb(100,181,205); }
-        .color-segment:nth-child(4) { background-color: rgb(54,130,189); }
-        .color-segment:nth-child(5) { background-color: rgb(8,88,158); }
+        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
+        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
+        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
+        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
+        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
+        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
+
 
         /* Tooltip styles */
         .tooltip {
@@ -893,11 +895,16 @@
                             <div class="file-input-wrapper">
                                 <input type="file" id="modelCard" name="model_card" accept=".txt" required>
                                 <label for="modelCard" class="custom-file-input">
-                                    <i class="fas fa-cloud-upload-alt"></i>
                                     <span>Choose a file or drag it here</span>
                                 </label>
                                 <div class="file-name" id="fileName"></div>
                             </div>
+                        </div>
+                        <div class="mb-3 text-center">
+                            <a href="https://docs.google.com/spreadsheets/d/1TTtgHsDR98i8Xn07PAetne30VYSmLCrhC4iydc_5E5Y/copy" class="template-link" target="_blank" rel="noopener noreferrer">
+                                <i class="fas fa-plus-circle"></i>
+                                <span>Don't have a model card yet? Create one here</span>
+                            </a>
                         </div>
                         <div class="mb-4">
                             <label class="form-label">
@@ -926,12 +933,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="mb-4 text-center">
-                            <a href="/static/model_card_template.txt" class="template-link" download>
-                                <i class="fas fa-download"></i>
-                                <span>Download Model Card Template</span>
-                            </a>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">
                             <i class="fas fa-magic"></i>
@@ -1229,19 +1230,22 @@
                     const colorBarHtml = `
                         <div class="color-bar active" style="margin-bottom: 1.2rem; margin-top: 0.5rem; margin-left: auto; margin-right: 30px;">
                             <div class="color-segment">
-                                <div class="color-tooltip">0 – Clear Violation<br><span style='font-weight:400;'>The section directly contradicts a policy requirement or explicitly engages in prohibited behavior.</span></div>
+                                <div class="color-tooltip">0 – Off White<br><span style='font-weight:400;'>No issues. Fully compliant or not applicable.</span></div>
                             </div>
                             <div class="color-segment">
-                                <div class="color-tooltip">1 – Probable Violation<br><span style='font-weight:400;'>The section suggests behavior that is likely non-compliant or leaves strong indications of harm or risk.</span></div>
+                                <div class="color-tooltip">1 – Light Yellow<br><span style='font-weight:400;'>Minor ambiguity, but likely compliant.</span></div>
                             </div>
                             <div class="color-segment">
-                                <div class="color-tooltip">2 – Possible Risk<br><span style='font-weight:400;'>The section does not directly violate the policy, but it implies or permits behavior that could plausibly lead to a violation.</span></div>
+                                <div class="color-tooltip">2 – Warm Orange<br><span style='font-weight:400;'>Possible minor risk or unclear compliance.</span></div>
                             </div>
                             <div class="color-segment">
-                                <div class="color-tooltip">3 – Ambiguous or Unclear Risk<br><span style='font-weight:400;'>There is not enough information to confirm safety or violation. It's unclear whether the system avoids the prohibited behavior, and other sections do not clarify.</span></div>
+                                <div class="color-tooltip">3 – Medium Orange<br><span style='font-weight:400;'>Possible risk or moderate ambiguity.</span></div>
                             </div>
                             <div class="color-segment">
-                                <div class="color-tooltip">4-5: No Violation (Minor Ambiguity)<br><span style='font-weight:400;'>All requirements met, no significant issues.</span></div>
+                                <div class="color-tooltip">4 – Strong Red-Orange<br><span style='font-weight:400;'>Probable violation or strong risk.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">5 – Dark Red<br><span style='font-weight:400;'>Clear violation or severe non-compliance.</span></div>
                             </div>
                         </div>
                         <style>

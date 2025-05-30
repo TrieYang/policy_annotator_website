@@ -1,0 +1,4 @@
+### **Inputs**
+
+* **Model Card Section to Evaluate**: `{{SECTION}}`
+* **Policy Articles to check compliance for**: `{{START_ART}}` to `{{END_ART}}`
