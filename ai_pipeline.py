@@ -1,5 +1,6 @@
 import os
 import time
+import sys
 import json
 from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
@@ -8,15 +9,14 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
-from policy_chunker import get_chunking_prompt, parse_chunk_response
+from policy_chunker import get_chunking_prompt, parse_chunk_response, get_section_groups
 from utils.section_summary import generate_section_summary
 from utils.top_level_summary import generate_top_level_summary
 from utils.interactive_heatmap import generate_interactive_heatmap
 from utils.policy_summary import generate_policy_summary
-from utils.parse_model_card_content import parse_model_card_content
 
 SAMPLE_RESPONSE_FOLDER = "./sample_responses"
-TESTING_MODE = True
+TESTING_MODE = False
 
 class FakeLLM:
     def __init__(self, sample_folder):
@@ -68,6 +68,7 @@ fakeLlm = FakeLLM(SAMPLE_RESPONSE_FOLDER)
 
 llm = ChatAnthropic(
 model="claude-3-5-sonnet-20241022",
+#model="claude-3-7-sonnet-20250219",
 #model="claude-3-haiku-20240307",
 anthropic_api_key=ANTHROPIC_API_KEY,
 temperature=0.3)
@@ -105,14 +106,30 @@ sections = [
 
 async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_policies=None):
     try:
-        # Load model card content
-        async with aiofiles.open(model_card_path, "r", encoding="utf-8") as f:
-            model_card_content = await f.read()
+        # Load model card content from CSV and convert to markdown table format
+        df = pd.read_csv(model_card_path)
+        
+        # Create markdown table content
+        markdown_content = "| Section | Content |\n| ------- | ------- |\n"
+        
+        # Iterate through rows and create markdown table rows
+        for _, row in df.iterrows():
+            section = row['Section']
+            content = row['Your Response']
+            if pd.notna(section) and pd.notna(content):  # Skip empty rows
+                markdown_content += f"| {section} | {content} |\n"
+        
+        model_card_content = markdown_content
 
         # Read prompt template
-        prompt_template_path = "prompt.txt"
+        prompt_template_path = "new_prompt.txt"
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
-            prompt_template = await f.read()
+            chunk_prompt = await f.read()
+            
+        # Read prompt template
+        prompt_template_path = "new_prompt_second.txt"
+        async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
+            chunk_prompt_temp = await f.read()
 
         # Get list of policy files and filter based on selection
         policy_files = sorted(os.listdir(policy_folder))
@@ -129,103 +146,58 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         # Initialize dictionary to store section-based data
         section_data = {section: {} for section in sections}
         
+        # Get irrelevant articles for each policy and section
+        with open("universal_irrelevancy_map.json", "r", encoding="utf-8") as f:
+            irrelevant_articles = json.load(f)
+        
         for policy_file in policy_files:
             try:
                 policy_path = os.path.join(policy_folder, policy_file)
                 async with aiofiles.open(policy_path, "r") as pf:
                     legal_doc_content = await pf.read()
                 if not TESTING_MODE:
-                    # Get chunking strategy for this policy
-                    chunking_prompt = get_chunking_prompt().replace("{{POLICY_DOC}}", legal_doc_content)
-                    chunk_response = llm.invoke(chunking_prompt).content
-                    print("\nChunking response:", chunk_response)
-                    chunks = parse_chunk_response(chunk_response)
-                    print(f"Policy {policy_file} will be evaluated in {len(chunks)} chunks")
-                    print("Chunks:", chunks)
+                    # Get chunking strategy for this policy with section-specific irrelevant articles
+                    policy_name = policy_file.split('.')[0]
+                    section_irrelevant_articles = irrelevant_articles.get(policy_name, {})
+                    
+                    # Get 5 section groups
+                    groups = get_section_groups()
+
+                    # Process all groups in loop
+                    section_chunks = {}
+
+                    for i, group in enumerate(groups, start=1):
+                        prompt = get_chunking_prompt(group)
+                        prompt = prompt.replace("{POLICY_DOC}", legal_doc_content)
+                        prompt = prompt.replace("{IRRE_LIST}", json.dumps(section_irrelevant_articles))
+                        
+                        response = llm.invoke(prompt).content
+                        print(f"Response for group {i} received")
+                        print(response)
+
+                        chunks = parse_chunk_response(response)
+                        section_chunks.update(chunks)
+
+                    # Final combined result
+                    print(f"Policy {policy_file} will be evaluated with section-specific chunks")
+                    print("Section chunks:", section_chunks)
+
+
 
                 # Initialize section data for this policy
                 policy_section_scores = {section: {} for section in sections}
                 policy_section_descriptions = {section: {} for section in sections}
 
                 for section in sections:
-                    if TESTING_MODE:
-                        # Set the context for FakeLLM
-                        fakeLlm.set_context(policy_file.split('.')[0], section)
-                        
-                        # Create the prompt without chunking
-                        chunk_prompt = (
-                            prompt_template
-                            .replace("{{MODEL_CARD}}", model_card_content)
-                            .replace("{{LEGAL_DOC}}", legal_doc_content)
-                            .replace("{{SECTION}}", section)
-                            .replace("{{START_ART}}", "1")  # Use dummy values since we're not chunking
-                            .replace("{{END_ART}}", "999")  # Use dummy values since we're not chunking
-                        )
-                        
-                        print(f"Evaluating {policy_file} section '{section}' in testing mode...")
-                        messages = [
-                            {
-                                "role": "system",
-                                "content": [
-                                    {
-                                        "type": "text",
-                                        "text": f"{legal_doc_content}",
-                                        "cache_control": {"type": "ephemeral"},
-                                    },
-                                ],
-                            },
-                            {
-                                "role": "user",
-                                "content": f"{chunk_prompt}",
-                            },
-                        ]
-                        response = fakeLlm.invoke(messages)
-                        print(f'fakeLlm response is: {response.content}')
-
-                        # Parse the markdown table to extract JSON content
-                        try:
-                            # Split the response into lines and find all data rows
-                            lines = response.content.strip().splitlines()
-                            # Get all rows except the separator row (the one with |---|---|)
-                            table_rows = [line for line in lines if line.startswith('|') and not line.startswith('|-')]
-                            if len(table_rows) < 2:  # Need at least header and one data row
-                                raise Exception("Invalid table format - missing header or data rows")
+                        # Get the chunks for this specific section
+                        section_specific_chunks = section_chunks.get(section, [])
+                        if not section_specific_chunks:
+                            print(f"No chunks for section '{section}' - skipping evaluation")
+                            continue
                             
-                            # Skip header row (first row) and process each data row
-                            data_rows = table_rows[1:]  # Skip header row
-                            
-                            for data_row in data_rows:
-                                # Split row into cells and remove empty cells at start/end
-                                cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
-                                if len(cells) != 2:  # Should have exactly 2 columns
-                                    print(f"Warning: Row does not have 2 columns: {data_row}")
-                                    continue
-                                    
-                                try:
-                                    # First cell should be the article number
-                                    # Clean and standardize the article number format
-                                    article_num = cells[0].strip()
-                                    # Remove any 'Art.' prefix if it exists
-                                    article_num = article_num.replace('Art.', '').strip()
-                                    # Keep the original number format (don't convert to int)
-                                    
-                                    # Second cell should be the JSON data
-                                    json_data = json.loads(cells[1])
-                                    
-                                    policy_section_scores[section][article_num] = json_data['score']
-                                    policy_section_descriptions[section][article_num] = json_data.get('description', '')
-                                    print(f"Parsed article {article_num}: Score={json_data['score']}")
-                                except (ValueError, json.JSONDecodeError) as e:
-                                    print(f"Error parsing row {data_row}: {e}")
-                                    continue
-                        except Exception as e:
-                            print(f"Error processing response: {e}")
-                            print(f"Full response:\n{response}")
-                    else:
-                        for chunk_start, chunk_end in chunks:
-                            chunk_prompt = (
-                                prompt_template
-                                .replace("{{MODEL_CARD}}", model_card_content)
+                        for chunk_start, chunk_end in section_specific_chunks:
+                            chunk_prompt_second = (
+                                chunk_prompt_temp
                                 .replace("{{LEGAL_DOC}}", legal_doc_content)
                                 .replace("{{SECTION}}", section)
                                 .replace("{{START_ART}}", str(chunk_start))
@@ -241,54 +213,65 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                             "text": f"{legal_doc_content}",
                                             "cache_control": {"type": "ephemeral"},
                                         },
+                                        {
+                                            "type": "text",
+                                            "text": f"{chunk_prompt}",
+                                            "cache_control": {"type": "ephemeral"},
+                                        },
+                                        {
+                                            "type": "text",
+                                            "text": f"{model_card_content}",
+                                            "cache_control": {"type": "ephemeral"},
+                                        },
                                     ],
                                 },
                                 {
                                     "role": "user",
-                                    "content": f"{chunk_prompt}",
+                                    "content": f"{chunk_prompt_second}",
                                 },
                             ]
                             response = llm.invoke(messages)
-
-                        # Parse the markdown table to extract JSON content
-                        try:
-                            # Split the response into lines and find all data rows
-                            lines = response.content.strip().splitlines()
-                            # Get all rows except the separator row (the one with |---|---|)
-                            table_rows = [line for line in lines if line.startswith('|') and not line.startswith('|-')]
-                            if len(table_rows) < 2:  # Need at least header and one data row
-                                raise Exception("Invalid table format - missing header or data rows")
-                            
-                            # Skip header row (first row) and process each data row
-                            data_rows = table_rows[1:]  # Skip header row
-                            
-                            for data_row in data_rows:
-                                # Split row into cells and remove empty cells at start/end
-                                cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
-                                if len(cells) != 2:  # Should have exactly 2 columns
-                                    print(f"Warning: Row does not have 2 columns: {data_row}")
-                                    continue
-                                    
-                                try:
-                                    # First cell should be the article number
-                                    # Clean and standardize the article number format
-                                    article_num = cells[0].strip()
-                                    # Remove any 'Art.' prefix if it exists
-                                    article_num = article_num.replace('Art.', '').strip()
-                                    # Keep the original number format (don't convert to int)
-                                    
-                                    # Second cell should be the JSON data
-                                    json_data = json.loads(cells[1])
-                                    
-                                    policy_section_scores[section][article_num] = json_data['score']
-                                    policy_section_descriptions[section][article_num] = json_data.get('description', '')
-                                    print(f"Parsed article {article_num}: Score={json_data['score']}")
-                                except (ValueError, json.JSONDecodeError) as e:
-                                    print(f"Error parsing row {data_row}: {e}")
-                                    continue
-                        except Exception as e:
-                            print(f"Error processing response: {e}")
-                            print(f"Full response:\n{response}")
+                            # Parse the markdown table to extract JSON content
+                            try:
+                                # Split the response into lines and find all data rows
+                                lines = response.content.strip().splitlines()
+                                # Get all rows except the separator row (the one with |---|---|)
+                                table_rows = [line for line in lines if line.startswith('|') and not line.startswith('|-')]
+                                if len(table_rows) < 2:  # Need at least header and one data row
+                                    raise Exception("Invalid table format - missing header or data rows")
+                                
+                                # Skip header row (first row) and process each data row
+                                data_rows = table_rows[1:]  # Skip header row
+                                
+                                for data_row in data_rows:
+                                    # Split row into cells and remove empty cells at start/end
+                                    cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
+                                    if len(cells) != 2:  # Should have exactly 2 columns
+                                        print(f"Warning: Row does not have 2 columns: {data_row}")
+                                        continue
+                                        
+                                    try:
+                                        # First cell should be the article number
+                                        # Clean and standardize the article number format
+                                        article_num = cells[0].strip()
+                                        # Remove any 'Art.' prefix if it exists
+                                        article_num = article_num.replace('Art.', '').strip()
+                                        # Keep the original number format (don't convert to int)
+                                        
+                                        # Second cell should be the JSON data
+                                        json_data = json.loads(cells[1])
+                                        
+                                        policy_section_scores[section][article_num] = json_data['score']
+                                        policy_section_descriptions[section][article_num] = json_data.get('description', '')
+                                        print(f"Parsed article {article_num}: Score={json_data['score']}")
+                                    except (ValueError, json.JSONDecodeError) as e:
+                                        print(f"Error parsing row {data_row}: {e}")
+                                        continue
+                            except Exception as e:
+                                print("something went wrong")
+                                print(f"Error processing response: {e}")
+                                print(f"Full response:\n{response}")
+                           
 
                 # Store the data for this policy
                 policy_name = policy_file.split('.')[0]

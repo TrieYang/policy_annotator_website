@@ -111,16 +111,14 @@ def generate_interactive_heatmap(data_df, descriptions_df, policy, model_card_co
         zmax=5,
         xgap=3, 
         ygap=3,
-        colorscale = [[0.0, 'rgb(255,255,204)'], 
-                    [0.2, 'rgb(255,255,204)'],
-                    [0.2, 'rgb(161,218,180)'],
-                    [0.4, 'rgb(161,218,180)'],
-                    [0.4, 'rgb(100,181,205)'],
-                    [0.6, 'rgb(100,181,205)'],
-                    [0.6, 'rgb(54,130,189)'],
-                    [0.8, 'rgb(54,130,189)'],
-                    [0.8, 'rgb(8,88,158)'],
-                    [1.0, 'rgb(8,88,158)']],
+        colorscale=[
+            [0.0, '#EFEFEF'],   # Score 0 – deep blue (fully compliant)
+            [0.2, '#FFEDA0'],   # Score 1 – blue
+            [0.4, '#FEB24C'],   # Score 2 – light blue
+            [0.6, '#FD8D3C'],   # Score 3 – orange
+            [0.8, '#F03B20'],   # Score 4 – red-orange
+            [1.0, '#B10026'],   # Score 5 – deep red (violation)
+        ],
         hoverinfo="skip",  # <-- IMPORTANT: disable hover on heatmap so hover won't be covered
         showscale=False
     )

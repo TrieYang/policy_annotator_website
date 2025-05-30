@@ -1,0 +1,97 @@
+### **Task**  
+Compare the **Model Card Information** with the **Legal Document Information**, both provided in markdown table format. Determine whether the AI system complies with this legal document by assigning violation levels to each model card section and assessing the significance of each section in determining compliance.
+
+### **Instructions**
+- IMPORTANT: **Do NOT skip or combine articles**. You must provide **one row per article number**.
+- IMPORTANT: **Do NOT skip or combine model card section**. You must evaluate all sections in the selected sections: "{{START_SECTION}}" to "{{END_SECTION}}". Do not skip or ignore any section within that range.
+- IMPORTANT: Only evaluate model card section "{{START_SECTION}}" to "{{END_SECTION}}" for the compliance contribution . The complete model card is just provided to aid with the evaluation process, the resulting score should be for only the selected sections.
+- IMPORTANT: Only evaluate policy articles {{START_ART}} through {{END_ART}} in this evaluation. But also don't forget/skip any articles within [{{START_ART}}, {{END_ART}}] even your evaluation results for them can be zero sometimes.
+- For each row, include:
+  - Article No. (e.g., `1798.100`)
+  - Violation Level
+  - Reasoning(less than one sentence, if irrelevant, just state irrelevant)
+  - Compliance Contribution Score
+- Compare model card section to chosen legal document article/section.
+- Assign a Violation Level (0–5) based on how severely the model card section fails to meet the legal requirements.
+- Provide reasoning for the compliance level assigned.
+- Assign a **Compliance Contribution Score** (0-5) to indicate how critical this section of the model card is for determining compliance with the **specific provided** legal policy document.  
+- Ensure the final output is in a **Markdown Table Format**. It would be one markdown table for one model card section section.
+- Do not include **ANY** extra wording except for the table itself and the title indicating what model section the table is for. 
+- Output must follow the **Markdown Table Format** **exactly**, with no summaries or comments outside of the table.
+- Do not combine article numbers (e.g., never write "19–30"). Each article must appear individually.
+- Do not include the word prefix "Article" in the column Article No.
+- Policy Article is the level of division right under policy. So for example, for CCPA, 1798.100(c), 1798.100(2) are not articles, they are points under one article 1798.100. So all of these should be under one row in your evaluation.
+---
+
+### **What is Compliance Contribution Score?**
+The **Compliance Contribution Score** evaluates how necessary a section is for assessing compliance with the provided legal document. Instead of measuring how "useful" or "related" a section is, it measures the impact of removing that section on the ability to determine compliance.
+
+It is scored based on **how much the absence of this section would hinder compliance assessment** for this model card, rather than how informative it is when present. 
+
+- **Level 0 (Not Needed)**: The section has no impact on compliance assessment. Removing it does not affect this model card's ability to determine compliance to one or multiple policy paragraphs.
+- **Level 5 (Essential)**: The section is indispensable. Without it, determining compliance to one or multiple policy paragraphs would be impossible or highly unreliable.
+- **Levels 1-4 (Partially Contributory)**: The section provides some information useful for compliance assessment, but its removal would not entirely prevent compliance determination to one or multiple policy paragraphs.
+
+---
+
+### **Inputs**
+#### **Entire Model Card**: {{MODEL_CARD}}   
+
+---
+
+### **Example Input and Outputs (for format demonstration, ignore its content)**
+#### **Model Card Information (Example)**
+| Section | Content |
+| :---- | :---- |
+| System Overview	 | Computer vision-based retail analytics platform utilizing deep learning models for anonymous customer behavior tracking. Integrates with existing CCTV infrastructure to provide real-time insights on store traffic patterns, customer engagement, and space utilization through edge computing devices and cloud processing. |
+| Primary Intended Uses	 | (1) Store Layout Optimization: Analyzing customer movement patterns to optimize product placement and store design; (2) Peak Hour Management: Identifying busy periods for staff scheduling and resource allocation; (3) Conversion Rate Analysis: Measuring store entry to purchase ratios; (4) Department Performance Tracking: Monitoring customer engagement across different store sections |
+| Bias Mitigation Measures	 | (1) Diverse Store Types: Data collected from various retail formats and locations; (2) Cultural Representation: Balanced dataset across different cultural contexts and regions; (3) Accessibility Considerations: Includes movement patterns of customers with mobility aids; (4) Regular Bias Audits: Quarterly assessment of prediction accuracy across different demographics |
+
+---
+
+#### **Legal Document Information (Example)**
+| Article/Section Number | Paragraph Number | Content |
+|------------------------|------------------|---------|
+| Article 9 | 1 | content placeholder |
+| Article 9 | 2 | content placeholder |
+| Article 10 | 1 | content placeholder |
+| Article 10 | 2 | content placeholder |
+| Article 11 | 1 | content placeholder |
+
+---
+
+#### **Example Output Format of comparing section System Overview to Primary Intended Uses to Article 9-11(this is only provided as a reference for output formatting, its actual content/writing should be ignored)**
+- Section: System Overview
+| Article No. | Violation Level | Reasoning to Violation Level | Compliance Contribution Score |
+|-------------------|------------------------|-----------|------------------------|
+| 9 | 3 | placeholder for reasoning | 3 |
+| 10 | 3 | placeholder for reasoning| 4 |
+| 11 | 4 | placeholder for reasoning | 5 |
+
+- Section: Primary Intended Uses
+| Article No. | Violation Level | Reasoning to Violation Level | Compliance Contribution Score |
+|-------------------|------------------------|-----------|------------------------|
+| 9 | 3 | placeholder for reasoning | 3 |
+| 10 | 3 | placeholder for reasoning| 4 |
+| 11 | 4 | placeholder for reasoning | 5 |
+
+---
+
+### **Metrics**
+#### Violation Level (0–5)
+- **Level 0 – No Violation**: does not violate the article's requirements.
+- **Level 1 – Minor Gaps**: Minor issues or lack of detail, but mostly compliant.
+- **Level 2 – Partial Violation**: Noticeable non-compliance with some key expectations missing.
+- **Level 3 – Moderate Violation**: Multiple gaps or inconsistencies with the article.
+- **Level 4 – Major Violation**: Largely contradicts the article’s requirements or omits critical elements.
+- **Level 5 – Severe Violation**: Completely fails to meet the article’s requirements and may introduce risk or legal non-compliance.
+
+#### **Compliance Contribution Score** (0-5)  
+- **Level 0 - Not Needed**: The section has no impact on compliance assessment. Removing it does not affect this model card's ability to determine compliance to one or multiple policy paragraphs.
+- **Level 1 - Marginal Contribution**: Provides minimal information, with little impact to determine compliance to one or multiple policy paragraphs if removed.  
+- **Level 2 - Some Contribution**: Offers indirect relevance but does not directly determine compliance.  
+- **Level 3 - Moderate Contribution**: Provides partial but significant evidence that helps assess compliance.  
+- **Level 4 - High Contribution**: The section is important for compliance assessment and removing it would make evaluation difficult.  
+- **Level 5 - Essential Contribution**: The section is indispensable. Without it, determining compliance to one or multiple policy paragraphs would be **impossible or highly unreliable**.
+
+**Output strictly as one markdown table per model card section. Start each section with: `- Section: <section name>`**

@@ -14,8 +14,9 @@ Given JSON-formatted evaluation results for a specific model card section, retur
 - Input will be a JSON array containing evaluation results for a specific model card section across all policies, where each item has:
   1. `policy`: The policy being evaluated
   2. `article`: The specific article number in the policy 
-  3. `score`: NVAM score (0–5)
-  4. `description`: A short explanation of the issue or deficiency if `score < 5` and what can be done to improve the score to 5
+  3. `score`: Violation score (0–5)
+  4. `description`: A short explanation of the issue or deficiency if `score > 0` and what can be done to improve the score to 0
+- If all score are 0 or no evaluation result is uploaded/JSON array is empty, state this section is fully compliant and no actions needed.
 - Step by step guide:
 1, **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
 2, Group remaining items by policy

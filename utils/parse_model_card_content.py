@@ -1,26 +1,25 @@
-import os
-from dotenv import load_dotenv
+from collections import defaultdict
 
-def parse_model_card_content(model_card_content):
-    """Parse model card content into sections"""
-    sections_content = {}
-    current_section = None
-    current_content = []
-    
-    for line in model_card_content.split('\n'):
+def parse_model_card_by_section(file_path):
+    sections = {}
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
+
+    # Skip the markdown title (if any), and header rows
+    for line in lines[2:]:  # Skip: 0 = title, 1 = column header, 2 = separator
+        line = line.strip()
         if line.startswith('|') and '|' in line[1:]:
-            # This is a table row
-            if current_section:
-                current_content.append(line)
-        elif line.strip():
-            # This is a section header
-            if current_section and current_content:
-                sections_content[current_section] = '\n'.join(current_content)
-            current_section = line.strip()
-            current_content = []
-    
-    # Add the last section
-    if current_section and current_content:
-        sections_content[current_section] = '\n'.join(current_content)
-    
-    return sections_content
+            parts = [p.strip() for p in line.strip('|').split('|')]
+            if len(parts) >= 2:
+                section, content = parts[0], parts[1]
+                sections[section] = content
+
+    return sections
+
+# Example usage
+if __name__ == "__main__":
+    file_path = "model_cards/ai_resume_screening_tool_model_card.txt"
+    sections_content = parse_model_card_by_section(file_path)
+
+    print(sections_content)

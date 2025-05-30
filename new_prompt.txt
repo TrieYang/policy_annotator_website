@@ -1,0 +1,80 @@
+### **Task**
+
+Compare a **specific Model Card Section** with relevant **Legal Document Articles**, both provided in markdown table format. Evaluate whether this section, based on its purpose and scope, contributes to any potential **policy violations** using a **Violation Score (0–5)**, where **5 = clear violation** and **0 = fully compliant**.
+
+---
+
+### **Instructions**
+
+* Evaluate only the model card section that is chosen against the specified policy articles that are chosen.
+* Your evaluation must remain strictly within the **scope, intent, and expected content of the selected section**:
+  * Each model card section serves a specific, limited purpose. You are not judging overall system compliance — only whether this one section contributes to or avoids policy violations.
+  * **Do not penalize the section** for missing details that should appear in other sections.
+  * **Do flag vague, incomplete, or risky content** only if it's **expected within this section’s role**.
+
+    > 🔍 **Example — “System Name”**:
+    > If the section is `"System Name"` and the policy article is about risk classification, do **not** say:
+    > *“Just from the system name alone, we cannot determine if this is a high-risk system.”*
+    > That’s out of scope — **risk identification** is not the job of the System Name. If the name is clear and does not violate policy, it deserves a **score of 0 (Fully Compliant)**.
+    > The scope of a section refers to the reasonable extent of information that the section is designed to cover — not everything the policy might ask about.
+        For example, the System Name section is only meant to provide a recognizable name. It is not required (or appropriate) to include functional descriptions like "high-risk resume scanning tool" just to fulfill a policy about risk disclosure. That kind of information belongs in "Intended Use" or "Risk Level" sections.
+
+
+* This evaluation is **not a review of the model card’s overall completeness or quality**. You are **only evaluating whether the provided content violates or risks violating** the specified policy articles.
+  * If the content in the selected section **clearly avoids violations**, assign a **score of 0**, even if the section could be expanded.
+  * However, in your **reasoning**, you may note that the article touches on topics such as `X`, and while the current section does not violate those, it could benefit from **additional detail on `X` (within the section’s scope)** for a more complete alignment.
+    > ✅ Example: If Article 10 concerns data minimization and the section "Dataset Description" says only “videos from surveillance datasets,” you may assign **score = 0** if there is no violation.
+    > But your description can note: *“The section avoids violations, but since Article 10 addresses data minimization, you may consider briefly clarifying how irrelevant data is excluded from training to strengthen alignment.”*
+* If the section clearly avoids any violation and fulfills its expected role, score it **0**.
+* For any score other than 0, provide a brief description (2-4 sentences) explaining:
+  1. Why the score was assigned, try to provide at least one direct reference e.g. quoted sentences or phrases as evidence.
+  2. Actionable items to fix the score to 0
+* Do not split articles by paragraphs(Some policy documents may contain rows with same article numbers, e.g. 10(1), 10(2) should be merged and evaluated as one row for article 10). Each row should be comparing **ONE** policy **Article** to one model card section. 
+* If an article contains multiple paragraphs or clauses, evaluate them together and give a single violation score for that entire article.
+* Your response will be processed programatically so you need to strictly follow the exact format provided in the example, and **DO NOT** include any extra wording other than the table in your response. Your response should **ONLY** be a markdown table. 
+---
+
+### **Violation Score Definition (0–5)**
+
+| Score                                  | Description                                                                                                |
+| -------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **0 – Fully Compliant / No Violation** | The section clearly fulfills its role and avoids any policy violations.                                    |
+| **1 – Minor Ambiguity**                | The section meets requirements but lacks small clarifications that could ensure confidence.                |
+| **2 – Ambiguous**                      | The section is vague or incomplete in a way that may create uncertainty or mild risk.                      |
+| **3 – Possible Risk**                  | The section could reasonably lead to a policy violation due to unclear, incomplete, or permissive content. |
+| **4 – Probable Violation**             | Strong indications that the section permits or suggests behavior likely in conflict with the policy.       |
+| **5 – Clear Violation**                | The section directly describes behavior that violates or contradicts the policy article.                   |
+
+---
+
+### **Evaluation Guide**
+
+1. Understand the **intent of the selected section** and what it is responsible for covering.
+2. Compare the section **only** to the policy articles from {{START\_ART}} through {{END\_ART}}.
+3. Ask: Based on what this section *should contain*, does it provide enough info to show **no violation**, or does it create **risk**, **ambiguity**, or **direct conflict**?
+4. Do **not ask the section** to provide information that belongs in another section. If a section fulfills its limited role clearly and without risk, it gets a **0**.
+5. If a section is vague or lacks key info *within its expected content*, assign an appropriate score and describe why.
+
+---
+
+### **Output Format**
+
+* Output must be a **markdown table** with:
+
+  1. First column = article number (e.g., `"1"`, `"2"`, `"10"`)
+  2. Second column = JSON object:
+
+  * `"score"`: integer 0–5
+  * `"description"`: 2–4 sentence explanation if score < 5; otherwise `null`
+
+> ⚠️ **Do not combine or skip rows**
+> ⚠️ **Only include the markdown table — no extra text, no explanations outside the table**
+
+---
+
+### **Example Output Table**
+
+| Article | Evaluation                                                                                                                                                                                                             |
+| ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1       | {"score": 0, "description": null}                                                                                                                                                                                      |
+| 2       | {"score": 3, "description": "The section is vague about how consent is handled during data collection. To reduce policy risk, include a sentence specifying the consent process or reference relevant documentation."} |
