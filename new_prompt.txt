@@ -1,6 +1,6 @@
 ### **Task**
 
-Compare a **specific Model Card Section** with relevant **Legal Document Articles**, both provided in markdown table format. Evaluate whether this section, based on its purpose and scope, contributes to any potential **policy violations** using a **Violation Score (0–5)**, where **5 = clear violation** and **0 = fully compliant**.
+Compare a **specific Model Card Section** with **Selected Legal Document Articles**, both provided in markdown table format. Evaluate whether this section, based on its purpose and scope, contributes to any potential **policy violations** using a **Violation Score (0–5)**, where **5 = clear violation** and **0 = fully compliant**.
 
 ---
 
@@ -9,21 +9,21 @@ Compare a **specific Model Card Section** with relevant **Legal Document Article
 * Evaluate only the model card section that is chosen against the specified policy articles that are chosen.
 * Your evaluation must remain strictly within the **scope, intent, and expected content of the selected section**:
   * Each model card section serves a specific, limited purpose. You are not judging overall system compliance — only whether this one section contributes to or avoids policy violations.
-  * **Do not penalize the section** for missing details that should appear in other sections.
+  * **Do not penalize the section** for MISSING information.
   * **Do flag vague, incomplete, or risky content** only if it's **expected within this section’s role**.
 
     > 🔍 **Example — “System Name”**:
     > If the section is `"System Name"` and the policy article is about risk classification, do **not** say:
-    > *“Just from the system name alone, we cannot determine if this is a high-risk system.”*
-    > That’s out of scope — **risk identification** is not the job of the System Name. If the name is clear and does not violate policy, it deserves a **score of 0 (Fully Compliant)**.
+      *“Just from the system name alone, we cannot determine if this is a high-risk system.”*
+      That’s out of scope — **risk identification** is not the job of the System Name. If the name is clear and does not violate policy, it deserves a **score of 0 (Fully Compliant)**.
     > The scope of a section refers to the reasonable extent of information that the section is designed to cover — not everything the policy might ask about.
         For example, the System Name section is only meant to provide a recognizable name. It is not required (or appropriate) to include functional descriptions like "high-risk resume scanning tool" just to fulfill a policy about risk disclosure. That kind of information belongs in "Intended Use" or "Risk Level" sections.
 
 
-* This evaluation is **not a review of the model card’s overall completeness or quality**. You are **only evaluating whether the provided content violates or risks violating** the specified policy articles.
+* This evaluation is **not a review of the model card’s overall completeness or quality**. You are **only evaluating whether the provided content violates** the specified policy articles.
   * If the content in the selected section **clearly avoids violations**, assign a **score of 0**, even if the section could be expanded.
   * However, in your **reasoning**, you may note that the article touches on topics such as `X`, and while the current section does not violate those, it could benefit from **additional detail on `X` (within the section’s scope)** for a more complete alignment.
-    > ✅ Example: If Article 10 concerns data minimization and the section "Dataset Description" says only “videos from surveillance datasets,” you may assign **score = 0** if there is no violation.
+    > Example: If Article 10 concerns data minimization and the section "Dataset Description" says only “videos from surveillance datasets,” you may assign **score = 0** if there is no violation.
     > But your description can note: *“The section avoids violations, but since Article 10 addresses data minimization, you may consider briefly clarifying how irrelevant data is excluded from training to strengthen alignment.”*
 * If the section clearly avoids any violation and fulfills its expected role, score it **0**.
 * For any score other than 0, provide a brief description (2-4 sentences) explaining:
@@ -50,7 +50,7 @@ Compare a **specific Model Card Section** with relevant **Legal Document Article
 ### **Evaluation Guide**
 
 1. Understand the **intent of the selected section** and what it is responsible for covering.
-2. Compare the section **only** to the policy articles from {{START\_ART}} through {{END\_ART}}.
+2. Compare the section **only** to the selected policy articles: {{ARTICLES_TO_EVALUATE}}.
 3. Ask: Based on what this section *should contain*, does it provide enough info to show **no violation**, or does it create **risk**, **ambiguity**, or **direct conflict**?
 4. Do **not ask the section** to provide information that belongs in another section. If a section fulfills its limited role clearly and without risk, it gets a **0**.
 5. If a section is vague or lacks key info *within its expected content*, assign an appropriate score and describe why.

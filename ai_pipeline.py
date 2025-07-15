@@ -120,6 +120,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 markdown_content += f"| {section} | {content} |\n"
         
         model_card_content = markdown_content
+        print(model_card_content)
 
         # Read prompt template
         prompt_template_path = "new_prompt.txt"
@@ -146,42 +147,38 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         # Initialize dictionary to store section-based data
         section_data = {section: {} for section in sections}
         
-        # Get irrelevant articles for each policy and section
-        with open("universal_irrelevancy_map.json", "r", encoding="utf-8") as f:
-            irrelevant_articles = json.load(f)
         
         for policy_file in policy_files:
             try:
                 policy_path = os.path.join(policy_folder, policy_file)
                 async with aiofiles.open(policy_path, "r") as pf:
                     legal_doc_content = await pf.read()
-                if not TESTING_MODE:
-                    # Get chunking strategy for this policy with section-specific irrelevant articles
-                    policy_name = policy_file.split('.')[0]
-                    section_irrelevant_articles = irrelevant_articles.get(policy_name, {})
-                    
-                    # Get 5 section groups
-                    groups = get_section_groups()
-
-                    # Process all groups in loop
-                    section_chunks = {}
-
-                    for i, group in enumerate(groups, start=1):
-                        prompt = get_chunking_prompt(group)
-                        prompt = prompt.replace("{POLICY_DOC}", legal_doc_content)
-                        prompt = prompt.replace("{IRRE_LIST}", json.dumps(section_irrelevant_articles))
-                        
-                        response = llm.invoke(prompt).content
-                        print(f"Response for group {i} received")
-                        print(response)
-
-                        chunks = parse_chunk_response(response)
-                        section_chunks.update(chunks)
-
-                    # Final combined result
-                    print(f"Policy {policy_file} will be evaluated with section-specific chunks")
-                    print("Section chunks:", section_chunks)
-
+      
+                section_chunks = {
+                    'System Name': [('Article 2', 'Article 4', 'Article 5', 'Article 7', 'Article 8')],
+                    'Versioning Information': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Primary Developer/Org': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Contact Info': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'System Overview': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Primary intended uses': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Primary intended users': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Out-of-scope use cases': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Terms and conditions': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Current legal compliance status': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Dataset Description': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Collection Method': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Bias Mitigation Measures': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Usage Constraints': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Summary of Performance Assessment': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Disaggregated Performance': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Testing Contexts': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Evaluations for Edge Cases or Adversarial Inputs': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Potential Risks and Harms': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Actions taken': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Misuse Scenarios': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Human Oversight': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
+                    'Update Frequency': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')]
+                }
 
 
                 # Initialize section data for this policy
@@ -195,15 +192,16 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                             print(f"No chunks for section '{section}' - skipping evaluation")
                             continue
                             
-                        for chunk_start, chunk_end in section_specific_chunks:
+                        for chunk in section_specific_chunks:
+                            # Convert the chunk of articles into a comma-separated string
+                            articles_str = ", ".join(chunk)
                             chunk_prompt_second = (
                                 chunk_prompt_temp
                                 .replace("{{LEGAL_DOC}}", legal_doc_content)
                                 .replace("{{SECTION}}", section)
-                                .replace("{{START_ART}}", str(chunk_start))
-                                .replace("{{END_ART}}", str(chunk_end))
+                                .replace("{{ARTICLES_TO_EVALUATE}}", articles_str)
                             )
-                            print(f"Evaluating {policy_file} section '{section}' for articles {chunk_start}-{chunk_end}...")
+                            print(f"Evaluating {policy_file} section '{section}' for articles {articles_str}...")
                             messages = [
                                 {
                                     "role": "system",
@@ -231,6 +229,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                 },
                             ]
                             response = llm.invoke(messages)
+                            print(response)
                             # Parse the markdown table to extract JSON content
                             try:
                                 # Split the response into lines and find all data rows
@@ -242,14 +241,12 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                 
                                 # Skip header row (first row) and process each data row
                                 data_rows = table_rows[1:]  # Skip header row
-                                
                                 for data_row in data_rows:
                                     # Split row into cells and remove empty cells at start/end
                                     cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
                                     if len(cells) != 2:  # Should have exactly 2 columns
                                         print(f"Warning: Row does not have 2 columns: {data_row}")
                                         continue
-                                        
                                     try:
                                         # First cell should be the article number
                                         # Clean and standardize the article number format
@@ -263,7 +260,6 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                         
                                         policy_section_scores[section][article_num] = json_data['score']
                                         policy_section_descriptions[section][article_num] = json_data.get('description', '')
-                                        print(f"Parsed article {article_num}: Score={json_data['score']}")
                                     except (ValueError, json.JSONDecodeError) as e:
                                         print(f"Error parsing row {data_row}: {e}")
                                         continue
@@ -280,8 +276,6 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 all_articles = set()
                 for section in sections:
                     all_articles.update(policy_section_scores[section].keys())
-                    
-                print(f"\nDebug - Raw articles for {policy_name}:", all_articles)
                 
                 # Convert to float for sorting, handling both integer and decimal article numbers
                 def article_to_sortable(art):

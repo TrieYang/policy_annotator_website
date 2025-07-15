@@ -4,6 +4,7 @@ import json
 from quart import Quart, render_template, request, send_file, jsonify
 from ai_pipeline import run_ai_pipeline
 import aiofiles
+import pandas as pd
 
 app = Quart(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -43,15 +44,26 @@ async def upload():
                 selected_policies = json.loads(form['selected_policies'])
             except json.JSONDecodeError:
                 selected_policies = None
-
-        # Read the model card content
-        async with aiofiles.open(upload_path, 'r', encoding='utf-8') as f:
-            model_card_content = await f.read()
+            
+        # Load model card content from CSV and convert to markdown table format
+        df = pd.read_csv(upload_path)
+        
+        # Create markdown table content
+        markdown_content = "| Section | Content |\n| ------- | ------- |\n"
+        
+        # Iterate through rows and create markdown table rows
+        for _, row in df.iterrows():
+            section = row['Section']
+            content = row['Your Response']
+            if pd.notna(section) and pd.notna(content):  # Skip empty rows
+                markdown_content += f"| {section} | {content} |\n"
+        
+        model_card_content = markdown_content
 
         # Run AI pipeline with uploaded file and policies
         report_path = os.path.join(REPORT_FOLDER, f"{filename}_report.txt")
         heatmap_filenames, summaries, top_level_summary, section_summaries = await run_ai_pipeline(upload_path, POLICY_FOLDER, report_path, selected_policies)
-        
+        print(heatmap_filenames)
         # Check if heatmap HTML files were generated
         if heatmap_filenames and all(os.path.exists(os.path.join(STATIC_FOLDER, filename)) for filename in heatmap_filenames):
             return jsonify({
