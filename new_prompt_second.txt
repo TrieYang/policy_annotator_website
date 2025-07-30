@@ -6,7 +6,7 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
 
 ### **Instructions**
 
-* Evaluate only the model card section that is chosen against the specified policy articles that are chosen.
+* Evaluate only the model card section that is chosen against the chosen specified policy articles.
 * Your evaluation must remain strictly within the **scope, intent, and expected content of the selected section**:
   * Each model card section serves a specific, limited purpose. You are not judging overall system compliance — only whether this one section contributes to or avoids policy violations.
   * **Do not penalize the section** for MISSING information.
