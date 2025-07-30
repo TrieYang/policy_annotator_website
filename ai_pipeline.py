@@ -67,7 +67,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 fakeLlm = FakeLLM(SAMPLE_RESPONSE_FOLDER)
 
 llm = ChatAnthropic(
-model="claude-3-5-sonnet-20241022",
+model="claude-sonnet-4-20250514",
 #model="claude-3-7-sonnet-20250219",
 #model="claude-3-haiku-20240307",
 anthropic_api_key=ANTHROPIC_API_KEY,
