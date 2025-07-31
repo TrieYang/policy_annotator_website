@@ -691,7 +691,6 @@
             text-align: left;
             font-size: 0.85rem;
             vertical-align: top;
-            height: 20px;
         }
 
         .model-card-table table {
@@ -708,7 +707,6 @@
             text-align: left;
             font-size: 0.85rem;
             vertical-align: top;
-            height: 20px;
         }
 
         .model-card-table th:nth-child(1),
@@ -1141,16 +1139,12 @@
                         }
 
                         .section-summary {
-                            background: #f8f9fa;
                             padding: 1rem;
                             border-radius: 8px;
-                            border: 1px solid #e9ecef;
                             font-size: 0.9rem;
                         }
 
                         .section-summary .summary-content {
-                            max-height: 200px;
-                            overflow: hidden;
                             transition: max-height 0.3s ease-out;
                         }
 
@@ -1370,7 +1364,7 @@
                 let html = globalDropdownHtml;
                 html += '<table class="table">';
                 html += `
-                    <tr height="20px">
+                    <tr>
                         <th>Section</th>
                         <th>Model Card Content</th>
                         <th>Evaluation Summary</th>
