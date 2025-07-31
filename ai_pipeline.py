@@ -434,23 +434,28 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         for section in sections:
             try:
                 if not section_data[section]:  # Check if there's no data for this section
-                    section_summaries[section] = f"""#### ⚠️ {section} – No Evaluation Data
+                    section_summaries[section] = json.dumps({
+                        "Overall": f"""#### ⚠️ {section} – No Evaluation Data
 
-                Note: No evaluation data was provided for this section. This could indicate that:
-                - The section is missing from the model card
-                - No applicable policy requirements were found
-                - An error occurred during evaluation
+Note: No evaluation data was provided for this section. This could indicate that:
+- The section is missing from the model card
+- No applicable policy requirements were found
+- An error occurred during evaluation
 
-                Please ensure this section exists and contains the necessary information."""
+Please ensure this section exists and contains the necessary information."""
+                    })
                 else:
                     summary = await generate_section_summary(section, section_data[section], llm, TESTING_MODE)
                     section_summaries[section] = summary
                     print(f"Generated summary for section: {section}")
             except Exception as e:
                 print(f"Error generating summary for section {section}: {str(e)}")
-                section_summaries[section] = f"""#### ❌ {section} – Error
+                section_summaries[section] = json.dumps({
+                    "Overall": f"""#### ❌ {section} – Error
 
-An error occurred while generating the summary for this section. Please check the logs for more details."""
+An error occurred while generating the summary for this section. Please check the logs for more details.""",
+                    "Error": str(e)
+                })
 
         print("All evaluations completed.")
         return heatmap_filenames, summaries, top_level_summary, section_summaries
