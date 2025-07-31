@@ -289,13 +289,18 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                             print(response)
                             # Parse the markdown table to extract JSON content
                             try:
-                                # Split the response into lines and find all data rows
                                 lines = response.content.strip().splitlines()
-                                # Get all rows except the separator row (the one with |---|---|)
-                                table_rows = [line for line in lines if line.startswith('|') and not line.startswith('|-')]
-                                if len(table_rows) < 2:  # Need at least header and one data row
-                                    raise Exception("Invalid table format - missing header or data rows")
-                                
+
+                                # Helper function to detect markdown separator row
+                                def is_separator_row(line):
+                                    parts = [p.strip() for p in line.strip().split('|')[1:-1]]
+                                    return all(part.replace('-', '') == '' for part in parts)
+
+                                # Get all rows except the separator row (the one with |---|---| etc.)
+                                table_rows = [
+                                    line for line in lines
+                                    if line.strip().startswith('|') and not is_separator_row(line)
+                                ]
                                 # Skip header row (first row) and process each data row
                                 data_rows = table_rows[1:]  # Skip header row
                                 for data_row in data_rows:
@@ -431,12 +436,12 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 if not section_data[section]:  # Check if there's no data for this section
                     section_summaries[section] = f"""#### ⚠️ {section} – No Evaluation Data
 
-Note: No evaluation data was provided for this section. This could indicate that:
-- The section is missing from the model card
-- No applicable policy requirements were found
-- An error occurred during evaluation
+                Note: No evaluation data was provided for this section. This could indicate that:
+                - The section is missing from the model card
+                - No applicable policy requirements were found
+                - An error occurred during evaluation
 
-Please ensure this section exists and contains the necessary information."""
+                Please ensure this section exists and contains the necessary information."""
                 else:
                     summary = await generate_section_summary(section, section_data[section], llm, TESTING_MODE)
                     section_summaries[section] = summary

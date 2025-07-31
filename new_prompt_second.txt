@@ -6,7 +6,7 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
 
 ### **Instructions**
 
-* Evaluate only the model card section that is chosen against the chosen specified policy articles.
+* Evaluate only the **CHOSEN model card section** that is chosen against the chosen specified policy articles.
 * Your evaluation must remain strictly within the **scope, intent, and expected content of the selected section**:
   * Each model card section serves a specific, limited purpose. You are not judging overall system compliance — only whether this one section contributes to or avoids policy violations.
   * **Do not penalize the section** for MISSING information.
@@ -38,7 +38,7 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
 
 | Score                                  | Description                                                                                                |
 | -------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **0 – Fully Compliant / No Violation** | The section clearly fulfills its role and avoids any policy violations.                                    |
+| **0 – Fully Compliant / No Violation** | The section clearly fulfills its role in regards to determining system compliance to this policy article and avoids any policy violations.                                    |
 | **1 – Minor Ambiguity**                | The section meets requirements but lacks small clarifications that could ensure confidence.                |
 | **2 – Ambiguous**                      | The section is vague or incomplete in a way that may create uncertainty or mild risk.                      |
 | **3 – Possible Risk**                  | The section could reasonably lead to a policy violation due to unclear, incomplete, or permissive content. |
@@ -49,11 +49,11 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
 
 ### **Evaluation Guide**
 
-1. Understand the **intent of the selected section** and what it is responsible for covering.
+1. Understand the **intent of the selected section**: {{SECTION}} and what it is responsible for covering.
 2. Compare the section **only** to the selected policy articles: {{ARTICLES_TO_EVALUATE}}.
 3. Ask: Based on what this section *should contain*, does it provide enough info to show **no violation**, or does it create **risk**, **ambiguity**, or **direct conflict**?
-4. Do **not ask the section** to provide information that belongs in another section. If a section fulfills its limited role clearly and without risk, it gets a **0**.
-5. If a section is vague or lacks key info *within its expected content*, assign an appropriate score and describe why.
+4. **Do not penaliz the section** on not providing info that's outside of its scope. If a section fulfills its role clearly and without risk, it gets a **0**.
+5. If a section is vague, lacks key info or directly violates selected policy articles *within its expected content*, assign an appropriate score and describe why.
 
 ---
 
@@ -78,4 +78,10 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
 | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1       | {"score": 0, "description": null}                                                                                                                                                                                      |
 | 2       | {"score": 3, "description": "The section is vague about how consent is handled during data collection. To reduce policy risk, include a sentence specifying the consent process or reference relevant documentation."} |
+
+---
+
+### **Input**
+1, Selected model card section: {{SECTION}}
+2, Selected policy articles: {{ARTICLES_TO_EVALUATE}}
 
