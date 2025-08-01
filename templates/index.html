@@ -379,7 +379,6 @@
             border-radius: 12px;
             border: 1px solid #e9ecef;
             position: relative;
-            height: 800px;  /* Fixed height */
             display: flex;
             flex-direction: column;
         }
@@ -387,7 +386,6 @@
         /* Container for scrollable content */
         .model-card-scroll {
             flex: 1;
-            overflow-y: auto;
             position: relative;
         }
 
@@ -540,6 +538,85 @@
             line-height: 1.7;
         }
 
+        /* Add table styles for summary content */
+        .summary-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-content th,
+        .summary-content td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .summary-content th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .summary-content tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .summary-content tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .summary-content tr:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Priority-based color coding for table cells - more selective approach */
+        .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        /* Priority color coding for top-level summary tables - only high priority */
+        .top-level-summary .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+
+        /* Remove medium and low priority row styling */
+        /* .top-level-summary tr.priority-medium td,
+        .summary-content tr.priority-medium td {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary tr.priority-low td,
+        .summary-content tr.priority-low td {
+            background-color: #f8fff9 !important;
+        } */
+
+        /* Ensure priority styling overrides alternating row colors - only for high priority and only 3rd column */
+        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
+            background-color: #fff5f5 !important;
+        }
+
+        /* Remove medium and low priority override styling */
+        /* .top-level-summary tr.priority-medium:nth-child(even) td,
+        .top-level-summary tr.priority-medium:nth-child(odd) td,
+        .summary-content tr.priority-medium:nth-child(even) td,
+        .summary-content tr.priority-medium:nth-child(odd) td {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary tr.priority-low:nth-child(even) td,
+        .top-level-summary tr.priority-low:nth-child(odd) td,
+        .summary-content tr.priority-low:nth-child(even) td,
+        .summary-content tr.priority-low:nth-child(odd) td {
+            background-color: #f8fff9 !important;
+        } */
+
         /* Add styles for the policy icon and name */
         .policy-icon {
             color: var(--primary-color);
@@ -598,6 +675,48 @@
             margin-bottom: 1rem;
             line-height: 1.7;
         }
+
+        /* Add table styles for top-level summary */
+        .top-level-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .top-level-summary th,
+        .top-level-summary td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .top-level-summary th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .top-level-summary tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .top-level-summary tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .top-level-summary tr:hover {
+            background-color: #e9ecef;
+        }
+
+
+        .top-level-summary tr.priority-low:nth-child(even) td,
+        .top-level-summary tr.priority-low:nth-child(odd) td,
+        .summary-content tr.priority-low:nth-child(even) td,
+        .summary-content tr.priority-low:nth-child(odd) td {
+            background-color: #f8fff9 !important;
+        } */
 
         /* Add styles for the view toggle */
         .view-toggle {
@@ -1165,13 +1284,23 @@
                 // Create a single model card content display
                 const modelCardWrapper = document.createElement('div');
                 modelCardWrapper.className = 'model-card-wrapper mb-4';
+                
+                // Determine the title based on view mode
+                const getTitle = (mode) => {
+                    if (mode === 'article') {
+                        return 'Section-wise Compliance Issues and Fixes';
+                    } else {
+                        return 'Evaluation Result in Heatmap View';
+                    }
+                };
+                
                 modelCardWrapper.innerHTML = `
                     <div class="model-card-display">
                         <div class="model-card-scroll">
                             <div class="model-card-header">
-                                <h4 class="model-card-title">
+                                <h4 class="model-card-title" id="modelCardTitle">
                                     <i class="fas fa-file-alt"></i>
-                                    Model Card Section Evaluation
+                                    ${getTitle(viewMode)}
                                 </h4>
                                 <div class="view-toggle">
                                     <label>Issues and Fixes</label>
@@ -1196,6 +1325,9 @@
                 const policySelector = document.querySelector('#policySelector');
                 const policyEvaluations = document.querySelectorAll('.policy-evaluation');
                 
+                // Apply priority-based styling to tables
+                applyPriorityStyling();
+                
                 policySelector.addEventListener('change', function(e) {
                     const selectedPolicy = e.target.value;
                     policyEvaluations.forEach(evaluation => {
@@ -1210,6 +1342,17 @@
                 // Add event listener for view toggle
                 document.querySelector('.view-toggle-input').addEventListener('change', function(e) {
                     window.currentViewMode = this.checked ? 'article' : 'highlevel';
+                    
+                    // Update the title based on the new view mode
+                    const titleElement = document.getElementById('modelCardTitle');
+                    if (titleElement) {
+                        if (window.currentViewMode === 'article') {
+                            titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Section-wise Compliance Issues and Fixes';
+                        } else {
+                            titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Evaluation Result in Heatmap View';
+                        }
+                    }
+                    
                     // Re-render the table with the new view mode
                     const existingHeatmaps = JSON.parse(localStorage.getItem('currentHeatmaps') || '{"filenames": [], "modelCardContent": "", "summaries": {}}');
                     displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries, window.currentViewMode);
@@ -1436,11 +1579,75 @@
                                     div.innerHTML = DOMPurify.sanitize(marked.parse(summaryJson['Overall']));
                                 }
                             });
+                            
+                            // Re-apply priority styling after content update
+                            setTimeout(() => applyPriorityStyling(), 100);
                         });
                     }
                 }, 0);
 
                 return html;
+            }
+
+            // Function to apply priority-based styling to table cells
+            function applyPriorityStyling() {
+                // Find all table cells in summary content and top-level summary
+                const tableCells = document.querySelectorAll('.summary-content td, .top-level-summary td');
+                
+                tableCells.forEach(cell => {
+                    const text = cell.textContent.trim().toLowerCase();
+                    
+                    // Remove existing priority classes
+                    cell.classList.remove('priority-high', 'priority-medium', 'priority-low');
+                    
+                    // Only apply high priority styling
+                    if (text.includes('high') || text.includes('critical') || text.includes('urgent')) {
+                        cell.classList.add('priority-high');
+                    }
+                    // Remove medium and low priority detection
+                    /* else if (text.includes('medium') || text.includes('moderate') || text.includes('medium-priority')) {
+                        cell.classList.add('priority-medium');
+                    } else if (text.includes('low') || text.includes('minor') || text.includes('low-priority')) {
+                        cell.classList.add('priority-low');
+                    } */
+                    
+                    // Debug: Log what we found
+                    if (text.includes('high') || text.includes('critical') || text.includes('urgent')) {
+                        console.log('High priority cell found:', text, 'Classes applied:', cell.className);
+                    }
+                });
+                
+                // Also check for priority in the entire row but only apply to specific columns
+                const tableRows = document.querySelectorAll('.summary-content tr, .top-level-summary tr');
+                tableRows.forEach(row => {
+                    const rowText = row.textContent.trim().toLowerCase();
+                    
+                    // Remove existing priority classes from the row
+                    row.classList.remove('priority-high', 'priority-medium', 'priority-low');
+                    
+                    // Only apply high priority class to the row if priority is found
+                    if (rowText.includes('high') || rowText.includes('critical') || rowText.includes('urgent')) {
+                        row.classList.add('priority-high');
+                        // Only apply to the priority column (3rd column)
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 3) {
+                            // Only highlight the priority column (3rd column)
+                            cells[2].classList.add('priority-high');
+                        }
+                    }
+                    // Remove medium and low priority row detection
+                    /* else if (rowText.includes('medium') || rowText.includes('moderate')) {
+                        row.classList.add('priority-medium');
+                        row.querySelectorAll('td').forEach(cell => {
+                            cell.classList.add('priority-medium');
+                        });
+                    } else if (rowText.includes('low') || rowText.includes('minor')) {
+                        row.classList.add('priority-low');
+                        row.querySelectorAll('td').forEach(cell => {
+                            cell.classList.add('priority-low');
+                        });
+                    } */
+                });
             }
 
             fileInput.addEventListener('change', function() {

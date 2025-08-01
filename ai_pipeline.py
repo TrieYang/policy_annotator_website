@@ -344,12 +344,28 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                     # Remove any 'Art.' prefix if it exists
                     clean_art = art.replace('Art.', '').strip()
                     try:
-                        # Try converting to float to handle both integer and decimal article numbers
-                        return float(clean_art)
+                        # First try converting to float for simple numbers
+                        float_val = float(clean_art)
+                        # Return as a single-element tuple for consistency
+                        return (float_val,)
                     except ValueError:
-                        # If conversion fails, return the original string
-                        print(f"Warning: Could not convert article number '{clean_art}' to float")
-                        return clean_art
+                        # For complex article numbers like '1798.199.60', split by dots and convert each part
+                        try:
+                            parts = clean_art.split('.')
+                            # Convert each part to float, handling any non-numeric parts
+                            numeric_parts = []
+                            for part in parts:
+                                try:
+                                    numeric_parts.append(float(part))
+                                except ValueError:
+                                    # If a part can't be converted to float, use 0
+                                    numeric_parts.append(0.0)
+                            # Return tuple for proper sorting of hierarchical numbers
+                            return tuple(numeric_parts)
+                        except Exception:
+                            # If all else fails, return the original string as a single-element tuple
+                            print(f"Warning: Could not convert article number '{clean_art}' to sortable format")
+                            return (clean_art,)
                         
                 # Sort articles using the custom sorting function
                 sorted_articles = sorted(all_articles, key=article_to_sortable)                

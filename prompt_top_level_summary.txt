@@ -21,27 +21,29 @@ Generate a high-level executive summary of the model card's compliance status ac
 
 ### **Output Format**
 ```
-**Current Status:**
-Brief 1-2 sentence overview of the model card's overall compliance status across all evaluated policies.
+**Current Compliance Status:**  
+Brief 2–3 sentence overview of the model card's overall compliance status across all evaluated policies.
 
-**Common Compliance Gaps:**
-- **[Theme 1]** – Description of the issue and its impact across policies
-- **[Theme 2]** – Description of the issue and its impact across policies
-[3-4 key themes maximum]
+**Compliance Gaps Table:**  
+Present major compliance issues in a markdown table format as shown below. Each row represents a key gap.
 
-**Strategic Recommendations:**
-1. **[Primary Recommendation]** – Explanation and expected impact
-2. **[Secondary Recommendation]** – Explanation and expected impact
-[2-3 recommendations maximum]
+| Compliance Gap                              | Description                                                                 | Priority | Affected Policies |
+|--------------------------------------------|-----------------------------------------------------------------------------|----------|-------------------|
+| Insufficient Privacy Documentation         | Missing details on data handling, retention, and protection mechanisms      | High     | AIDA, CCPA        |
+| Incomplete Risk Management Framework       | No system-wide risk assessment or mitigation plan                          | High     | EU AI Act, AIDA   |
+| Weak User Consent and Rights Disclosure    | Consent mechanisms are unclear or undocumented                             | Medium   | CCPA              |
+| Limited Bias Mitigation Transparency       | No explanation of how bias in datasets or models is addressed              | Low      | AIDA              |
 
-**Priority Areas:**
-Brief closing paragraph identifying the most critical areas requiring immediate attention for improving cross-policy compliance.
-```
+**To-dos Recommended:**  
+Present actionable recommendations to address major compliance issues in a markdown table format as shown below. Each row represents a to-do.
+| To-dos                                     | Compliance Gap                                                              | Priority |
+|--------------------------------------------|-----------------------------------------------------------------------------|----------|
+ 
+[1 to-do for each compliance gap]
 
 ### **Formatting Rules**
 - Keep the tone professional and constructive
-- Focus on actionable insights
-- Highlight patterns across different policies
+- As an overall summary, highlight patterns across different policies
 - Prioritize the most critical issues
 - Keep recommendations strategic and high-level
 - Do not include any headings above "Current Status" - the UI will handle the main title
