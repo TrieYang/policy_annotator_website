@@ -15,7 +15,7 @@ Generate a high-level executive summary of the model card's compliance status ac
 
 - Your task is to:
   1. Analyze all policy evaluation summaries
-  2. Identify common compliance gaps and themes
+  2. Identify all major compliance gaps
   3. Generate a concise executive summary
   4. Provide high-level strategic recommendations
 
@@ -36,8 +36,8 @@ Present major compliance issues in a markdown table format as shown below. Each 
 
 **To-dos Recommended:**  
 Present actionable recommendations to address major compliance issues in a markdown table format as shown below. Each row represents a to-do.
-| To-dos                                     | Compliance Gap                                                              | Priority |
-|--------------------------------------------|-----------------------------------------------------------------------------|----------|
+| To-dos                                     | Compliance Gap                                                              | Priority | Effort Estimation |
+|--------------------------------------------|-----------------------------------------------------------------------------|----------|-------------------| 
  
 [1 to-do for each compliance gap]
 
