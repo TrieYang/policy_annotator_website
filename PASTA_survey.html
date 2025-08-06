@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>System Usability Scale - Compliance Report</title>
+    <title>PASTA User Study Interview Survey</title>
     <style>
         body {
             font-family: Arial, Helvetica, sans-serif;
@@ -31,6 +31,71 @@
             border-radius: 5px;
             margin-bottom: 30px;
             border-left: 4px solid #2196F3;
+        }
+        
+        /* Table of Contents Styles */
+        .toc {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .toc-item {
+            margin-bottom: 10px;
+        }
+        
+        .toc-main {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2196F3;
+            text-decoration: none;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .toc-main:hover {
+            background-color: #e3f2fd;
+            padding-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .toc-sub {
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+        
+        .toc-sub li {
+            margin-bottom: 5px;
+        }
+        
+        .toc-sub a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            padding: 4px 0;
+        }
+        
+        .toc-sub a:hover {
+            color: #2196F3;
+            text-decoration: underline;
         }
         
         .question-table {
@@ -222,21 +287,51 @@
             color: #4CAF50;
             min-height: 20px;
         }
+        
+        /* Scroll behavior for smooth navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Section anchor styling */
+        .section-anchor {
+            padding-top: 20px;
+            margin-top: -20px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>System Usability Scale - Compliance Report Evaluation</h1>
+        <h1>PASTA User Study Interview Survey</h1>
         
         <div class="demographic-form">
             <label for="participant">Participant Name:</label>
             <input type="text" id="participant" name="participant" required>
         </div>
         
-        <div class="instructions">
-            <strong>Instructions:</strong> Please rate your agreement with each statement about the compliance report you just reviewed. 
-            Use the scale from "Strongly Disagree" (1) to "Strongly Agree" (5). 
-            There are no right or wrong answers - we want your honest opinion about the usability of the compliance report.
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>Survey Overview</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#section-1" class="toc-main">1. System Usability & Tool Effectiveness Survey</a>
+                    <ul class="toc-sub">
+                        <li><a href="#sus-section">a. System Usability Scale (Questions 1-10)</a></li>
+                        <li><a href="#tool-effectiveness-section">b. Tool Effectiveness Survey (Questions 11-19)</a></li>
+                    </ul>
+                </li>
+                <li class="toc-item">
+                    <a href="#section-2" class="toc-main">2. NASA Task Load Index (TLX) (Questions 20-25)</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div id="section-1" class="section-anchor" style="margin-top: 40px; margin-bottom: 30px;">
+            <h2 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">System Usability & Tool Effectiveness Survey</h2>
+            <div class="instructions" style="background-color: #e8f5e8; border-left-color: #4CAF50;">
+                <strong>Instructions:</strong> For each scale below, click on the point that best indicates your experience. 
+                Each scale ranges from "Strongly disagree" to "Strongly agree".
+            </div>
         </div>
         
         <table class="question-table">
@@ -264,8 +359,8 @@
             </thead>
             <tbody>
                 <!-- Standard SUS Questions 1-10 -->
-                <tr style="background-color: #f0f8ff;">
-                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #2196F3; padding: 15px;">
+                <tr id="sus-section" class="section-anchor" style="background-color: #e8f5e8;">
+                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #4CAF50; padding: 15px;">
                         System Usability Scale
                     </td>
                 </tr>
@@ -400,15 +495,12 @@
                     </td>
                 </tr>
                 
-                <!-- Spacing between sections -->
-                <tr style="height: 40px; background-color: #f9f9f9;">
-                    <td colspan="3" style="border: none;"></td>
-                </tr>
+
                 
                 <!-- Compliance Report Questions 11-19 -->
-                <tr style="background-color: #fff3e0;">
-                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #FF9800; padding: 15px;">
-                        Compliance Report Effectiveness & AI Governance
+                <tr id="tool-effectiveness-section" class="section-anchor" style="background-color: #e8f5e8;">
+                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #4CAF50; padding: 15px;">
+                        Tool Effectiveness Survey
                     </td>
                 </tr>
                 <tr>
@@ -532,12 +624,11 @@
         </table>
         
         <!-- NASA Task Load Index Section -->
-        <div style="margin-top: 40px; margin-bottom: 30px;">
+        <div id="section-2" class="section-anchor" style="margin-top: 40px; margin-bottom: 30px;">
             <h2 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">NASA Task Load Index (TLX)</h2>
             <div class="instructions" style="background-color: #e8f5e8; border-left-color: #4CAF50;">
-                <strong>Instructions:</strong> For each scale below, click on the point that best indicates your experience. 
+                <strong>Instructions:</strong> For each scale below, click anywhere along the scale to indicate your rating.
                 Each scale ranges from "Low" to "High" (or "Good" to "Poor" for Performance). 
-                Click anywhere along the scale to indicate your rating.
             </div>
         </div>
         
@@ -545,23 +636,15 @@
             <thead>
                 <tr>
                     <th class="question-number">#</th>
-                    <th class="question-text">Scale</th>
+                    <th class="question-text">Question</th>
                     <th class="likert-scale">Rating Scale</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- NASA TLX Questions -->
-                <tr style="background-color: #e8f5e8;">
-                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #4CAF50; padding: 15px;">
-                        NASA Task Load Index Scales
-                    </td>
-                </tr>
-                
-                <!-- Mental Demand -->
+                <!-- Add section anchor for compliance report task load -->
                 <tr>
                     <td class="question-number">20</td>
                     <td class="question-text">
-                        <strong>Mental Demand</strong><br>
                         <small>How much mental and perceptual activity was required (e.g. thinking, deciding, calculating, remembering, looking, searching, etc) to find the compliance issues? Was the task easy or demanding, simple or complex, exacting or forgiving?</small>
                     </td>
                     <td class="likert-scale">
@@ -603,7 +686,6 @@
                 <tr>
                     <td class="question-number">21</td>
                     <td class="question-text">
-                        <strong>Physical Demand</strong><br>
                         <small>How much physical activity was required (e.g. pushing, pulling, turning, controlling, activating, etc) to find the compliance issues? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?</small>
                     </td>
                     <td class="likert-scale">
@@ -645,7 +727,6 @@
                 <tr>
                     <td class="question-number">22</td>
                     <td class="question-text">
-                        <strong>Performance</strong><br>
                         <small>How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)? How satisfied were you with your performance in accomplishing these goals?</small>
                     </td>
                     <td class="likert-scale">
@@ -687,7 +768,6 @@
                 <tr>
                     <td class="question-number">23</td>
                     <td class="question-text">
-                        <strong>Effort</strong><br>
                         <small>How hard did you have to work (mentally and physically) to accomplish your level of performance?</small>
                     </td>
                     <td class="likert-scale">
@@ -729,7 +809,6 @@
                 <tr>
                     <td class="question-number">24</td>
                     <td class="question-text">
-                        <strong>Mental Demand - Model Card</strong><br>
                         <small>How mentally demanding was filling in the model card? Was the task easy or demanding, simple or complex, exacting or forgiving?</small>
                     </td>
                     <td class="likert-scale">
@@ -771,7 +850,6 @@
                 <tr>
                     <td class="question-number">25</td>
                     <td class="question-text">
-                        <strong>Physical Demand - Model Card</strong><br>
                         <small>How physically demanding was filling in the model card? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?</small>
                     </td>
                     <td class="likert-scale">
@@ -820,6 +898,9 @@
     </div>
 
     <script>
+        // Add the saveAs library for file downloads
+        var saveAs=saveAs||function(e){"use strict";if("undefined"==typeof navigator||!/MSIE [1-9]\./.test(navigator.userAgent)){var t=e.document,n=function(){return e.URL||e.webkitURL||e},o=t.createElementNS("http://www.w3.org/1999/xhtml","a"),r="download"in o,i=function(e){var t=new MouseEvent("click");e.dispatchEvent(t)},a=/Version\/[\d\.]+.*Safari/.test(navigator.userAgent),c=e.webkitRequestFileSystem,f=e.requestFileSystem||c||e.mozRequestFileSystem,u=function(t){(e.setImmediate||e.setTimeout)(function(){throw t},0)},d="application/octet-stream",s=0,l=4e4,v=function(e){var t=function(){"string"==typeof e?n().revokeObjectURL(e):e.remove()};setTimeout(t,l)},p=function(e,t,n){t=[].concat(t);for(var o=t.length;o--;){var r=e["on"+t[o]];if("function"==typeof r)try{r.call(e,n||e)}catch(i){u(i)}}},w=function(e){return/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(e.type)?new Blob(["\ufeff",e],{type:e.type}):e},y=function(t,u,l){l||(t=w(t));var y,m,S,h=this,R=t.type,O=!1,g=function(){p(h,"writestart progress write writeend".split(" "))},b=function(){if(m&&a&&"undefined"!=typeof FileReader){var o=new FileReader;return o.onloadend=function(){var e=o.result;m.location.href="data:attachment/file"+e.slice(e.search(/[,;]/)),h.readyState=h.DONE,g()},o.readAsDataURL(t),void(h.readyState=h.INIT)}if((O||!y)&&(y=n().createObjectURL(t)),m)m.location.href=y;else{var r=e.open(y,"_blank");void 0===r&&a&&(e.location.href=y)}h.readyState=h.DONE,g(),v(y)},E=function(e){return function(){return h.readyState!==h.DONE?e.apply(this,arguments):void 0}},N={create:!0,exclusive:!1};return h.readyState=h.INIT,u||(u="download"),r?(y=n().createObjectURL(t),void setTimeout(function(){o.href=y,o.download=u,i(o),g(),v(y),h.readyState=h.DONE})):(e.chrome&&R&&R!==d&&(S=t.slice||t.webkitSlice,t=S.call(t,0,t.size,d),O=!0),c&&"download"!==u&&(u+=".download"),(R===d||c)&&(m=e),f?(s+=t.size,void f(e.TEMPORARY,s,E(function(e){e.root.getDirectory("saved",N,E(function(e){var n=function(){e.getFile(u,N,E(function(e){e.createWriter(E(function(n){n.onwriteend=function(t){m.location.href=e.toURL(),h.readyState=h.DONE,p(h,"writeend",t),v(e)},n.onerror=function(){var e=n.error;e.code!==e.ABORT_ERR&&b()},"writestart progress write abort".split(" ").forEach(function(e){n["on"+e]=h["on"+e]}),n.write(t),h.abort=function(){n.abort(),h.readyState=h.DONE},h.readyState=h.WRITING}),b)}),b)};e.getFile(u,{create:!1},E(function(e){e.remove(),n()}),E(function(e){e.code===e.NOT_FOUND_ERR?n():b()}))}),b)}),b)):void b())},m=y.prototype,S=function(e,t,n){return new y(e,t,n)};return"undefined"!=typeof navigator&&navigator.msSaveOrOpenBlob?function(e,t,n){return n||(e=w(e)),navigator.msSaveOrOpenBlob(e,t||"download")}:(m.abort=function(){var e=this;e.readyState=e.DONE,p(e,"abort")},m.readyState=m.INIT=0,m.WRITING=1,m.DONE=2,m.error=m.onwritestart=m.onprogress=m.onwrite=m.onabort=m.onerror=m.onwriteend=null,S)}}("undefined"!=typeof self&&self||"undefined"!=typeof window&&window||this.content);
+
         // NASA TLX ratings storage
         let nasaRatings = {};
         
@@ -842,12 +923,11 @@
         }
         
         function calculateResults() {
-            // Get participant and session info
+            // Get participant info
             const participant = document.getElementById('participant').value.trim();
-            const session = document.getElementById('session').value.trim();
             
-            if (!participant || !session) {
-                alert('Please enter both Participant Name and Session.');
+            if (!participant) {
+                alert('Please enter Participant Name.');
                 return;
             }
             
@@ -866,7 +946,7 @@
             }
             
             if (!allAnswered) {
-                alert('Please answer all SUS questions before submitting.');
+                alert('Please answer all questions before submitting.');
                 return;
             }
             
@@ -940,7 +1020,6 @@
             
             resultsContent.innerHTML = `
                 <p><strong>Participant:</strong> ${participant}</p>
-                <p><strong>Session:</strong> ${session}</p>
                 <p><strong>Standard SUS Score (Questions 1-10):</strong> <span style="font-size: 1.2em; font-weight: bold; color: ${gradeColor};">${susScore.toFixed(1)}/100</span></p>
                 <p><strong>SUS Grade:</strong> <span style="color: ${gradeColor}; font-weight: bold;">${grade}</span></p>
                 <p><strong>Compliance Report Score (Questions 11-19):</strong> <span style="font-size: 1.2em; font-weight: bold; color: #2196F3;">${complianceScore.toFixed(1)}/100</span></p>
@@ -952,29 +1031,44 @@
                 <ul>
                     ${Object.keys(responses).map(q => `<li>Question ${q.substring(1)}: ${responses[q]}/5</li>`).join('')}
                 </ul>
+                <p style="margin-top: 20px; padding: 10px; background-color: #e8f5e8; border-radius: 5px;">
+                    <strong>✅ Results saved!</strong> Your responses have been automatically downloaded as a JSON file.
+                </p>
             `;
             
             resultsDiv.style.display = 'block';
             
-            // Save results to file
+            // Create comprehensive data object for JSON export
             const data = {
-                participant: participant,
-                session: session,
-                susResponses: responses,
-                nasaRatings: nasaRatings,
-                susScore: susScore,
-                complianceScore: complianceScore,
-                grade: grade,
-                timestamp: new Date().toISOString()
+                metadata: {
+                    participant: participant,
+                    timestamp: new Date().toISOString(),
+                    surveyType: "PASTA User Study Interview Survey",
+                    version: "1.0"
+                },
+                susResponses: {
+                    individual: responses,
+                    susScore: susScore,
+                    susGrade: grade,
+                    complianceScore: complianceScore
+                },
+                nasaTLX: {
+                    ratings: nasaRatings,
+                    scales: nasaScaleNames
+                },
+                calculatedScores: {
+                    standardSUSScore: susScore,
+                    complianceReportScore: complianceScore,
+                    nasaTLXRatings: Object.keys(nasaRatings).map(index => ({
+                        scale: nasaScaleNames[index],
+                        rating: nasaRatings[index]
+                    }))
+                }
             };
             
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `SUS_NASA_${participant}_${session}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
+            // Generate and download JSON file
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json;charset=utf-8"});
+            saveAs(blob, `PASTA_Survey_${participant}_${new Date().toISOString().split('T')[0]}.json`);
         }
     </script>
 </body>
