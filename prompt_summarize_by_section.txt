@@ -1,14 +1,11 @@
 ### **Task**  
-Given JSON-formatted evaluation results for a specific model card section, return a JSON object mapping "Overall" and each policy to its respective markdown-formatted summary. The markdown-formatted summary will be a
+Given JSON-formatted evaluation results for a specific model card section, return a JSON object mapping "Overall" and each policy to its respective markdown-formatted summary.
 
 ---
 
 ### **Definition**
 - Model Card Section: A part of a model card, which is a documentation format used to describe key details about an AI system. Each section focuses on a specific area, such as system overview, training data, performance, risks, etc., to help developers and stakeholders understand how the model works and where it may have limitations.
 - Policy Article: A specific clause or numbered requirement within an AI policy or regulation (e.g., EU AI Act, AIDA). Each article outlines a legal or ethical obligation that AI systems must meet—such as transparency, data privacy, or human oversight.
-- NVAM score: An integer score from 0-5 describing how well a **model card section** aligns with a **specific policy article/paragraph**
-
-
 
 ### **Instructions**
 - Input will be a JSON array containing evaluation results for a specific model card section across all policies, where each item has:
@@ -16,7 +13,7 @@ Given JSON-formatted evaluation results for a specific model card section, retur
   2. `article`: The specific article number in the policy 
   3. `score`: Violation score (0–5)
   4. `description`: A short explanation of the issue or deficiency if `score > 0` and what can be done to improve the score to 0
-- If all score are 0 or no evaluation result is uploaded/JSON array is empty, state this section is fully compliant and no actions needed.
+- If all score are 0 or no evaluation result is uploaded/JSON array is empty, state exactly "This section is fully compliant and no actions needed."
 - Step by step guide:
 1, **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
 2, Group remaining items by policy

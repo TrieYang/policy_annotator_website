@@ -11,10 +11,11 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 from policy_chunker import get_chunking_prompt, parse_chunk_response, get_section_groups
-from utils.section_summary import generate_section_summary
+from utils.section_summary import generate_section_summary, generate_multiple_section_summaries
 from utils.top_level_summary import generate_top_level_summary
 from utils.interactive_heatmap import generate_interactive_heatmap
 from utils.policy_summary import generate_policy_summary
+import asyncio
 
 SAMPLE_RESPONSE_FOLDER = "./sample_responses"
 TESTING_MODE = False
@@ -154,7 +155,9 @@ model="claude-sonnet-4-20250514",
 #model="claude-3-7-sonnet-20250219",
 #model="claude-3-haiku-20240307",
 anthropic_api_key=ANTHROPIC_API_KEY,
-temperature=0.3)
+temperature=0.3,
+max_retries=3,  # Add retry logic
+timeout=300)  # Add timeout
 
 # Section names for iteration
 sections = [
@@ -231,12 +234,28 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         
         for policy_file in policy_files:
             try:
+                print(f"\n{'='*50}")
+                print(f"Processing policy file: {policy_file}")
+                print(f"{'='*50}")
+                
                 policy_path = os.path.join(policy_folder, policy_file)
+                
+                # Check if file exists and is readable
+                if not os.path.exists(policy_path):
+                    print(f"Error: Policy file {policy_path} does not exist")
+                    continue
+                    
+                file_size = os.path.getsize(policy_path)
+                print(f"Policy file size: {file_size} bytes")
+                
                 async with aiofiles.open(policy_path, "r") as pf:
                     legal_doc_content = await pf.read()
+                
+                print(f"Successfully read policy file. Content length: {len(legal_doc_content)} characters")
       
                 # Load the relevancy map for the current policy
                 section_chunks = load_relevancy_map(policy_file.split('.')[0])
+                print(f"Loaded relevancy map with {len(section_chunks)} sections")
 
                 # Initialize section data for this policy
                 policy_section_scores = {section: {} for section in sections}
@@ -249,7 +268,11 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                             print(f"No chunks for section '{section}' - skipping evaluation")
                             continue
                             
-                        for chunk in section_specific_chunks:
+                        print(f"Evaluating section '{section}' with {len(section_specific_chunks)} chunks")
+                        
+                        for chunk_idx, chunk in enumerate(section_specific_chunks):
+                            print(f"  Processing chunk {chunk_idx + 1}/{len(section_specific_chunks)} for section '{section}'")
+                            
                             # Convert the chunk of articles into a comma-separated string
                             articles_str = ", ".join(chunk)
                             chunk_prompt_second = (
@@ -285,7 +308,31 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                     "content": f"{chunk_prompt_second}",
                                 },
                             ]
-                            response = llm.invoke(messages)
+                            
+                            # Add timeout protection for LLM calls
+                            try:
+                                response = await asyncio.wait_for(
+                                    asyncio.to_thread(llm.invoke, messages),
+                                    timeout=300  # 5 minute timeout for each evaluation
+                                )
+                                print(f"Successfully evaluated {policy_file} section '{section}' for articles {articles_str}")
+                            except asyncio.TimeoutError:
+                                print(f"Timeout error evaluating {policy_file} section '{section}' for articles {articles_str}")
+                                continue
+                            except Exception as e:
+                                print(f"Error evaluating {policy_file} section '{section}' for articles {articles_str}: {str(e)}")
+                                # Try one more time with a shorter timeout
+                                try:
+                                    print(f"Retrying evaluation for {policy_file} section '{section}' for articles {articles_str}...")
+                                    response = await asyncio.wait_for(
+                                        asyncio.to_thread(llm.invoke, messages),
+                                        timeout=180  # 3 minute timeout for retry
+                                    )
+                                    print(f"Successfully evaluated {policy_file} section '{section}' for articles {articles_str} on retry")
+                                except Exception as retry_e:
+                                    print(f"Retry failed for {policy_file} section '{section}' for articles {articles_str}: {str(retry_e)}")
+                                    continue
+                                
                             print(response)
                             # Parse the markdown table to extract JSON content
                             try:
@@ -339,6 +386,8 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 for section in sections:
                     all_articles.update(policy_section_scores[section].keys())
                 
+                print(f"Policy {policy_name}: Found {len(all_articles)} total articles across all sections")
+                
                 # Convert to float for sorting, handling both integer and decimal article numbers
                 def article_to_sortable(art):
                     # Remove any 'Art.' prefix if it exists
@@ -382,6 +431,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                         'descriptions': policy_section_descriptions[section]
                     }
                 
+                print(f"Successfully processed policy {policy_name} with {len(sorted_articles)} articles")
 
             except Exception as e:
                 print(f"Error processing policy file {policy_file}: {str(e)}")
@@ -431,11 +481,69 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 if policy_name in all_policy_data:
                     policy_data = all_policy_data[policy_name]
                     print(f"\nGenerating summary for policy: {policy_name}")
-                    summary = await generate_policy_summary(policy_name, policy_data, model_card_content, llm, sections)
-                    summaries[policy_name] = summary
-                    print(f"Generated summary for {policy_name}")
+                    print(f"Policy data keys: {list(policy_data.keys())}")
+                    print(f"Number of sections with data: {len([s for s in sections if s in policy_data['scores']])}")
+                    
+                    # Validate policy data structure
+                    if 'scores' not in policy_data or 'descriptions' not in policy_data:
+                        print(f"Error: Invalid policy data structure for {policy_name}")
+                        summaries[policy_name] = f"""**Current Compliance Status:**
+Error: Invalid policy data structure for {policy_name}. Please check the evaluation results manually.
+
+**Compliance Gaps and To-dos:**
+| Compliance Gap | Description | To-dos | Priority |
+|----------------|-------------|--------|----------|
+| Data Structure Error | Invalid policy data structure | Review evaluation process | High |"""
+                        continue
+                    
+                    # Check if there's any actual evaluation data
+                    has_data = False
+                    for section in sections:
+                        if section in policy_data['scores'] and policy_data['scores'][section]:
+                            has_data = True
+                            break
+                    
+                    if not has_data:
+                        print(f"Warning: No evaluation data found for {policy_name}")
+                        summaries[policy_name] = f"""**Current Compliance Status:**
+No evaluation data found for {policy_name}. This could indicate that no applicable policy requirements were found or an error occurred during evaluation.
+
+**Compliance Gaps and To-dos:**
+| Compliance Gap | Description | To-dos | Priority |
+|----------------|-------------|--------|----------|
+| No Evaluation Data | No applicable policy requirements found | Review policy mapping and evaluation process | Medium |"""
+                        continue
+                    
+                    # Add timeout protection for the entire summary generation
+                    try:
+                        summary = await asyncio.wait_for(
+                            generate_policy_summary(policy_name, policy_data, model_card_content, llm, sections),
+                            timeout=600  # 10 minute timeout for entire summary generation
+                        )
+                        summaries[policy_name] = summary
+                        print(f"Generated summary for {policy_name}")
+                    except asyncio.TimeoutError:
+                        print(f"Timeout error generating summary for {policy_name}")
+                        summaries[policy_name] = f"""**Current Compliance Status:**
+Timeout occurred while generating summary for {policy_name}. Please check the evaluation results manually.
+
+**Compliance Gaps and To-dos:**
+| Compliance Gap | Description | To-dos | Priority |
+|----------------|-------------|--------|----------|
+| Summary Generation Timeout | Unable to generate detailed summary | Review evaluation results manually | Medium |"""
+                    except Exception as e:
+                        print(f"Error generating summary for {policy_name}: {str(e)}")
+                        summaries[policy_name] = f"""**Current Compliance Status:**
+Error occurred while generating summary for {policy_name}. Please check the evaluation results manually.
+
+**Compliance Gaps and To-dos:**
+| Compliance Gap | Description | To-dos | Priority |
+|----------------|-------------|--------|----------|
+| Summary Generation Error | {str(e)} | Review evaluation results manually | Medium |"""
+                else:
+                    print(f"Warning: No policy data found for {policy_name}")
             except Exception as e:
-                print(f"Error generating summary for policy {policy_name}: {str(e)}")
+                print(f"Error processing policy file {policy_file}: {str(e)}")
                 continue
 
         print("\nGenerated summaries for policies:", list(summaries.keys()))
@@ -446,12 +554,19 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         print("Generated top-level summary")
 
         # Generate section-based summaries
-        section_summaries = {}
-        for section in sections:
-            try:
-                if not section_data[section]:  # Check if there's no data for this section
-                    section_summaries[section] = json.dumps({
-                        "Overall": f"""#### ⚠️ {section} – No Evaluation Data
+        print("\nGenerating section-based summaries...")
+        try:
+            section_summaries = await generate_multiple_section_summaries(section_data, llm, TESTING_MODE)
+            print(f"Generated summaries for {len(section_summaries)} sections")
+        except Exception as e:
+            print(f"Error generating section summaries: {str(e)}")
+            # Fallback to individual processing if batch processing fails
+            section_summaries = {}
+            for section in sections:
+                try:
+                    if not section_data[section]:  # Check if there's no data for this section
+                        section_summaries[section] = json.dumps({
+                            "Overall": f"""#### ⚠️ {section} – No Evaluation Data
 
 Note: No evaluation data was provided for this section. This could indicate that:
 - The section is missing from the model card
@@ -459,19 +574,19 @@ Note: No evaluation data was provided for this section. This could indicate that
 - An error occurred during evaluation
 
 Please ensure this section exists and contains the necessary information."""
-                    })
-                else:
-                    summary = await generate_section_summary(section, section_data[section], llm, TESTING_MODE)
-                    section_summaries[section] = summary
-                    print(f"Generated summary for section: {section}")
-            except Exception as e:
-                print(f"Error generating summary for section {section}: {str(e)}")
-                section_summaries[section] = json.dumps({
-                    "Overall": f"""#### ❌ {section} – Error
+                        })
+                    else:
+                        summary = await generate_section_summary(section, section_data[section], llm, TESTING_MODE)
+                        section_summaries[section] = summary
+                        print(f"Generated summary for section: {section}")
+                except Exception as e:
+                    print(f"Error generating summary for section {section}: {str(e)}")
+                    section_summaries[section] = json.dumps({
+                        "Overall": f"""#### ❌ {section} – Error
 
 An error occurred while generating the summary for this section. Please check the logs for more details.""",
-                    "Error": str(e)
-                })
+                        "Error": str(e)
+                    })
 
         print("All evaluations completed.")
         return heatmap_filenames, summaries, top_level_summary, section_summaries
