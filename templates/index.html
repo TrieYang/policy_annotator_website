@@ -577,24 +577,28 @@
             background-color: #fff5f5 !important;
         }
 
-        /* Priority color coding for top-level summary tables - only high priority */
+        .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Priority color coding for top-level summary tables */
         .top-level-summary .priority-high {
             background-color: #fff5f5 !important;
         }
 
-
-        /* Remove medium and low priority row styling */
-        /* .top-level-summary tr.priority-medium td,
-        .summary-content tr.priority-medium td {
+        .top-level-summary .priority-medium {
             background-color: #fffbf0 !important;
         }
 
-        .top-level-summary tr.priority-low td,
-        .summary-content tr.priority-low td {
+        .top-level-summary .priority-low {
             background-color: #f8fff9 !important;
-        } */
+        }
 
-        /* Ensure priority styling overrides alternating row colors - only for high priority and only 3rd column */
+        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
         .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
         .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
         .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
@@ -602,20 +606,19 @@
             background-color: #fff5f5 !important;
         }
 
-        /* Remove medium and low priority override styling */
-        /* .top-level-summary tr.priority-medium:nth-child(even) td,
-        .top-level-summary tr.priority-medium:nth-child(odd) td,
-        .summary-content tr.priority-medium:nth-child(even) td,
-        .summary-content tr.priority-medium:nth-child(odd) td {
+        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
             background-color: #fffbf0 !important;
         }
 
-        .top-level-summary tr.priority-low:nth-child(even) td,
-        .top-level-summary tr.priority-low:nth-child(odd) td,
-        .summary-content tr.priority-low:nth-child(even) td,
-        .summary-content tr.priority-low:nth-child(odd) td {
+        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
             background-color: #f8fff9 !important;
-        } */
+        }
 
         /* Add styles for the policy icon and name */
         .policy-icon {
@@ -983,6 +986,158 @@
             visibility: visible;
             opacity: 1;
             pointer-events: auto;
+        }
+
+        /* New styles for priority legend */
+        .priority-legend-compact {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-legend-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .priority-items-compact {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            flex-wrap: wrap;
+        }
+
+        .priority-item-compact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .priority-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .priority-dot.high {
+            background-color: #FD8D3C; /* Warm Orange */
+        }
+
+        .priority-dot.medium {
+            background-color: #FEB24C; /* Warm Orange */
+        }
+
+        .priority-dot.low {
+            background-color: #EFEFEF; /* Off White */
+            border: 1px solid #dee2e6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .priority-legend-compact {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .priority-items-compact {
+                gap: 1rem;
+            }
+
+            .priority-item-compact {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Priority header tooltip styles */
+        .priority-header {
+            position: relative;
+            cursor: help;
+            white-space: nowrap;
+        }
+
+        .priority-info-icon {
+            font-size: 0.8em !important;
+            color: var(--primary-color) !important;
+            margin-left: 0.3rem !important;
+            display: inline !important;
+            vertical-align: middle !important;
+        }
+
+        .priority-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s, visibility 0.3s;
+            margin-top: 10px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .priority-tooltip::before {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .priority-header:hover .priority-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .priority-tooltip .tooltip-item {
+            margin-bottom: 0.75rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .priority-tooltip .tooltip-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .priority-tooltip .tooltip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .priority-tooltip strong {
+            color: #FFD700;
         }
     </style>
 </head>
@@ -1600,20 +1755,26 @@
                     // Remove existing priority classes
                     cell.classList.remove('priority-high', 'priority-medium', 'priority-low');
                     
-                    // Only apply high priority styling
+                    // Apply priority styling for all levels
                     if (text.includes('high') || text.includes('critical') || text.includes('urgent')) {
                         cell.classList.add('priority-high');
                     }
-                    // Remove medium and low priority detection
-                    /* else if (text.includes('medium') || text.includes('moderate') || text.includes('medium-priority')) {
+                    // Apply medium priority styling
+                    else if (text.includes('medium') || text.includes('moderate') || text.includes('medium-priority')) {
                         cell.classList.add('priority-medium');
-                    } else if (text.includes('low') || text.includes('minor') || text.includes('low-priority')) {
+                    }
+                    // Apply low priority styling
+                    else if (text.includes('low') || text.includes('minor') || text.includes('low-priority')) {
                         cell.classList.add('priority-low');
-                    } */
+                    }
                     
                     // Debug: Log what we found
                     if (text.includes('high') || text.includes('critical') || text.includes('urgent')) {
                         console.log('High priority cell found:', text, 'Classes applied:', cell.className);
+                    } else if (text.includes('medium') || text.includes('moderate') || text.includes('medium-priority')) {
+                        console.log('Medium priority cell found:', text, 'Classes applied:', cell.className);
+                    } else if (text.includes('low') || text.includes('minor') || text.includes('low-priority')) {
+                        console.log('Low priority cell found:', text, 'Classes applied:', cell.className);
                     }
                 });
                 
@@ -1625,28 +1786,79 @@
                     // Remove existing priority classes from the row
                     row.classList.remove('priority-high', 'priority-medium', 'priority-low');
                     
-                    // Only apply high priority class to the row if priority is found
+                    // Apply priority class to the row and specific column
                     if (rowText.includes('high') || rowText.includes('critical') || rowText.includes('urgent')) {
                         row.classList.add('priority-high');
                         // Only apply to the priority column (3rd column)
                         const cells = row.querySelectorAll('td');
                         if (cells.length >= 3) {
-                            // Only highlight the priority column (3rd column)
                             cells[2].classList.add('priority-high');
                         }
                     }
-                    // Remove medium and low priority row detection
-                    /* else if (rowText.includes('medium') || rowText.includes('moderate')) {
+                    // Apply medium priority class to the row if medium priority is found
+                    else if (rowText.includes('medium') || rowText.includes('moderate')) {
                         row.classList.add('priority-medium');
-                        row.querySelectorAll('td').forEach(cell => {
-                            cell.classList.add('priority-medium');
-                        });
-                    } else if (rowText.includes('low') || rowText.includes('minor')) {
+                        // Only apply to the priority column (3rd column)
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 3) {
+                            cells[2].classList.add('priority-medium');
+                        }
+                    }
+                    // Apply low priority class to the row if low priority is found
+                    else if (rowText.includes('low') || rowText.includes('minor')) {
                         row.classList.add('priority-low');
-                        row.querySelectorAll('td').forEach(cell => {
-                            cell.classList.add('priority-low');
-                        });
-                    } */
+                        // Only apply to the priority column (3rd column)
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 3) {
+                            cells[2].classList.add('priority-low');
+                        }
+                    }
+                });
+
+                // Add priority tooltips to headers
+                addPriorityTooltips();
+            }
+
+            // Function to add priority tooltips to table headers
+            function addPriorityTooltips() {
+                const tableHeaders = document.querySelectorAll('.summary-content th, .top-level-summary th');
+                
+                tableHeaders.forEach(header => {
+                    const text = header.textContent.trim().toLowerCase();
+                    
+                    if (text.includes('priority')) {
+                        // Add priority header class and tooltip
+                        header.classList.add('priority-header');
+                        
+                        // Remove existing tooltip if any
+                        const existingTooltip = header.querySelector('.priority-tooltip');
+                        if (existingTooltip) {
+                            existingTooltip.remove();
+                        }
+                        
+                        // Add info icon to indicate it's hoverable (if not already present)
+                        if (!header.querySelector('.priority-info-icon')) {
+                            const originalText = header.textContent.trim();
+                            header.innerHTML = `${originalText} <i class="fas fa-info-circle priority-info-icon"></i>`;
+                        }
+                        
+                        // Add new tooltip
+                        const tooltip = document.createElement('div');
+                        tooltip.className = 'priority-tooltip';
+                        tooltip.innerHTML = `
+                            <div class="tooltip-item">
+                                <strong>High:</strong> Legal violations, immediate action required
+                            </div>
+                            <div class="tooltip-item">
+                                <strong>Medium:</strong> Future risks, address within reasonable timeframe
+                            </div>
+                            <div class="tooltip-item">
+                                <strong>Low:</strong> Best practice improvements, address as resources permit
+                            </div>
+                        `;
+                        
+                        header.appendChild(tooltip);
+                    }
                 });
             }
 

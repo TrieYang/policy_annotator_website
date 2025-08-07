@@ -24,21 +24,15 @@ Generate a high-level executive summary of the model card's compliance status ac
 **Current Compliance Status:**  
 Brief 2–3 sentence overview of the model card's overall compliance status across all evaluated policies.
 
-**Compliance Gaps Table:**  
-Present major compliance issues in a markdown table format as shown below. Each row represents a key gap.
+**Compliance Gaps and To-dos**  
+Present major compliance issues in a markdown table format as shown below. Each row represents a key gap. Present actionable recommendations to address each issue.
 
-| Compliance Gap                              | Description                                                                 | Priority | Affected Policies |
-|--------------------------------------------|-----------------------------------------------------------------------------|----------|-------------------|
-| Insufficient Privacy Documentation         | Missing details on data handling, retention, and protection mechanisms      | High     | AIDA, CCPA        |
-| Incomplete Risk Management Framework       | No system-wide risk assessment or mitigation plan                          | High     | EU AI Act, AIDA   |
-| Weak User Consent and Rights Disclosure    | Consent mechanisms are unclear or undocumented                             | Medium   | CCPA              |
-| Limited Bias Mitigation Transparency       | No explanation of how bias in datasets or models is addressed              | Low      | AIDA              |
 
-**To-dos Recommended:**  
-Present actionable recommendations to address major compliance issues in a markdown table format as shown below. Each row represents a to-do.
-| To-dos                                     | Compliance Gap                                                              | Priority | Effort Estimation |
-|--------------------------------------------|-----------------------------------------------------------------------------|----------|-------------------| 
- 
+| Compliance Gap                              | Description                                                                | To-dos                                           | Priority | Affected Policies |
+|--------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------|---------|-------------------|
+| Insufficient Privacy Documentation         | Missing details on data handling, retention, and protection mechanisms      | Establish material harm notification procedures	| High     | AIDA, CCPA        |
+
+
 [1 to-do for each compliance gap]
 
 ### **Formatting Rules**

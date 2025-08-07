@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>PASTA User Study Interview Survey</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .instructions {
+            background-color: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #2196F3;
+        }
+        
+        /* Table of Contents Styles */
+        .toc {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 2px solid #dee2e6;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .toc-item {
+            margin-bottom: 10px;
+        }
+        
+        .toc-main {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2196F3;
+            text-decoration: none;
+            display: block;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .toc-main:hover {
+            background-color: #e3f2fd;
+            padding-left: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .toc-sub {
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+        
+        .toc-sub li {
+            margin-bottom: 5px;
+        }
+        
+        .toc-sub a {
+            color: #666;
+            text-decoration: none;
+            font-size: 14px;
+            display: block;
+            padding: 4px 0;
+        }
+        
+        .toc-sub a:hover {
+            color: #2196F3;
+            text-decoration: underline;
+        }
+        
+        .question-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .question-table th {
+            background-color: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: bold;
+        }
+        
+        .question-table td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+        
+        .question-number {
+            width: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .question-text {
+            width: 60%;
+        }
+        
+        .likert-scale {
+            width: 40%;
+            text-align: center;
+        }
+        
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .scale-labels span {
+            flex: 1;
+            padding: 0 2px;
+            line-height: 1.2;
+        }
+        
+        .scale-numbers {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .radio-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .radio-group input[type="radio"] {
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+        
+        .radio-group label {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 3px;
+            transition: background-color 0.2s;
+        }
+        
+        .radio-group label:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .submit-btn {
+            background-color: #2196F3;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #1976D2;
+        }
+        
+        .submit-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #e8f5e8;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            display: none;
+        }
+        
+        .error {
+            color: #f44336;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        
+        .demographic-form {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .demographic-form input {
+            margin: 0 15px 0 5px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        
+        .demographic-form label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* NASA TLX Scale Styles */
+        .nasa-scale {
+            text-align: center;
+            margin: 10px 0;
+        }
+        
+        .scale-bar {
+            border: 2px solid #333;
+            height: 20px;
+            margin: 10px 0;
+            position: relative;
+            background: white;
+        }
+        
+        .scale-segments {
+            display: flex;
+            height: 100%;
+        }
+        
+        .segment {
+            flex: 1;
+            border-right: 1px solid #ccc;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            position: relative;
+        }
+        
+        .segment:last-child {
+            border-right: none;
+        }
+        
+        .segment:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .segment.selected {
+            background-color: #4CAF50;
+        }
+        
+        .scale-labels {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .rating-display {
+            margin-top: 5px;
+            font-weight: bold;
+            color: #4CAF50;
+            min-height: 20px;
+        }
+        
+        /* Scroll behavior for smooth navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Section anchor styling */
+        .section-anchor {
+            padding-top: 20px;
+            margin-top: -20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PASTA User Study Interview Survey</h1>
+        
+        <div class="demographic-form">
+            <label for="participant">Participant Name:</label>
+            <input type="text" id="participant" name="participant" required>
+        </div>
+        
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h2>Survey Overview</h2>
+            <ul class="toc-list">
+                <li class="toc-item">
+                    <a href="#section-1" class="toc-main">1. System Usability & Tool Effectiveness Survey</a>
+                    <ul class="toc-sub">
+                        <li><a href="#sus-section">a. System Usability Scale (Questions 1-10)</a></li>
+                        <li><a href="#tool-effectiveness-section">b. Tool Effectiveness Survey (Questions 11-19)</a></li>
+                    </ul>
+                </li>
+                <li class="toc-item">
+                    <a href="#section-2" class="toc-main">2. NASA Task Load Index (TLX) (Questions 20-25)</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div id="section-1" class="section-anchor" style="margin-top: 40px; margin-bottom: 30px;">
+            <h2 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">System Usability & Tool Effectiveness Survey</h2>
+            <div class="instructions" style="background-color: #e8f5e8; border-left-color: #4CAF50;">
+                <strong>Instructions:</strong> For each scale below, click on the point that best indicates your experience. 
+                Each scale ranges from "Strongly disagree" to "Strongly agree".
+            </div>
+        </div>
+        
+        <table class="question-table">
+            <thead>
+                <tr>
+                    <th class="question-number">#</th>
+                    <th class="question-text">Statement</th>
+                    <th class="likert-scale">
+                        <div class="scale-labels">
+                            <span>Strongly disagree</span>
+                            <span>Somewhat disagree</span>
+                            <span>Neither agree<br>nor disagree</span>
+                            <span>Somewhat agree</span>
+                            <span>Strongly agree</span>
+                        </div>
+                        <div class="scale-numbers">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Standard SUS Questions 1-10 -->
+                <tr id="sus-section" class="section-anchor" style="background-color: #e8f5e8;">
+                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #4CAF50; padding: 15px;">
+                        System Usability Scale
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">1</td>
+                    <td class="question-text">I think that I would like to use this system frequently.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q1" value="1" id="q1_1"><label for="q1_1"></label>
+                            <input type="radio" name="q1" value="2" id="q1_2"><label for="q1_2"></label>
+                            <input type="radio" name="q1" value="3" id="q1_3"><label for="q1_3"></label>
+                            <input type="radio" name="q1" value="4" id="q1_4"><label for="q1_4"></label>
+                            <input type="radio" name="q1" value="5" id="q1_5"><label for="q1_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">2</td>
+                    <td class="question-text">I found the system unnecessarily complex.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q2" value="1" id="q2_1"><label for="q2_1"></label>
+                            <input type="radio" name="q2" value="2" id="q2_2"><label for="q2_2"></label>
+                            <input type="radio" name="q2" value="3" id="q2_3"><label for="q2_3"></label>
+                            <input type="radio" name="q2" value="4" id="q2_4"><label for="q2_4"></label>
+                            <input type="radio" name="q2" value="5" id="q2_5"><label for="q2_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">3</td>
+                    <td class="question-text">I thought the system was easy to use.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q3" value="1" id="q3_1"><label for="q3_1"></label>
+                            <input type="radio" name="q3" value="2" id="q3_2"><label for="q3_2"></label>
+                            <input type="radio" name="q3" value="3" id="q3_3"><label for="q3_3"></label>
+                            <input type="radio" name="q3" value="4" id="q3_4"><label for="q3_4"></label>
+                            <input type="radio" name="q3" value="5" id="q3_5"><label for="q3_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">4</td>
+                    <td class="question-text">I think that I would need the support of a technical person to be able to use this system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q4" value="1" id="q4_1"><label for="q4_1"></label>
+                            <input type="radio" name="q4" value="2" id="q4_2"><label for="q4_2"></label>
+                            <input type="radio" name="q4" value="3" id="q4_3"><label for="q4_3"></label>
+                            <input type="radio" name="q4" value="4" id="q4_4"><label for="q4_4"></label>
+                            <input type="radio" name="q4" value="5" id="q4_5"><label for="q4_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">5</td>
+                    <td class="question-text">I found the various functions in this system were well integrated.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q5" value="1" id="q5_1"><label for="q5_1"></label>
+                            <input type="radio" name="q5" value="2" id="q5_2"><label for="q5_2"></label>
+                            <input type="radio" name="q5" value="3" id="q5_3"><label for="q5_3"></label>
+                            <input type="radio" name="q5" value="4" id="q5_4"><label for="q5_4"></label>
+                            <input type="radio" name="q5" value="5" id="q5_5"><label for="q5_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">6</td>
+                    <td class="question-text">I thought there was too much inconsistency in this system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q6" value="1" id="q6_1"><label for="q6_1"></label>
+                            <input type="radio" name="q6" value="2" id="q6_2"><label for="q6_2"></label>
+                            <input type="radio" name="q6" value="3" id="q6_3"><label for="q6_3"></label>
+                            <input type="radio" name="q6" value="4" id="q6_4"><label for="q6_4"></label>
+                            <input type="radio" name="q6" value="5" id="q6_5"><label for="q6_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">7</td>
+                    <td class="question-text">I would imagine that most people would learn to use this system very quickly.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q7" value="1" id="q7_1"><label for="q7_1"></label>
+                            <input type="radio" name="q7" value="2" id="q7_2"><label for="q7_2"></label>
+                            <input type="radio" name="q7" value="3" id="q7_3"><label for="q7_3"></label>
+                            <input type="radio" name="q7" value="4" id="q7_4"><label for="q7_4"></label>
+                            <input type="radio" name="q7" value="5" id="q7_5"><label for="q7_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">8</td>
+                    <td class="question-text">I found the system very awkward to use.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q8" value="1" id="q8_1"><label for="q8_1"></label>
+                            <input type="radio" name="q8" value="2" id="q8_2"><label for="q8_2"></label>
+                            <input type="radio" name="q8" value="3" id="q8_3"><label for="q8_3"></label>
+                            <input type="radio" name="q8" value="4" id="q8_4"><label for="q8_4"></label>
+                            <input type="radio" name="q8" value="5" id="q8_5"><label for="q8_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">9</td>
+                    <td class="question-text">I felt very confident using the system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q9" value="1" id="q9_1"><label for="q9_1"></label>
+                            <input type="radio" name="q9" value="2" id="q9_2"><label for="q9_2"></label>
+                            <input type="radio" name="q9" value="3" id="q9_3"><label for="q9_3"></label>
+                            <input type="radio" name="q9" value="4" id="q9_4"><label for="q9_4"></label>
+                            <input type="radio" name="q9" value="5" id="q9_5"><label for="q9_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">10</td>
+                    <td class="question-text">I needed to learn a lot of things before I could get going with this system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q10" value="1" id="q10_1"><label for="q10_1"></label>
+                            <input type="radio" name="q10" value="2" id="q10_2"><label for="q10_2"></label>
+                            <input type="radio" name="q10" value="3" id="q10_3"><label for="q10_3"></label>
+                            <input type="radio" name="q10" value="4" id="q10_4"><label for="q10_4"></label>
+                            <input type="radio" name="q10" value="5" id="q10_5"><label for="q10_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                
+
+                
+                <!-- Compliance Report Questions 11-19 -->
+                <tr id="tool-effectiveness-section" class="section-anchor" style="background-color: #e8f5e8;">
+                    <td colspan="3" style="text-align: center; font-weight: bold; font-size: 16px; color: #4CAF50; padding: 15px;">
+                        Tool Effectiveness Survey
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">11</td>
+                    <td class="question-text">I was able to identify my system's overall compliance status.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q11" value="1" id="q11_1"><label for="q11_1"></label>
+                            <input type="radio" name="q11" value="2" id="q11_2"><label for="q11_2"></label>
+                            <input type="radio" name="q11" value="3" id="q11_3"><label for="q11_3"></label>
+                            <input type="radio" name="q11" value="4" id="q11_4"><label for="q11_4"></label>
+                            <input type="radio" name="q11" value="5" id="q11_5"><label for="q11_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">12</td>
+                    <td class="question-text">I was able to find compliance issues regarding specific policies.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q12" value="1" id="q12_1"><label for="q12_1"></label>
+                            <input type="radio" name="q12" value="2" id="q12_2"><label for="q12_2"></label>
+                            <input type="radio" name="q12" value="3" id="q12_3"><label for="q12_3"></label>
+                            <input type="radio" name="q12" value="4" id="q12_4"><label for="q12_4"></label>
+                            <input type="radio" name="q12" value="5" id="q12_5"><label for="q12_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">13</td>
+                    <td class="question-text">I was able to find compliance issues in specific parts of my system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q13" value="1" id="q13_1"><label for="q13_1"></label>
+                            <input type="radio" name="q13" value="2" id="q13_2"><label for="q13_2"></label>
+                            <input type="radio" name="q13" value="3" id="q13_3"><label for="q13_3"></label>
+                            <input type="radio" name="q13" value="4" id="q13_4"><label for="q13_4"></label>
+                            <input type="radio" name="q13" value="5" id="q13_5"><label for="q13_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">14</td>
+                    <td class="question-text">I was able to find high-risk areas in my system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q14" value="1" id="q14_1"><label for="q14_1"></label>
+                            <input type="radio" name="q14" value="2" id="q14_2"><label for="q14_2"></label>
+                            <input type="radio" name="q14" value="3" id="q14_3"><label for="q14_3"></label>
+                            <input type="radio" name="q14" value="4" id="q14_4"><label for="q14_4"></label>
+                            <input type="radio" name="q14" value="5" id="q14_5"><label for="q14_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">15</td>
+                    <td class="question-text">I was able to understand the causes of compliance issues.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q15" value="1" id="q15_1"><label for="q15_1"></label>
+                            <input type="radio" name="q15" value="2" id="q15_2"><label for="q15_2"></label>
+                            <input type="radio" name="q15" value="3" id="q15_3"><label for="q15_3"></label>
+                            <input type="radio" name="q15" value="4" id="q15_4"><label for="q15_4"></label>
+                            <input type="radio" name="q15" value="5" id="q15_5"><label for="q15_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">16</td>
+                    <td class="question-text">I was able to find ways to fix compliance issues.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q16" value="1" id="q16_1"><label for="q16_1"></label>
+                            <input type="radio" name="q16" value="2" id="q16_2"><label for="q16_2"></label>
+                            <input type="radio" name="q16" value="3" id="q16_3"><label for="q16_3"></label>
+                            <input type="radio" name="q16" value="4" id="q16_4"><label for="q16_4"></label>
+                            <input type="radio" name="q16" value="5" id="q16_5"><label for="q16_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">17</td>
+                    <td class="question-text">I thought the report was easy to understand.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q17" value="1" id="q17_1"><label for="q17_1"></label>
+                            <input type="radio" name="q17" value="2" id="q17_2"><label for="q17_2"></label>
+                            <input type="radio" name="q17" value="3" id="q17_3"><label for="q17_3"></label>
+                            <input type="radio" name="q17" value="4" id="q17_4"><label for="q17_4"></label>
+                            <input type="radio" name="q17" value="5" id="q17_5"><label for="q17_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">18</td>
+                    <td class="question-text">I thought the compliance issues flagged were relevant to my system.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q18" value="1" id="q18_1"><label for="q18_1"></label>
+                            <input type="radio" name="q18" value="2" id="q18_2"><label for="q18_2"></label>
+                            <input type="radio" name="q18" value="3" id="q18_3"><label for="q18_3"></label>
+                            <input type="radio" name="q18" value="4" id="q18_4"><label for="q18_4"></label>
+                            <input type="radio" name="q18" value="5" id="q18_5"><label for="q18_5"></label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="question-number">19</td>
+                    <td class="question-text">I am confident in AI governance for my AI systems.</td>
+                    <td class="likert-scale">
+                        <div class="radio-group">
+                            <input type="radio" name="q19" value="1" id="q19_1"><label for="q19_1"></label>
+                            <input type="radio" name="q19" value="2" id="q19_2"><label for="q19_2"></label>
+                            <input type="radio" name="q19" value="3" id="q19_3"><label for="q19_3"></label>
+                            <input type="radio" name="q19" value="4" id="q19_4"><label for="q19_4"></label>
+                            <input type="radio" name="q19" value="5" id="q19_5"><label for="q19_5"></label>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- NASA Task Load Index Section -->
+        <div id="section-2" class="section-anchor" style="margin-top: 40px; margin-bottom: 30px;">
+            <h2 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">NASA Task Load Index (TLX)</h2>
+            <div class="instructions" style="background-color: #e8f5e8; border-left-color: #4CAF50;">
+                <strong>Instructions:</strong> For each scale below, click anywhere along the scale to indicate your rating.
+                Each scale ranges from "Low" to "High" (or "Good" to "Poor" for Performance). 
+            </div>
+        </div>
+        
+        <table class="question-table">
+            <thead>
+                <tr>
+                    <th class="question-number">#</th>
+                    <th class="question-text">Question</th>
+                    <th class="likert-scale">Rating Scale</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Add section anchor for compliance report task load -->
+                <tr>
+                    <td class="question-number">20</td>
+                    <td class="question-text">
+                        <small>How much mental and perceptual activity was required (e.g. thinking, deciding, calculating, remembering, looking, searching, etc) to find the compliance issues? Was the task easy or demanding, simple or complex, exacting or forgiving?</small>
+                    </td>
+                    <td class="likert-scale">
+                        <div class="nasa-scale" id="nasa-scale-0">
+                            <div class="scale-bar">
+                                <div class="scale-segments">
+                                    <div class="segment" data-value="5" onclick="setNASARating(0, 5)"></div>
+                                    <div class="segment" data-value="10" onclick="setNASARating(0, 10)"></div>
+                                    <div class="segment" data-value="15" onclick="setNASARating(0, 15)"></div>
+                                    <div class="segment" data-value="20" onclick="setNASARating(0, 20)"></div>
+                                    <div class="segment" data-value="25" onclick="setNASARating(0, 25)"></div>
+                                    <div class="segment" data-value="30" onclick="setNASARating(0, 30)"></div>
+                                    <div class="segment" data-value="35" onclick="setNASARating(0, 35)"></div>
+                                    <div class="segment" data-value="40" onclick="setNASARating(0, 40)"></div>
+                                    <div class="segment" data-value="45" onclick="setNASARating(0, 45)"></div>
+                                    <div class="segment" data-value="50" onclick="setNASARating(0, 50)"></div>
+                                    <div class="segment" data-value="55" onclick="setNASARating(0, 55)"></div>
+                                    <div class="segment" data-value="60" onclick="setNASARating(0, 60)"></div>
+                                    <div class="segment" data-value="65" onclick="setNASARating(0, 65)"></div>
+                                    <div class="segment" data-value="70" onclick="setNASARating(0, 70)"></div>
+                                    <div class="segment" data-value="75" onclick="setNASARating(0, 75)"></div>
+                                    <div class="segment" data-value="80" onclick="setNASARating(0, 80)"></div>
+                                    <div class="segment" data-value="85" onclick="setNASARating(0, 85)"></div>
+                                    <div class="segment" data-value="90" onclick="setNASARating(0, 90)"></div>
+                                    <div class="segment" data-value="95" onclick="setNASARating(0, 95)"></div>
+                                    <div class="segment" data-value="100" onclick="setNASARating(0, 100)"></div>
+                                </div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
+                            <div class="rating-display" id="nasa-rating-0">No rating selected</div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Physical Demand -->
+                <tr>
+                    <td class="question-number">21</td>
+                    <td class="question-text">
+                        <small>How much physical activity was required (e.g. pushing, pulling, turning, controlling, activating, etc) to find the compliance issues? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?</small>
+                    </td>
+                    <td class="likert-scale">
+                        <div class="nasa-scale" id="nasa-scale-1">
+                            <div class="scale-bar">
+                                <div class="scale-segments">
+                                    <div class="segment" data-value="5" onclick="setNASARating(1, 5)"></div>
+                                    <div class="segment" data-value="10" onclick="setNASARating(1, 10)"></div>
+                                    <div class="segment" data-value="15" onclick="setNASARating(1, 15)"></div>
+                                    <div class="segment" data-value="20" onclick="setNASARating(1, 20)"></div>
+                                    <div class="segment" data-value="25" onclick="setNASARating(1, 25)"></div>
+                                    <div class="segment" data-value="30" onclick="setNASARating(1, 30)"></div>
+                                    <div class="segment" data-value="35" onclick="setNASARating(1, 35)"></div>
+                                    <div class="segment" data-value="40" onclick="setNASARating(1, 40)"></div>
+                                    <div class="segment" data-value="45" onclick="setNASARating(1, 45)"></div>
+                                    <div class="segment" data-value="50" onclick="setNASARating(1, 50)"></div>
+                                    <div class="segment" data-value="55" onclick="setNASARating(1, 55)"></div>
+                                    <div class="segment" data-value="60" onclick="setNASARating(1, 60)"></div>
+                                    <div class="segment" data-value="65" onclick="setNASARating(1, 65)"></div>
+                                    <div class="segment" data-value="70" onclick="setNASARating(1, 70)"></div>
+                                    <div class="segment" data-value="75" onclick="setNASARating(1, 75)"></div>
+                                    <div class="segment" data-value="80" onclick="setNASARating(1, 80)"></div>
+                                    <div class="segment" data-value="85" onclick="setNASARating(1, 85)"></div>
+                                    <div class="segment" data-value="90" onclick="setNASARating(1, 90)"></div>
+                                    <div class="segment" data-value="95" onclick="setNASARating(1, 95)"></div>
+                                    <div class="segment" data-value="100" onclick="setNASARating(1, 100)"></div>
+                                </div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
+                            <div class="rating-display" id="nasa-rating-1">No rating selected</div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Performance -->
+                <tr>
+                    <td class="question-number">22</td>
+                    <td class="question-text">
+                        <small>How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)? How satisfied were you with your performance in accomplishing these goals?</small>
+                    </td>
+                    <td class="likert-scale">
+                        <div class="nasa-scale" id="nasa-scale-2">
+                            <div class="scale-bar">
+                                <div class="scale-segments">
+                                    <div class="segment" data-value="5" onclick="setNASARating(2, 5)"></div>
+                                    <div class="segment" data-value="10" onclick="setNASARating(2, 10)"></div>
+                                    <div class="segment" data-value="15" onclick="setNASARating(2, 15)"></div>
+                                    <div class="segment" data-value="20" onclick="setNASARating(2, 20)"></div>
+                                    <div class="segment" data-value="25" onclick="setNASARating(2, 25)"></div>
+                                    <div class="segment" data-value="30" onclick="setNASARating(2, 30)"></div>
+                                    <div class="segment" data-value="35" onclick="setNASARating(2, 35)"></div>
+                                    <div class="segment" data-value="40" onclick="setNASARating(2, 40)"></div>
+                                    <div class="segment" data-value="45" onclick="setNASARating(2, 45)"></div>
+                                    <div class="segment" data-value="50" onclick="setNASARating(2, 50)"></div>
+                                    <div class="segment" data-value="55" onclick="setNASARating(2, 55)"></div>
+                                    <div class="segment" data-value="60" onclick="setNASARating(2, 60)"></div>
+                                    <div class="segment" data-value="65" onclick="setNASARating(2, 65)"></div>
+                                    <div class="segment" data-value="70" onclick="setNASARating(2, 70)"></div>
+                                    <div class="segment" data-value="75" onclick="setNASARating(2, 75)"></div>
+                                    <div class="segment" data-value="80" onclick="setNASARating(2, 80)"></div>
+                                    <div class="segment" data-value="85" onclick="setNASARating(2, 85)"></div>
+                                    <div class="segment" data-value="90" onclick="setNASARating(2, 90)"></div>
+                                    <div class="segment" data-value="95" onclick="setNASARating(2, 95)"></div>
+                                    <div class="segment" data-value="100" onclick="setNASARating(2, 100)"></div>
+                                </div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Good</span>
+                                <span>Poor</span>
+                            </div>
+                            <div class="rating-display" id="nasa-rating-2">No rating selected</div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Effort -->
+                <tr>
+                    <td class="question-number">23</td>
+                    <td class="question-text">
+                        <small>How hard did you have to work (mentally and physically) to accomplish your level of performance?</small>
+                    </td>
+                    <td class="likert-scale">
+                        <div class="nasa-scale" id="nasa-scale-3">
+                            <div class="scale-bar">
+                                <div class="scale-segments">
+                                    <div class="segment" data-value="5" onclick="setNASARating(3, 5)"></div>
+                                    <div class="segment" data-value="10" onclick="setNASARating(3, 10)"></div>
+                                    <div class="segment" data-value="15" onclick="setNASARating(3, 15)"></div>
+                                    <div class="segment" data-value="20" onclick="setNASARating(3, 20)"></div>
+                                    <div class="segment" data-value="25" onclick="setNASARating(3, 25)"></div>
+                                    <div class="segment" data-value="30" onclick="setNASARating(3, 30)"></div>
+                                    <div class="segment" data-value="35" onclick="setNASARating(3, 35)"></div>
+                                    <div class="segment" data-value="40" onclick="setNASARating(3, 40)"></div>
+                                    <div class="segment" data-value="45" onclick="setNASARating(3, 45)"></div>
+                                    <div class="segment" data-value="50" onclick="setNASARating(3, 50)"></div>
+                                    <div class="segment" data-value="55" onclick="setNASARating(3, 55)"></div>
+                                    <div class="segment" data-value="60" onclick="setNASARating(3, 60)"></div>
+                                    <div class="segment" data-value="65" onclick="setNASARating(3, 65)"></div>
+                                    <div class="segment" data-value="70" onclick="setNASARating(3, 70)"></div>
+                                    <div class="segment" data-value="75" onclick="setNASARating(3, 75)"></div>
+                                    <div class="segment" data-value="80" onclick="setNASARating(3, 80)"></div>
+                                    <div class="segment" data-value="85" onclick="setNASARating(3, 85)"></div>
+                                    <div class="segment" data-value="90" onclick="setNASARating(3, 90)"></div>
+                                    <div class="segment" data-value="95" onclick="setNASARating(3, 95)"></div>
+                                    <div class="segment" data-value="100" onclick="setNASARating(3, 100)"></div>
+                                </div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
+                            <div class="rating-display" id="nasa-rating-3">No rating selected</div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Mental Demand - Model Card -->
+                <tr>
+                    <td class="question-number">24</td>
+                    <td class="question-text">
+                        <small>How mentally demanding was filling in the model card? Was the task easy or demanding, simple or complex, exacting or forgiving?</small>
+                    </td>
+                    <td class="likert-scale">
+                        <div class="nasa-scale" id="nasa-scale-4">
+                            <div class="scale-bar">
+                                <div class="scale-segments">
+                                    <div class="segment" data-value="5" onclick="setNASARating(4, 5)"></div>
+                                    <div class="segment" data-value="10" onclick="setNASARating(4, 10)"></div>
+                                    <div class="segment" data-value="15" onclick="setNASARating(4, 15)"></div>
+                                    <div class="segment" data-value="20" onclick="setNASARating(4, 20)"></div>
+                                    <div class="segment" data-value="25" onclick="setNASARating(4, 25)"></div>
+                                    <div class="segment" data-value="30" onclick="setNASARating(4, 30)"></div>
+                                    <div class="segment" data-value="35" onclick="setNASARating(4, 35)"></div>
+                                    <div class="segment" data-value="40" onclick="setNASARating(4, 40)"></div>
+                                    <div class="segment" data-value="45" onclick="setNASARating(4, 45)"></div>
+                                    <div class="segment" data-value="50" onclick="setNASARating(4, 50)"></div>
+                                    <div class="segment" data-value="55" onclick="setNASARating(4, 55)"></div>
+                                    <div class="segment" data-value="60" onclick="setNASARating(4, 60)"></div>
+                                    <div class="segment" data-value="65" onclick="setNASARating(4, 65)"></div>
+                                    <div class="segment" data-value="70" onclick="setNASARating(4, 70)"></div>
+                                    <div class="segment" data-value="75" onclick="setNASARating(4, 75)"></div>
+                                    <div class="segment" data-value="80" onclick="setNASARating(4, 80)"></div>
+                                    <div class="segment" data-value="85" onclick="setNASARating(4, 85)"></div>
+                                    <div class="segment" data-value="90" onclick="setNASARating(4, 90)"></div>
+                                    <div class="segment" data-value="95" onclick="setNASARating(4, 95)"></div>
+                                    <div class="segment" data-value="100" onclick="setNASARating(4, 100)"></div>
+                                </div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
+                            <div class="rating-display" id="nasa-rating-4">No rating selected</div>
+                        </div>
+                    </td>
+                </tr>
+                
+                <!-- Physical Demand - Model Card -->
+                <tr>
+                    <td class="question-number">25</td>
+                    <td class="question-text">
+                        <small>How physically demanding was filling in the model card? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?</small>
+                    </td>
+                    <td class="likert-scale">
+                        <div class="nasa-scale" id="nasa-scale-5">
+                            <div class="scale-bar">
+                                <div class="scale-segments">
+                                    <div class="segment" data-value="5" onclick="setNASARating(5, 5)"></div>
+                                    <div class="segment" data-value="10" onclick="setNASARating(5, 10)"></div>
+                                    <div class="segment" data-value="15" onclick="setNASARating(5, 15)"></div>
+                                    <div class="segment" data-value="20" onclick="setNASARating(5, 20)"></div>
+                                    <div class="segment" data-value="25" onclick="setNASARating(5, 25)"></div>
+                                    <div class="segment" data-value="30" onclick="setNASARating(5, 30)"></div>
+                                    <div class="segment" data-value="35" onclick="setNASARating(5, 35)"></div>
+                                    <div class="segment" data-value="40" onclick="setNASARating(5, 40)"></div>
+                                    <div class="segment" data-value="45" onclick="setNASARating(5, 45)"></div>
+                                    <div class="segment" data-value="50" onclick="setNASARating(5, 50)"></div>
+                                    <div class="segment" data-value="55" onclick="setNASARating(5, 55)"></div>
+                                    <div class="segment" data-value="60" onclick="setNASARating(5, 60)"></div>
+                                    <div class="segment" data-value="65" onclick="setNASARating(5, 65)"></div>
+                                    <div class="segment" data-value="70" onclick="setNASARating(5, 70)"></div>
+                                    <div class="segment" data-value="75" onclick="setNASARating(5, 75)"></div>
+                                    <div class="segment" data-value="80" onclick="setNASARating(5, 80)"></div>
+                                    <div class="segment" data-value="85" onclick="setNASARating(5, 85)"></div>
+                                    <div class="segment" data-value="90" onclick="setNASARating(5, 90)"></div>
+                                    <div class="segment" data-value="95" onclick="setNASARating(5, 95)"></div>
+                                    <div class="segment" data-value="100" onclick="setNASARating(5, 100)"></div>
+                                </div>
+                            </div>
+                            <div class="scale-labels">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
+                            <div class="rating-display" id="nasa-rating-5">No rating selected</div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button class="submit-btn" onclick="calculateResults()">Submit Responses</button>
+        
+        <div id="results" class="results">
+            <h3>Results</h3>
+            <div id="results-content"></div>
+        </div>
+    </div>
+
+    <script>
+        // Add the saveAs library for file downloads
+        var saveAs=saveAs||function(e){"use strict";if("undefined"==typeof navigator||!/MSIE [1-9]\./.test(navigator.userAgent)){var t=e.document,n=function(){return e.URL||e.webkitURL||e},o=t.createElementNS("http://www.w3.org/1999/xhtml","a"),r="download"in o,i=function(e){var t=new MouseEvent("click");e.dispatchEvent(t)},a=/Version\/[\d\.]+.*Safari/.test(navigator.userAgent),c=e.webkitRequestFileSystem,f=e.requestFileSystem||c||e.mozRequestFileSystem,u=function(t){(e.setImmediate||e.setTimeout)(function(){throw t},0)},d="application/octet-stream",s=0,l=4e4,v=function(e){var t=function(){"string"==typeof e?n().revokeObjectURL(e):e.remove()};setTimeout(t,l)},p=function(e,t,n){t=[].concat(t);for(var o=t.length;o--;){var r=e["on"+t[o]];if("function"==typeof r)try{r.call(e,n||e)}catch(i){u(i)}}},w=function(e){return/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(e.type)?new Blob(["\ufeff",e],{type:e.type}):e},y=function(t,u,l){l||(t=w(t));var y,m,S,h=this,R=t.type,O=!1,g=function(){p(h,"writestart progress write writeend".split(" "))},b=function(){if(m&&a&&"undefined"!=typeof FileReader){var o=new FileReader;return o.onloadend=function(){var e=o.result;m.location.href="data:attachment/file"+e.slice(e.search(/[,;]/)),h.readyState=h.DONE,g()},o.readAsDataURL(t),void(h.readyState=h.INIT)}if((O||!y)&&(y=n().createObjectURL(t)),m)m.location.href=y;else{var r=e.open(y,"_blank");void 0===r&&a&&(e.location.href=y)}h.readyState=h.DONE,g(),v(y)},E=function(e){return function(){return h.readyState!==h.DONE?e.apply(this,arguments):void 0}},N={create:!0,exclusive:!1};return h.readyState=h.INIT,u||(u="download"),r?(y=n().createObjectURL(t),void setTimeout(function(){o.href=y,o.download=u,i(o),g(),v(y),h.readyState=h.DONE})):(e.chrome&&R&&R!==d&&(S=t.slice||t.webkitSlice,t=S.call(t,0,t.size,d),O=!0),c&&"download"!==u&&(u+=".download"),(R===d||c)&&(m=e),f?(s+=t.size,void f(e.TEMPORARY,s,E(function(e){e.root.getDirectory("saved",N,E(function(e){var n=function(){e.getFile(u,N,E(function(e){e.createWriter(E(function(n){n.onwriteend=function(t){m.location.href=e.toURL(),h.readyState=h.DONE,p(h,"writeend",t),v(e)},n.onerror=function(){var e=n.error;e.code!==e.ABORT_ERR&&b()},"writestart progress write abort".split(" ").forEach(function(e){n["on"+e]=h["on"+e]}),n.write(t),h.abort=function(){n.abort(),h.readyState=h.DONE},h.readyState=h.WRITING}),b)}),b)};e.getFile(u,{create:!1},E(function(e){e.remove(),n()}),E(function(e){e.code===e.NOT_FOUND_ERR?n():b()}))}),b)}),b)):void b())},m=y.prototype,S=function(e,t,n){return new y(e,t,n)};return"undefined"!=typeof navigator&&navigator.msSaveOrOpenBlob?function(e,t,n){return n||(e=w(e)),navigator.msSaveOrOpenBlob(e,t||"download")}:(m.abort=function(){var e=this;e.readyState=e.DONE,p(e,"abort")},m.readyState=m.INIT=0,m.WRITING=1,m.DONE=2,m.error=m.onwritestart=m.onprogress=m.onwrite=m.onabort=m.onerror=m.onwriteend=null,S)}}("undefined"!=typeof self&&self||"undefined"!=typeof window&&window||this.content);
+
+        // NASA TLX ratings storage
+        let nasaRatings = {};
+        
+        function setNASARating(scaleIndex, value) {
+            // Clear previous selection
+            const scale = document.getElementById(`nasa-scale-${scaleIndex}`);
+            const segments = scale.querySelectorAll('.segment');
+            segments.forEach(seg => seg.classList.remove('selected'));
+            
+            // Select the clicked segment
+            const selectedSegment = scale.querySelector(`[data-value="${value}"]`);
+            selectedSegment.classList.add('selected');
+            
+            // Update rating display
+            const ratingDisplay = document.getElementById(`nasa-rating-${scaleIndex}`);
+            ratingDisplay.textContent = `Rating: ${value}`;
+            
+            // Store the rating
+            nasaRatings[scaleIndex] = value;
+        }
+        
+        function calculateResults() {
+            // Get participant info
+            const participant = document.getElementById('participant').value.trim();
+            
+            if (!participant) {
+                alert('Please enter Participant Name.');
+                return;
+            }
+            
+            // Collect all SUS responses
+            const responses = {};
+            let allAnswered = true;
+            
+            for (let i = 1; i <= 19; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected) {
+                    responses[`q${i}`] = parseInt(selected.value);
+                } else {
+                    allAnswered = false;
+                    break;
+                }
+            }
+            
+            if (!allAnswered) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+            
+            // Check NASA TLX ratings
+            let allNASARated = true;
+            for (let i = 0; i < 6; i++) {
+                if (!nasaRatings[i]) {
+                    allNASARated = false;
+                    break;
+                }
+            }
+            
+            if (!allNASARated) {
+                alert('Please complete all NASA TLX scales before submitting.');
+                return;
+            }
+            
+            // Calculate SUS score (standard SUS scoring for first 10 questions only)
+            // For SUS, odd questions are scored as (score - 1) and even questions as (5 - score)
+            let susScore = 0;
+            let complianceScore = 0;
+            
+            // Calculate standard SUS score (questions 1-10)
+            for (let i = 1; i <= 10; i++) {
+                const score = responses[`q${i}`];
+                if (i % 2 === 1) { // Odd questions
+                    susScore += (score - 1);
+                } else { // Even questions
+                    susScore += (5 - score);
+                }
+            }
+            
+            // Convert to standard SUS scale (0-100)
+            susScore = susScore * 2.5; // Standard SUS conversion
+            
+            // Calculate compliance score (questions 11-19) - simple average
+            for (let i = 11; i <= 19; i++) {
+                complianceScore += responses[`q${i}`];
+            }
+            complianceScore = (complianceScore / 9) * 20; // Convert to 0-100 scale
+            
+            // Calculate NASA TLX scores
+            const nasaScaleNames = [
+                'Mental Demand', 'Physical Demand', 'Performance', 
+                'Effort', 'Mental Demand - Model Card', 'Physical Demand - Model Card'
+            ];
+            
+            // Determine SUS grade
+            let grade = '';
+            let gradeColor = '';
+            if (susScore >= 80) {
+                grade = 'A (Excellent)';
+                gradeColor = '#4CAF50';
+            } else if (susScore >= 70) {
+                grade = 'B (Good)';
+                gradeColor = '#8BC34A';
+            } else if (susScore >= 60) {
+                grade = 'C (Fair)';
+                gradeColor = '#FFC107';
+            } else if (susScore >= 50) {
+                grade = 'D (Poor)';
+                gradeColor = '#FF9800';
+            } else {
+                grade = 'F (Unacceptable)';
+                gradeColor = '#F44336';
+            }
+            
+            // Display results
+            const resultsDiv = document.getElementById('results');
+            const resultsContent = document.getElementById('results-content');
+            
+            resultsContent.innerHTML = `
+                <p><strong>Participant:</strong> ${participant}</p>
+                <p><strong>Standard SUS Score (Questions 1-10):</strong> <span style="font-size: 1.2em; font-weight: bold; color: ${gradeColor};">${susScore.toFixed(1)}/100</span></p>
+                <p><strong>SUS Grade:</strong> <span style="color: ${gradeColor}; font-weight: bold;">${grade}</span></p>
+                <p><strong>Compliance Report Score (Questions 11-19):</strong> <span style="font-size: 1.2em; font-weight: bold; color: #2196F3;">${complianceScore.toFixed(1)}/100</span></p>
+                <p><strong>NASA TLX Ratings:</strong></p>
+                <ul>
+                    ${Object.keys(nasaRatings).map(index => `<li>${nasaScaleNames[index]}: ${nasaRatings[index]}/100</li>`).join('')}
+                </ul>
+                <p><strong>Individual SUS Responses:</strong></p>
+                <ul>
+                    ${Object.keys(responses).map(q => `<li>Question ${q.substring(1)}: ${responses[q]}/5</li>`).join('')}
+                </ul>
+                <p style="margin-top: 20px; padding: 10px; background-color: #e8f5e8; border-radius: 5px;">
+                    <strong>✅ Results saved!</strong> Your responses have been automatically downloaded as a JSON file.
+                </p>
+            `;
+            
+            resultsDiv.style.display = 'block';
+            
+            // Create comprehensive data object for JSON export
+            const data = {
+                metadata: {
+                    participant: participant,
+                    timestamp: new Date().toISOString(),
+                    surveyType: "PASTA User Study Interview Survey",
+                    version: "1.0"
+                },
+                susResponses: {
+                    individual: responses,
+                    susScore: susScore,
+                    susGrade: grade,
+                    complianceScore: complianceScore
+                },
+                nasaTLX: {
+                    ratings: nasaRatings,
+                    scales: nasaScaleNames
+                },
+                calculatedScores: {
+                    standardSUSScore: susScore,
+                    complianceReportScore: complianceScore,
+                    nasaTLXRatings: Object.keys(nasaRatings).map(index => ({
+                        scale: nasaScaleNames[index],
+                        rating: nasaRatings[index]
+                    }))
+                }
+            };
+            
+            // Generate and download JSON file
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json;charset=utf-8"});
+            saveAs(blob, `PASTA_Survey_${participant}_${new Date().toISOString().split('T')[0]}.json`);
+        }
+    </script>
+</body>
+</html> 
