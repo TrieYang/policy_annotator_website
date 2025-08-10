@@ -1139,6 +1139,77 @@
         .priority-tooltip strong {
             color: #FFD700;
         }
+
+        /* Tooltip styles for affected policies */
+        .policies-with-tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .policies-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            min-width: 300px;
+            max-width: 400px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #34495e;
+        }
+
+        .policies-with-tooltip:hover .policies-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .violation-tooltip h4 {
+            margin: 0 0 8px 0;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 4px;
+        }
+
+        .violation-item {
+            margin-bottom: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .violation-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .violation-item strong {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .violation-description {
+            color: #bdc3c7;
+            font-size: 0.8rem;
+            margin-top: 2px;
+            display: block;
+        }
+
+        .tooltip-indicator {
+            color: #3498db;
+            margin-left: 4px;
+            font-size: 0.8rem;
+        }
+
+        .policies-with-tooltip:hover .tooltip-indicator {
+            color: #2980b9;
+        }
     </style>
 </head>
 <body>
@@ -1324,12 +1395,19 @@
 
                 // Add top-level summary if available
                 if (topLevelSummary) {
+                    // Parse violation details for tooltips
+                    const violationDetails = parseViolationDetails(topLevelSummary);
+                    
                     const renderedTopSummary = marked.parse(topLevelSummary);
                     const cleanTopSummary = DOMPurify.sanitize(renderedTopSummary);
+                    
+                    // Add tooltip functionality to the table
+                    const summaryWithTooltips = addTooltipsToTable(cleanTopSummary, violationDetails);
+                    
                     evaluationHTML += `
                         <div class="top-level-summary mb-4">
                             <div class="summary-content">
-                                ${cleanTopSummary}
+                                ${summaryWithTooltips}
                             </div>
                         </div>
                     `;
@@ -1939,6 +2017,105 @@
                     loadingDiv.style.display = 'none';
                 }
             });
+
+            // Helper function to parse violation details from top-level summary
+            function parseViolationDetails(summary) {
+                const violationDetails = {};
+                
+                // Find the "Violation Details for Tooltips" section
+                const violationSection = summary.match(/\*\*Violation Details for Tooltips:\*\*([\s\S]*?)(?=\n\n|$)/);
+                
+                if (violationSection) {
+                    const detailsText = violationSection[1];
+                    
+                    // Parse each gap section
+                    const gapSections = detailsText.match(/\*\*Gap: ([^*]+)\*\*([\s\S]*?)(?=\*\*Gap:|$)/g);
+                    
+                    if (gapSections) {
+                        gapSections.forEach(section => {
+                            const gapMatch = section.match(/\*\*Gap: ([^*]+)\*\*/);
+                            if (gapMatch) {
+                                const gapName = gapMatch[1].trim();
+                                violationDetails[gapName] = [];
+                                
+                                // Parse violations for this gap
+                                const violations = section.match(/- \*\*([^*]+)\*\*: ([^()]+) \(Score: (\d+)\) - ([^\n]+)/g);
+                                
+                                if (violations) {
+                                    violations.forEach(violation => {
+                                        const violationMatch = violation.match(/- \*\*([^*]+)\*\*: ([^()]+) \(Score: (\d+)\) - ([^\n]+)/);
+                                        if (violationMatch) {
+                                            violationDetails[gapName].push({
+                                                policy: violationMatch[1].trim(),
+                                                article: violationMatch[2].trim(),
+                                                score: parseInt(violationMatch[3]),
+                                                description: violationMatch[4].trim()
+                                            });
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+                
+                return violationDetails;
+            }
+
+            // Helper function to add tooltips to table cells
+            function addTooltipsToTable(html, violationDetails) {
+                // Create a temporary div to parse the HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = html;
+                
+                // Find all table rows
+                const rows = tempDiv.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    
+                    // Check if this is a data row (not header) and has enough columns
+                    if (cells.length >= 5) {
+                        const gapCell = cells[0]; // Compliance Gap column
+                        const policiesCell = cells[4]; // Affected Policies column
+                        
+                        const gapName = gapCell.textContent.trim();
+                        
+                        // Check if we have violation details for this gap
+                        if (violationDetails[gapName] && violationDetails[gapName].length > 0) {
+                            // Add tooltip class and data attributes
+                            policiesCell.classList.add('policies-with-tooltip');
+                            policiesCell.setAttribute('data-gap', gapName);
+                            
+                            // Create tooltip content
+                            let tooltipContent = '<div class="violation-tooltip">';
+                            tooltipContent += '<h4>Violation Details:</h4>';
+                            
+                            violationDetails[gapName].forEach(violation => {
+                                tooltipContent += `
+                                    <div class="violation-item">
+                                        <strong>${violation.policy} ${violation.article}</strong> (Score: ${violation.score})<br>
+                                        <span class="violation-description">${violation.description}</span>
+                                    </div>
+                                `;
+                            });
+                            
+                            tooltipContent += '</div>';
+                            
+                            // Add tooltip element
+                            const tooltip = document.createElement('div');
+                            tooltip.className = 'policies-tooltip';
+                            tooltip.innerHTML = tooltipContent;
+                            policiesCell.appendChild(tooltip);
+                            
+                            // Add hover indicator
+                            policiesCell.innerHTML += ' <i class="fas fa-info-circle tooltip-indicator"></i>';
+                        }
+                    }
+                });
+                
+                return tempDiv.innerHTML;
+            }
         });
     </script>
 </body>

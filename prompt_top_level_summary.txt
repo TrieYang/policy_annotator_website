@@ -19,21 +19,27 @@ Generate a high-level executive summary of the model card's compliance status ac
   3. Generate a concise executive summary
   4. Provide high-level strategic recommendations
 
+### **Priority Classification Guidelines**
+When assigning priority levels to compliance gaps, use the following criteria:
+
+- **High**: Legal violations, regulatory non-compliance, or issues that could result in significant legal/financial risks. These require immediate attention and remediation.
+- **Medium**: Compliance gaps that may lead to future risks or partial non-compliance. These should be addressed within a reasonable timeframe to prevent escalation.
+- **Low**: Minor improvements or best practice recommendations that enhance compliance but don't pose immediate risks. These can be addressed as resources permit.
+
+
 ### **Output Format**
 ```
 **Current Compliance Status:**  
-Brief 2–3 sentence overview of the model card's overall compliance status across all evaluated policies.
+Brief 3–4 sentence overview of the model card's overall compliance status across all evaluated policies.
 
 **Compliance Gaps and To-dos**  
 Present major compliance issues in a markdown table format as shown below. Each row represents a key gap. Present actionable recommendations to address each issue.
 
-
-| Compliance Gap                              | Description                                                                | To-dos                                           | Priority | Affected Policies |
+| Compliance Gap                              | Description                                                                | To-dos                                           | Priority |
 |--------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------|---------|-------------------|
-| Insufficient Privacy Documentation         | Missing details on data handling, retention, and protection mechanisms      | Establish material harm notification procedures	| High     | AIDA, CCPA        |
+| Short title of the issue — 5–10 words      | Specify which exact policy articles are violated and why, explaining the gap in 2–3 sentences      | Provide clear, actionable remediation steps directly addressing the described gap; keep under 20 words each	| High / Medium / Low based on legal risk and potential harm    |
 
-
-[1 to-do for each compliance gap]
+```
 
 ### **Formatting Rules**
 - Keep the tone professional and constructive
@@ -41,34 +47,32 @@ Present major compliance issues in a markdown table format as shown below. Each 
 - Prioritize the most critical issues
 - Keep recommendations strategic and high-level
 - Do not include any headings above "Current Status" - the UI will handle the main title
+- For violation details, extract the exact article numbers, scores, and descriptions from the policy summaries
+- Only include violations with scores < 5 (non-compliant items)
+- Use the exact content from the policy summaries, not newly generated information
 
 ### **Example Input**
 ```json
 {
   "policy_summaries": {
-    "AIDA": "#### 🟠 AIDA – Partial Compliance...[full summary]",
-    "CCPA": "#### 🟠 CCPA – Partial Compliance...[full summary]"
+    "AIDA": "#### 🟠 AIDA – Partial Compliance...[full summary with violation details]",
+    "CCPA": "#### 🟠 CCPA – Partial Compliance...[full summary with violation details]"
   }
 }
 ```
 
 ### **Example Output**
-```
-**Current Status:**
-The model card demonstrates partial compliance across evaluated policies, with consistent gaps in data privacy documentation and risk management frameworks. While basic information is present, significant enhancements are needed to meet full compliance requirements.
+**Current Compliance Status:**  
+Overall, the model card demonstrates moderate compliance with evaluated policies, meeting basic transparency and documentation requirements. However, critical gaps remain in privacy protection, risk management, and user consent, particularly under AIDA, CCPA, and the EU AI Act. Several violations are tied to missing or insufficient disclosures required by specific articles. Addressing these gaps will be necessary to reduce legal risk and improve trustworthiness.  
 
-**Common Compliance Gaps:**
-- **Insufficient Privacy Documentation** – Multiple policies highlight inadequate documentation of data handling procedures, retention periods, and privacy protection measures
-- **Limited Risk Management** – Lack of comprehensive risk assessment and mitigation strategies appears as a recurring issue across policy requirements
-- **Incomplete User Rights Framework** – Documentation of user rights, access procedures, and consent mechanisms needs strengthening across all policies
+**Compliance Gaps and To-dos**  
 
-**Strategic Recommendations:**
-1. **Implement Unified Privacy Framework** – Develop comprehensive documentation covering data handling, retention, and privacy protection that satisfies requirements across all policies
-2. **Establish Central Risk Management System** – Create an integrated risk assessment and mitigation framework that addresses compliance requirements from all relevant policies
+| Compliance Gap                              | Description                                                                | To-dos                                           | Priority |
+|---------------------------------------------|-----------------------------------------------------------------------------|--------------------------------------------------|----------|
+| Insufficient Privacy Documentation          | Violates AIDA s.6(1)(a) and CCPA §1798.100 by omitting details on personal data handling, retention period, and security controls. This lack of disclosure prevents assessment of compliance with required privacy safeguards. | Add retention period statement; describe encryption & access controls; outline data deletion process | High |
+| Missing Risk Management Framework           | Violates EU AI Act Art. 9(1)–(2) by failing to document a continuous risk management process, including identification, evaluation, and mitigation of system risks. | Create documented risk register; add periodic risk reassessment process | High |
+| Weak User Consent Mechanisms                | Violates CCPA §1798.135 and AIDA s.8(2) by lacking clear opt-in consent for personal data processing and unclear user rights disclosure. | Implement opt-in consent forms; publish rights & opt-out procedure | Medium |
 
-**Priority Areas:**
-Immediate focus should be placed on developing comprehensive privacy documentation and implementing a robust risk management framework. These improvements will address the most critical compliance gaps while building a foundation for meeting future regulatory requirements.
-```
 
 ---
 

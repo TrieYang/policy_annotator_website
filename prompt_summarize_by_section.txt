@@ -1,5 +1,5 @@
 ### **Task**  
-Given JSON-formatted evaluation results for a specific model card section, return a JSON object mapping "Overall" and each policy to its respective markdown-formatted summary.
+Given JSON-formatted evaluation results for multiple model card sections, return a JSON object for each section mapping "Overall" and each policy to its respective markdown-formatted summary.
 
 ---
 
@@ -8,12 +8,12 @@ Given JSON-formatted evaluation results for a specific model card section, retur
 - Policy Article: A specific clause or numbered requirement within an AI policy or regulation (e.g., EU AI Act, AIDA). Each article outlines a legal or ethical obligation that AI systems must meet—such as transparency, data privacy, or human oversight.
 
 ### **Instructions**
-- Input will be a JSON array containing evaluation results for a specific model card section across all policies, where each item has:
+- Input will be multiple JSON arrays containing evaluation results for different model card sections across all policies, where each item has:
   1. `policy`: The policy being evaluated
   2. `article`: The specific article number in the policy 
   3. `score`: Violation score (0–5)
   4. `description`: A short explanation of the issue or deficiency if `score > 0` and what can be done to improve the score to 0
-- If all score are 0 or no evaluation result is uploaded/JSON array is empty, state exactly "This section is fully compliant and no actions needed."
+- If all scores are 0 or no evaluation result is uploaded/JSON array is empty for a section, state exactly "This section is fully compliant and no actions needed."
 - Step by step guide:
 1, **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
 2, Group remaining items by policy
@@ -24,20 +24,25 @@ Given JSON-formatted evaluation results for a specific model card section, retur
 6, On the next line, write a ↳ fix: rephrase the description into a constructive action
 7, Keep each pair short, readable, and action-oriented
 8, After per-policy summaries, generate one "Overall" block:
-9, Return as a JSON object mapping policy names and "Overall" to their markdown string.
+9, Return as a JSON object where each key is a section name and the value is the section's JSON object mapping policy names and "Overall" to their markdown string.
 
   #### **Output Format Example**
   ```
   {
-  "Overall": "#### **Issues and Fixes:**\n- **Missing Risk Categorization**  
-  ↳ *Add a risk classification label to the system design, using terms defined in major AI regulations (e.g., 'high-risk').*\n\n- **No Audit Trails**  
-  ↳ *Describe how audit logs are generated, stored, and reviewed to meet transparency standards.*",
-  
-  "EU AI Act": "#### **Issues and Fixes:**\n- **Missing Risk Categorization**  
-  ↳ *Clearly identify system risk level based on EU AI Act definitions, and list controls for high-risk categories.*",
+  "System Name": {
+    "Overall": "#### **Issues and Fixes:**\n- **Missing Risk Categorization**  
+    ↳ *Add a risk classification label to the system design, using terms defined in major AI regulations (e.g., 'high-risk').*\n\n- **No Audit Trails**  
+    ↳ *Describe how audit logs are generated, stored, and reviewed to meet transparency standards.*",
+    
+    "EU AI Act": "#### **Issues and Fixes:**\n- **Missing Risk Categorization**  
+    ↳ *Clearly identify system risk level based on EU AI Act definitions, and list controls for high-risk categories.*",
 
-  "AIDA": "#### **Issues and Fixes:**\n- **No Audit Trails**  
-  ↳ *Include explanations of data traceability, access monitoring, and audit logging to comply with AIDA.*"
+    "AIDA": "#### **Issues and Fixes:**\n- **No Audit Trails**  
+    ↳ *Include explanations of data traceability, access monitoring, and audit logging to comply with AIDA.*"
+  },
+  "Versioning Information": {
+    "Overall": "This section is fully compliant and no actions needed."
+  }
   }
   ```
 
@@ -51,30 +56,6 @@ Given JSON-formatted evaluation results for a specific model card section, retur
 - Do NOT include any extra conversational phrasing or meta commentary. This output will be displayed directly on the frontend and should be ready for users to read without modification.
 - Keep the tone **neutral, informative, and professional**.
 
----
-
-### **Example Input**
-```json
-{
-  "section": "System Overview",
-  "evaluation_result": [
-    {
-      "policy": "AIDA",
-      "article": "1",
-      "score": 3,
-      "description": "The system overview lacks specific details about data processing methods."
-    },
-    {
-      "policy": "CCPA",
-      "article": "2",
-      "score": 2,
-      "description": "Missing information about data collection and user privacy measures."
-    }
-  ]
-}
-```
-
 ### Input
 
-Section name: {{SECTION_NAME}}
-Evaluation Result: {{EVALUATION_RESULT}} 
+{{SECTIONS_INPUT}} 
