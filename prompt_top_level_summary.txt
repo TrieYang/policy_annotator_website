@@ -37,7 +37,7 @@ Present major compliance issues in a markdown table format as shown below. Each 
 
 | Compliance Gap                              | Description                                                                | To-dos                                           | Priority |
 |--------------------------------------------|-----------------------------------------------------------------------------|---------------------------------------------------|---------|-------------------|
-| Short title of the issue — 5–10 words      | Specify which exact policy articles are violated and why, explaining the gap in 2–3 sentences      | Provide clear, actionable remediation steps directly addressing the described gap; keep under 20 words each	| High / Medium / Low based on legal risk and potential harm    |
+| Short title of the issue — 5–10 words      | Specify which exact articles under which policy are violated and why, explaining the gap in 2–3 sentences      | Provide clear, actionable remediation steps directly addressing the described gap; keep under 20 words each	| High / Medium / Low based on legal risk and potential harm    |
 
 ```
 
