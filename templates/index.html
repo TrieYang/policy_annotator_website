@@ -1521,9 +1521,9 @@
                 // Determine the title based on view mode
                 const getTitle = (mode) => {
                     if (mode === 'article') {
-                        return 'Section-wise Compliance Issues and Fixes';
+                        return 'Evaluation Result';
                     } else {
-                        return 'Evaluation Result in Heatmap View';
+                        return 'Evaluation Result';
                     }
                 };
                 
@@ -1580,9 +1580,10 @@
                     const titleElement = document.getElementById('modelCardTitle');
                     if (titleElement) {
                         if (window.currentViewMode === 'article') {
-                            titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Section-wise Compliance Issues and Fixes';
-                        } else {
                             titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Evaluation Result in Heatmap View';
+            
+                        } else {
+                            titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Section-wise Compliance Issues and Fixes';
                         }
                     }
                     

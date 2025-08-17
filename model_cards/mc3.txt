@@ -3,7 +3,7 @@
 | System Name | CitySense Smart Traffic Flow Optimizer — AI-based system for adaptive traffic signal control and congestion mitigation in urban environments. |
 | Versioning Information | Initial launch: 2020-03-15. Current version: 4.1. Last updated: 2024-10-08. Version control via internal CI/CD pipeline using semantic versioning. Major logic changes require formal evaluation under safety and fairness checklists before production rollout. |
 | Primary Developer/Org | Developed by UrbanLogix Systems Inc. (San Francisco, CA), in partnership with the U.S. Department of Transportation’s Smart City Challenge initiative. |
-| Contact Info | citysense-support@urbanlogix.ai | +1-415-998-7623 | Public sector liaison: compliance@urbanlogix.ai |
+| Contact Info | citysense-support@urbanlogix.ai, +1-415-998-7623, Public sector liaison: compliance@urbanlogix.ai |
 | System Overview | CitySense combines real-time video analytics, vehicular telemetry, and predictive modeling to optimize traffic light sequences and lane reconfiguration. The system includes edge-deployed object detection models, cloud-based orchestration, and a municipality dashboard for control and override. |
 | Primary intended uses | Designed to dynamically manage city traffic flow, reduce congestion, and prioritize emergency vehicles. Supports adaptive light timing, incident detection, and coordination with public transit signal priority. Enables city planners to visualize peak hour patterns and optimize routing. |
 | Primary intended users | Municipal traffic control centers, transportation planners, and civil engineers. Intended users are trained public sector staff with expertise in traffic systems, basic AI principles, and emergency override procedures. |

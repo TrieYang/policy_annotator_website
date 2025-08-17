@@ -3,7 +3,7 @@
 | System Name | GenoMap Precision Oncology Recommender — Genomic-guided decision support system for oncology treatment selection. |
 | Versioning Information | Initial release: 2023-02-01. Current version: 1.2. Last update: 2024-10-05. Follows semantic versioning. Significant updates undergo review by a joint medical board and bioethics oversight committee. Updates are recorded via Git and regulatory-compliance audit trails. |
 | Primary Developer/Org | Developed by BioSakura Institute of Genomic Medicine, Tokyo. Clinical trials coordinated in partnership with National Cancer Center Japan and multiple oncology hospitals. |
-| Contact Info | contact@biosakura.jp | Regulatory & Privacy: privacy@biosakura.jp | Phone: +81-3-3333-9898 |
+| Contact Info | contact@biosakura.jp, Regulatory & Privacy: privacy@biosakura.jp, Phone: +81-3-3333-9898 |
 | System Overview | GenoMap integrates next-gen sequencing (NGS) variant interpretation with a treatment recommendation engine built on ensemble machine learning models (random forest + neural network classifiers). It uses secure APIs to ingest patient VCF files and outputs treatment options ranked by evidence strength. Operates under oncologist supervision. |
 | Primary intended uses | Designed to support oncologists in selecting personalized cancer therapies based on tumor mutation profiles. Outputs include therapy suggestions, mutation relevance scores, and eligibility flags for clinical trials. Intended as a second-opinion support tool, not a prescriptive directive. |
 | Primary intended users | Board-certified oncologists, genomic counselors, and hospital-based precision medicine teams. Use requires certified training in NGS interpretation and signed institutional data use agreements. |

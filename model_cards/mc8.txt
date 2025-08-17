@@ -3,7 +3,7 @@
 | System Name | NeuroSync Cognitive Rehabilitation Assistant — AI-driven therapy platform for post-stroke and traumatic brain injury cognitive recovery. |
 | Versioning Information | Initial release: 2021-11-01. Current version: 2.2. Last update: 2024-10-28. Versioning maintained via Git and Swedish eHealth registry. All updates validated through CE-mark documentation review and internal clinical risk assessment. |
 | Primary Developer/Org | Developed by MindMotion Neuro AB in Stockholm, Sweden. Co-developed with Uppsala University Hospital’s Neurorehabilitation Unit. |
-| Contact Info | neuro@mindmotion.se | Compliance contact: gdpr@mindmotion.se | Phone: +46 8 520 701 00 |
+| Contact Info | neuro@mindmotion.se, Compliance contact: gdpr@mindmotion.se, Phone: +46 8 520 701 00 |
 | System Overview | NeuroSync combines cognitive task modules with adaptive reinforcement learning algorithms to provide personalized brain rehabilitation programs. The platform includes speech-based interaction, touchscreen activities, and real-time clinician dashboards. Designed for supervised therapy sessions. |
 | Primary intended uses | Supports neurologists and therapists in providing evidence-based cognitive exercises tailored to attention, memory, and problem-solving deficits in patients recovering from stroke, TBI, or neurodegenerative decline. Tracks progress and suggests dynamic difficulty adjustments. |
 | Primary intended users | Licensed cognitive therapists, neuropsychologists, and rehab clinicians in medical facilities. Patients interact with the system under supervision. Caregivers can view summary reports but cannot modify task flow. |

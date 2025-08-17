@@ -560,7 +560,7 @@ Error occurred while generating summary for {policy_name}. Please check the eval
             print(f"Generated summaries for {len(section_summaries)} sections")
         except Exception as e:
             print(f"Error generating section summaries: {str(e)}")
-            # Fallback to individual processing if batch processing fails
+            # Fallback to individual processing if the main function fails
             section_summaries = {}
             for section in sections:
                 try:

@@ -89,7 +89,7 @@ It is scored based on **how much the absence of this section would hinder compli
 #### **Compliance Contribution Score** (0-5)  
 - **Level 0 - Not Needed**: The section has no impact on compliance assessment. Removing it does not affect this model card's ability to determine compliance to one or multiple policy paragraphs.
 - **Level 1 - Marginal Contribution**: Provides minimal information, with little impact to determine compliance to one or multiple policy paragraphs if removed.  
-- **Level 2 - Some Contribution**: Offers indirect relevance but does not directly determine compliance.  
+- **Level 2 - Some Contribution**: Offers indirect relevance but does not directly determine compliance, or content applicable but jurisdiction out of scope(for example the region doesn't apply)  
 - **Level 3 - Moderate Contribution**: Provides partial but significant evidence that helps assess compliance.  
 - **Level 4 - High Contribution**: The section is important for compliance assessment and removing it would make evaluation difficult.  
 - **Level 5 - Essential Contribution**: The section is indispensable. Without it, determining compliance to one or multiple policy paragraphs would be **impossible or highly unreliable**.

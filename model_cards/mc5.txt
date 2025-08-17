@@ -3,7 +3,7 @@
 | System Name | EduGuide Adaptive Learning Tutor — A real-time AI-powered personalized learning assistant for middle and high school students in Portuguese and Spanish. |
 | Versioning Information | Initial launch: 2021-01-20. Current version: 2.7. Last update: 2024-09-30. Version history tracked through Git and mirrored in the school dashboard. Major curriculum-aligned updates are reviewed quarterly by pedagogical boards. |
 | Primary Developer/Org | Developed by EduNova Brasil Ltda., in collaboration with São Paulo State Department of Education and UNESCO’s Inclusive AI for Learning initiative. |
-| Contact Info | support@eduguide.com.br | Phone: +55 11 4002-8922 | Privacy Officer: lgpd@eduguide.com.br |
+| Contact Info | support@eduguide.com.br, Phone: +55 11 4002-8922, Privacy Officer: lgpd@eduguide.com.br |
 | System Overview | EduGuide combines reinforcement learning and knowledge tracing models to adaptively deliver math, science, and language content. Includes speech-to-text, emotion detection via webcam (optional), and a teacher dashboard. Operates with real-time feedback and human teacher oversight. |
 | Primary intended uses | Designed to support K–12 students by adjusting lesson pacing and content difficulty based on engagement, performance, and knowledge gaps. Teachers can assign modules, monitor learning progress, and intervene when students struggle. |
 | Primary intended users | Students aged 10–18 in public schools. Teachers and education specialists use administrative portals for content moderation. Parents can access summarized learning reports. Platform use requires school-based activation and local training. |

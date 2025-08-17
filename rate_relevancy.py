@@ -16,7 +16,7 @@ load_dotenv()
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
 llm = ChatAnthropic(
-model="claude-3-5-sonnet-20241022",
+model="claude-sonnet-4-20250514",
 #model="claude-3-haiku-20240307",
 anthropic_api_key=ANTHROPIC_API_KEY,
 temperature=0.3)
@@ -58,10 +58,10 @@ sections_pairs = [
 ]
 
 async def rate_relevancy():
-        policy_folder = 'policies'
+        policy_folder = 'unprocessed_policy_tables'
         policy_files = sorted(os.listdir(policy_folder))
         prompt_template_path = "relevancy_prompt.txt"
-        model_card_path = "model_cards/mc8.txt"  
+        model_card_path = "model_cards/mc3.txt"  
         
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
             prompt_template = await f.read()

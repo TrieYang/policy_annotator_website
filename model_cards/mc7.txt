@@ -3,7 +3,7 @@
 | System Name | FinSecure Fraud Pattern Detector — Real-time transaction monitoring and anomaly detection system for financial fraud prevention in digital banking. |
 | Versioning Information | Initial release: 2020-08-01. Current version: 3.6. Last updated: 2024-12-01. Follows semantic versioning with release tags in GitLab. Major logic changes undergo MAS-mandated IT risk review and require board-level approval for system-critical deployments. |
 | Primary Developer/Org | Developed by Synapse Analytics Pte. Ltd., a Singapore-based fintech AI company. Deployed in partnership with ASEAN regional banks and insurance providers. |
-| Contact Info | frauddesk@synapse.sg | +65-6789-4567 | Data Protection: pdpa@synapse.sg |
+| Contact Info | frauddesk@synapse.sg, +65-6789-4567, Data Protection: pdpa@synapse.sg |
 | System Overview | FinSecure integrates streaming anomaly detection models (autoencoders, isolation forests), rule-based filters, and a scoring engine built atop financial graph embeddings. Ingests real-time transactional logs, customer behavioral data, and device fingerprint signals. Supports human-in-the-loop validation. |
 | Primary intended uses | Built to detect suspicious or fraudulent transactions across digital banking platforms, credit card networks, and e-wallets. Flags behavior anomalies, high-risk entities, and money laundering indicators. Supports regulatory reporting and SAR (Suspicious Activity Report) generation. |
 | Primary intended users | Internal fraud teams, risk analysts, bank compliance officers, and AML investigators. Requires financial domain training and credentialed system access. System users must undergo fraud typology training annually. |

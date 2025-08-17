@@ -3,7 +3,7 @@
 | System Name | TerraWatch Environmental Monitoring AI — A satellite-based AI platform for ecosystem surveillance, emissions tracking, and climate risk forecasting. |
 | Versioning Information | Released on 2022-05-05. Current version: 1.9. Last updated: 2024-11-15. Uses semantic versioning managed via GitHub Enterprise. Environmental and regulatory impact updates require cross-disciplinary review with audit logs retained under ISO 14001 standards. |
 | Primary Developer/Org | Developed by TerraVision Analytics Pty Ltd., Melbourne. Supported by CSIRO (Commonwealth Scientific and Industrial Research Organisation) and UN Environmental Data Coalition. |
-| Contact Info | climate@terrawatch.ai | +61-3-5555-0101 | Privacy & Data Requests: dataprotection@terrawatch.ai |
+| Contact Info | climate@terrawatch.ai, +61-3-5555-0101, Privacy & Data Requests: dataprotection@terrawatch.ai |
 | System Overview | TerraWatch processes real-time satellite imagery (Sentinel-2, Landsat 9) and remote sensor inputs through computer vision and geospatial ML models to detect deforestation, water loss, and GHG anomalies. Outputs feed into dashboards for NGOs, governments, and ESG auditors. |
 | Primary intended uses | Designed for climate risk analysts, conservation NGOs, and environmental regulators to track ecological changes, monitor industrial emissions, and assess disaster zones. Supports compliance reporting under climate disclosure frameworks and ESG scoring. |
 | Primary intended users | Environmental data scientists, policy agencies, climate task forces, and sustainability officers. Requires domain knowledge in remote sensing and ecological interpretation. Access via cloud dashboard or enterprise API. |

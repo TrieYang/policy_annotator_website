@@ -3,7 +3,7 @@
 | System Name | LegalEase Contract Review AI — A document analysis tool for legal teams to detect compliance gaps and risky clauses in contracts. |
 | Versioning Information | First released on 2021-09-01. Current version 3.4, last updated on 2024-12-12. Semantic versioning managed via Git; major revisions undergo legal audit for compliance alignment, and update logs are archived for EU AI Act conformity documentation. |
 | Primary Developer/Org | Built by RechtTech GmbH, Berlin. Developed in collaboration with Humboldt University Law Faculty. Commercial deployment managed by LegalEase Europe GmbH. |
-| Contact Info | legal@rechtech.ai | +49 30 12345678 | GDPR compliance inquiries: dataprotection@rechtech.ai |
+| Contact Info | legal@rechtech.ai, +49 30 12345678, GDPR compliance inquiries: dataprotection@rechtech.ai |
 | System Overview | LegalEase uses transformer-based NLP models fine-tuned on European commercial and employment contracts. It includes a clause classification engine, risk-scoring module, and a web-based interface with PDF upload support. Operates semi-autonomously with human review workflow and version-tracked audit logs. |
 | Primary intended uses | Designed for legal departments and compliance officers to accelerate contract review by flagging legally risky or non-standard clauses (e.g., data transfer, arbitration, indemnity). Supports risk categorization, regulatory alignment, and highlights for redlining. |
 | Primary intended users | In-house legal counsel, contract managers, law firms, and compliance officers. Users are expected to have legal training. Tool assumes familiarity with standard legal clause structure and jurisdiction-specific obligations. |
