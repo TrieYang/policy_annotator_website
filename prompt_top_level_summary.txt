@@ -19,6 +19,17 @@ Generate a high-level executive summary of the model card's compliance status ac
   3. Generate a concise executive summary
   4. Provide high-level strategic recommendations
 
+### **Highlighting Instructions**
+To improve readability, use the `highlight()` function around key phrases that should stand out. Examples:
+- `highlight(critical non-compliance)` - for severe issues
+- `highlight(systematic failures)` - for widespread problems
+- `highlight(fundamental regulatory requirements)` - for core requirements
+- `highlight(complete absence of legal documentation)` - for missing elements
+- `highlight(immediate remediation required)` - for urgent actions
+- `highlight(high-risk legal violations)` - for serious compliance issues
+
+Use highlighting sparingly and strategically - only highlight the most important concepts that help users quickly understand the key issues and required actions.
+
 ### **Priority Classification Guidelines**
 When assigning priority levels to compliance gaps, use the following criteria:
 
@@ -30,7 +41,7 @@ When assigning priority levels to compliance gaps, use the following criteria:
 ### **Output Format**
 ```
 **Current Compliance Status:**  
-Brief 3–4 sentence overview of the model card's overall compliance status across all evaluated policies.
+Brief 3–4 sentence overview of the model card's overall compliance status across all evaluated policies. Use highlighting for key issues and critical actions needed.
 
 **Compliance Gaps and To-dos**  
 Present major compliance issues in a markdown table format as shown below. Each row represents a key gap. Present actionable recommendations to address each issue.
@@ -50,6 +61,7 @@ Present major compliance issues in a markdown table format as shown below. Each 
 - For violation details, extract the exact article numbers, scores, and descriptions from the policy summaries
 - Only include violations with scores < 5 (non-compliant items)
 - Use the exact content from the policy summaries, not newly generated information
+- Use highlighting strategically to emphasize key compliance issues and critical actions needed
 
 ### **Example Input**
 ```json
@@ -63,7 +75,7 @@ Present major compliance issues in a markdown table format as shown below. Each 
 
 ### **Example Output**
 **Current Compliance Status:**  
-Overall, the model card demonstrates moderate compliance with evaluated policies, meeting basic transparency and documentation requirements. However, critical gaps remain in privacy protection, risk management, and user consent, particularly under AIDA, CCPA, and the EU AI Act. Several violations are tied to missing or insufficient disclosures required by specific articles. Addressing these gaps will be necessary to reduce legal risk and improve trustworthiness.  
+Overall, the model card demonstrates highlight(moderate compliance) with evaluated policies, meeting basic transparency and documentation requirements. However, highlight(critical gaps) remain in privacy protection, risk management, and user consent, particularly under AIDA, CCPA, and the EU AI Act. Several violations are tied to highlight(missing or insufficient disclosures) required by specific articles. Addressing these gaps will be necessary to reduce legal risk and improve trustworthiness.  
 
 **Compliance Gaps and To-dos**  
 

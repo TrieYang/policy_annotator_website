@@ -13,6 +13,16 @@ Summarize the **Policy Compliance Evaluation Results for a Specific Policy** int
   2. For items with `score < 5`, group them by **common themes** (e.g., privacy issues, lack of documentation, missing impact assessment).
   3. Generate a summary with the following format:
 
+### **Highlighting Instructions**
+To improve readability, use the `highlight()` function around key phrases that should stand out. Examples:
+- `highlight(critical non-compliance)` - for severe issues
+- `highlight(fundamental regulatory requirements)` - for core requirements
+- `highlight(complete absence of legal documentation)` - for missing elements
+- `highlight(unverified compliance status)` - for verification issues
+- `highlight(immediate remediation required)` - for urgent actions
+
+Use highlighting sparingly and strategically - only highlight the most important concepts that help users quickly understand the key issues.
+
 ### **Priority Classification Guidelines**
 When assigning priority levels to compliance gaps, use the following criteria:
 
@@ -23,7 +33,7 @@ When assigning priority levels to compliance gaps, use the following criteria:
 ### **Output Format**
 ```
 **Current Compliance Status:**
-Brief 2–3 sentence overview of the model card's compliance status for this specific policy. 
+Brief 2–3 sentence overview of the model card's compliance status for this specific policy. Use highlighting for key issues.
 
 **Compliance Gaps and To-dos**  
 Present major compliance issues in a markdown table format as shown below. Each row represents a key gap. Present actionable recommendations to address each issue.
@@ -40,6 +50,7 @@ Present major compliance issues in a markdown table format as shown below. Each 
 - Group similar issues together in the table format.
 - Prioritize issues based on severity and impact on compliance using the Priority Classification Guidelines above
 - Assign priority levels (High/Medium/Low) based on legal risk, regulatory impact, and urgency of remediation needed
+- Use highlighting strategically to emphasize key compliance issues and critical actions needed
 
 ### **Example Input**
 ```json
@@ -65,7 +76,7 @@ Present major compliance issues in a markdown table format as shown below. Each 
 ### **Example Output**
 ```
 **Current Compliance Status:**
-The model card demonstrates partial compliance with AIDA requirements, with significant gaps in privacy documentation and risk management frameworks. While basic information is present, comprehensive enhancements are needed to achieve full compliance.
+The model card demonstrates highlight(partial compliance) with AIDA requirements, with significant gaps in highlight(privacy documentation) and highlight(risk management frameworks). While basic information is present, comprehensive enhancements are needed to achieve full compliance.
 
 **Priority Issues Table:**
 | Issue Category                              | Description                                                                 | Priority | Affected Sections |

@@ -164,7 +164,7 @@ sections = [
     "System Name",
     "Versioning Information",
     "Primary Developer/Org",
-    "Contact Info",
+    "Contact Information",
     "System Overview",
     "Primary intended uses",
     "Primary intended users",

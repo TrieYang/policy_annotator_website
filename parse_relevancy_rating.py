@@ -87,7 +87,7 @@ def parse_relevancy_rating(file_path):
                         
                         # Add to appropriate dataset based on policy
                         data_entry = {
-                            'card': 'mc2',
+                            'card': 'mc6',
                             'Section': section_name,
                             'Article': article_no,
                             'score': score
