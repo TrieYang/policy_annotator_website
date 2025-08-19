@@ -61,7 +61,7 @@ async def rate_relevancy():
         policy_folder = 'unprocessed_policy_tables'
         policy_files = sorted(os.listdir(policy_folder))
         prompt_template_path = "relevancy_prompt.txt"
-        model_card_path = "model_cards/mc6.txt"  
+        model_card_path = "model_cards/mc8.txt"  
         
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
             prompt_template = await f.read()
