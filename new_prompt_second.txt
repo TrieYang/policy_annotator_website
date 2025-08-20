@@ -19,7 +19,7 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
     > The scope of a section refers to the reasonable extent of information that the section is designed to cover — not everything the policy might ask about.
         For example, the System Name section is only meant to provide a recognizable name. It is not required (or appropriate) to include functional descriptions like "high-risk resume scanning tool" just to fulfill a policy about risk disclosure. That kind of information belongs in "Intended Use" or "Risk Level" sections.
 
-
+* Take the context of the specific AI system into consideration. For example, for systems only calling existing AI API, do not penalize heavily on data training even if certain policy request to do so, as the user doesn't necessarily have the data training information. 
 * This evaluation is **not a review of the model card’s overall completeness or quality**. You are **only evaluating whether the provided content violates** the specified policy articles.
   * If the content in the selected section **clearly avoids violations**, assign a **score of 0**, even if the section could be expanded.
   * However, in your **reasoning**, you may note that the article touches on topics such as `X`, and while the current section does not violate those, it could benefit from **additional detail on `X` (within the section’s scope)** for a more complete alignment.

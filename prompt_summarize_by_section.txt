@@ -14,14 +14,13 @@ Given JSON-formatted evaluation results for a single model card section, return 
   3. `score`: Violation score (0–5)
   4. `description`: A short explanation of the issue or deficiency if `score > 0` and what can be done to improve the score to 0
 - If all scores are 0 or no evaluation result is uploaded/JSON array is empty for a section, state exactly "This section is fully compliant and no actions needed."
-- **CRITICAL OUTPUT LIMIT HANDLING**: If you have many compliance issues to process and are approaching output limits:
+- **CRITICAL OUTPUT LIMIT HANDLING**: If you have many compliance issues to process and are approaching output limits(3500 characters):
   1. **PRIORITIZE by violation score** - focus on higher scores (4-5) first, then medium scores (2-3), then lower scores (1)
-  2. **PRIORITIZE by policy importance** - focus on major regulations (EU AI Act, AIDA) before others
-  3. **ENSURE COMPLETENESS** - it's better to provide a complete, focused response than an incomplete, comprehensive one
-  4. **GROUP SIMILAR ISSUES** - combine related problems into single, comprehensive points
-  5. **STOP when you have enough** - don't try to cover every single issue if it risks incomplete JSON
+  2. **ENSURE COMPLETENESS** - it's better to provide a complete, focused response than an incomplete, comprehensive one
+  3. **GROUP SIMILAR ISSUES** - combine related problems into single, comprehensive points
+  4. don't try to cover every single issue if it risks incomplete JSON
 - Step by step guide:
-1, **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
+1, **Ignore any items where `score` is 0** – these are fully compliant and do not need to be mentioned.
 2, Group remaining items by policy, **starting with the highest priority issues**
 3, For each policy:
   Create a markdown block titled: #### **Issues and Fixes:**
@@ -54,7 +53,7 @@ Given JSON-formatted evaluation results for a single model card section, return 
   3. The goal is to improve readability and reduce duplication, not to expand the scope of evaluation.
 
 ### **Response Formatting Rules**
-- Do NOT include any extra conversational phrasing or meta commentary. This output will be displayed directly on the frontend and should be ready for users to read without modification.
+- Do NOT include any extra conversational phrasing or meta commentary.
 - Keep the tone **neutral, informative, and professional**.
 - **IMPORTANT**: Always return valid JSON. Do not include any text before or after the JSON object.
 - **CRITICAL**: If the section is fully compliant, return a JSON object with this structure:
