@@ -18,6 +18,7 @@ Generate a high-level executive summary of the model card's compliance status ac
   2. Identify all major compliance gaps
   3. Generate a concise executive summary
   4. Provide high-level strategic recommendations
+  in a friendly, gentle, neutral tone. Do not be too harsh in terms of your choice of language.
 
 ### **Highlighting Instructions**
 To improve readability, use the `highlight()` function around key phrases that should stand out. Examples:

@@ -1,4 +1,3 @@
-# relevancy map for AIDA
 section_chunks = {
     'Actions taken': [('AIDA.2', 'AIDA.4', 'AIDA.5', 'AIDA.6', 'AIDA.7', 'AIDA.8', 'AIDA.9', 'AIDA.10', 'AIDA.11', 'AIDA.12', 'AIDA.13', 'AIDA.14', 'AIDA.15', 'AIDA.16', 'AIDA.17', 'AIDA.18', 'AIDA.23', 'AIDA.27', 'AIDA.28', 'AIDA.30'), ('AIDA.36', 'AIDA.37', 'AIDA.38', 'AIDA.39')],
     'Bias Mitigation Measures': [('AIDA.2', 'AIDA.4', 'AIDA.5', 'AIDA.6', 'AIDA.7', 'AIDA.8', 'AIDA.9', 'AIDA.10', 'AIDA.11', 'AIDA.12', 'AIDA.13', 'AIDA.14', 'AIDA.15', 'AIDA.16', 'AIDA.17', 'AIDA.18', 'AIDA.19', 'AIDA.22', 'AIDA.23', 'AIDA.24'), ('AIDA.25', 'AIDA.26', 'AIDA.27', 'AIDA.28', 'AIDA.29', 'AIDA.30', 'AIDA.36', 'AIDA.38', 'AIDA.39', 'AIDA.40')],

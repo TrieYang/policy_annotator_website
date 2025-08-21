@@ -8,6 +8,10 @@ import aiofiles
 async def generate_section_summary(section_name, section_data, llm, TESTING_MODE):
     """Generate a summary of compliance evaluation results for a specific model card section"""
     
+    # Add timestamp to show when this task actually started
+    start_timestamp = time.strftime("%H:%M:%S")
+    print(f"[{start_timestamp}] 🚀 TASK STARTED for section '{section_name}'")
+    
     try:
         # Load the prompt template
         async with aiofiles.open("prompt_summarize_by_section.txt", "r") as f:
@@ -317,7 +321,7 @@ async def generate_section_summary(section_name, section_data, llm, TESTING_MODE
         return json.dumps(result_json)
 
 async def generate_multiple_section_summaries(sections_data, llm, TESTING_MODE):
-    """Generate summaries for multiple sections by processing one section at a time"""
+    """Generate summaries for multiple sections by processing all sections concurrently"""
     
     section_summaries = {}
     
@@ -327,18 +331,27 @@ async def generate_multiple_section_summaries(sections_data, llm, TESTING_MODE):
         if section_data:
             all_policies.update(section_data.keys())
     
-    # Process each section individually to avoid JSON truncation issues
+    # Create a list to store all concurrent tasks
+    all_tasks = []
+    task_metadata = {}  # To track which task corresponds to which section
+    
+    print(f"\n{'='*50}")
+    print(f"Preparing {len(sections_data)} sections for concurrent summary generation...")
+    print(f"{'='*50}")
+    
+    # Prepare all tasks first without executing them
     for section_name in sections_data.keys():
-        print(f"Processing section: {section_name}")
+        print(f"Preparing section: {section_name}")
         
         section_data = sections_data[section_name]
         
         # Check if there's no data for this section
         if not section_data:
-            print(f"Section '{section_name}' has no evaluation data")
-            # Create a result that includes all policies
-            result_json = {
-                "Overall": f"""#### ⚠️ {section_name} – No Evaluation Data
+            print(f"Section '{section_name}' has no evaluation data - will create fallback result")
+            # Create a task that returns immediately with fallback result
+            async def create_fallback_result(section_name, all_policies):
+                result_json = {
+                    "Overall": f"""#### ⚠️ {section_name} – No Evaluation Data
 
 Note: No evaluation data was provided for this section. This could indicate that:
 - The section is missing from the model card
@@ -346,10 +359,10 @@ Note: No evaluation data was provided for this section. This could indicate that
 - An error occurred during evaluation
 
 Please ensure this section exists and contains the necessary information."""
-            }
-            # Add all policies with the same message
-            for policy_name in all_policies:
-                result_json[policy_name] = f"""#### ⚠️ {section_name} – No Evaluation Data
+                }
+                # Add all policies with the same message
+                for policy_name in all_policies:
+                    result_json[policy_name] = f"""#### ⚠️ {section_name} – No Evaluation Data
 
 Note: No evaluation data was provided for this section. This could indicate that:
 - The section is missing from the model card
@@ -357,31 +370,96 @@ Note: No evaluation data was provided for this section. This could indicate that
 - An error occurred during evaluation
 
 Please ensure this section exists and contains the necessary information."""
+                
+                return section_name, json.dumps(result_json)
             
-            section_summaries[section_name] = json.dumps(result_json)
+            task = asyncio.create_task(create_fallback_result(section_name, all_policies))
+            task_metadata[len(all_tasks)] = {'section_name': section_name, 'type': 'fallback'}
+            all_tasks.append(task)
             continue
         
-        try:
-            # Generate summary for this individual section
-            summary = await generate_section_summary(section_name, section_data, llm, TESTING_MODE)
-            section_summaries[section_name] = summary
-            print(f"Generated summary for section: {section_name}")
+        # Create task for actual summary generation
+        task = asyncio.create_task(generate_section_summary(section_name, section_data, llm, TESTING_MODE))
+        task_metadata[len(all_tasks)] = {'section_name': section_name, 'type': 'summary'}
+        all_tasks.append(task)
+    
+    print(f"\n{'='*50}")
+    print(f"Executing {len(all_tasks)} section summary requests concurrently...")
+    print(f"{'='*50}")
+    print(f"ALL TASKS STARTED AT THE SAME TIME - they are running in parallel!")
+    print(f"Watch the timestamps below - they should be very close together!")
+    print(f"{'='*50}")
+    
+    # Execute all tasks concurrently
+    start_time = time.time()
+    responses = await asyncio.gather(*all_tasks, return_exceptions=True)
+    end_time = time.time()
+    
+    print(f"Completed {len(all_tasks)} section summary requests in {end_time - start_time:.2f} seconds")
+    print(f"Average time per request: {(end_time - start_time) / len(all_tasks):.2f} seconds")
+    
+    # Process all responses
+    print(f"\n{'='*50}")
+    print(f"Processing {len(responses)} section summary responses...")
+    print(f"{'='*50}")
+    
+    successful_requests = 0
+    failed_requests = 0
+    
+    for task_id, response in enumerate(responses):
+        metadata = task_metadata[task_id]
+        section_name = metadata['section_name']
+        task_type = metadata['type']
+        
+        if isinstance(response, Exception):
+            print(f"Request failed for section '{section_name}' ({task_type}): {str(response)}")
+            failed_requests += 1
             
-            # Add a small delay between sections to avoid overwhelming the LLM API
-            if not TESTING_MODE:
-                await asyncio.sleep(1)
-            
-        except Exception as e:
-            print(f"Error generating summary for section {section_name}: {str(e)}")
-            # Create a result that includes all policies
+            # Create error fallback result
             result_json = {
                 "Overall": f"#### ❌ {section_name} – Error\n\nAn error occurred while generating the summary for this section. Please check the logs for more details.",
-                "Error": str(e)
+                "Error": str(response)
             }
             # Add all policies with the same error message
             for policy_name in all_policies:
                 result_json[policy_name] = f"#### ❌ {section_name} – Error\n\nAn error occurred while generating the summary for this section. Please check the logs for more details."
             
             section_summaries[section_name] = json.dumps(result_json)
+            continue
+        
+        try:
+            if task_type == 'fallback':
+                # This was a fallback task that returned (section_name, result)
+                section_name, result = response
+                section_summaries[section_name] = result
+                print(f"Processed fallback result for section: {section_name}")
+            else:
+                # This was a summary generation task
+                section_summaries[section_name] = response
+                print(f"Processed summary response for section: {section_name}")
+            
+            successful_requests += 1
+            
+        except Exception as e:
+            print(f"Error processing response for section '{section_name}' ({task_type}): {str(e)}")
+            failed_requests += 1
+            
+            # Create error fallback result
+            result_json = {
+                "Overall": f"#### ❌ {section_name} – Error\n\nAn error occurred while processing the summary for this section: {str(e)}",
+                "Error": str(e)
+            }
+            # Add all policies with the same error message
+            for policy_name in all_policies:
+                result_json[policy_name] = f"#### ❌ {section_name} – Error\n\nAn error occurred while processing the summary for this section: {str(e)}"
+            
+            section_summaries[section_name] = json.dumps(result_json)
+    
+    print(f"\n{'='*50}")
+    print(f"Section Summary Processing Summary:")
+    print(f"Successful requests: {successful_requests}")
+    print(f"Failed requests: {failed_requests}")
+    print(f"Total requests: {len(all_tasks)}")
+    print(f"{'='*50}")
     
     return section_summaries

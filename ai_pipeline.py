@@ -36,6 +36,10 @@ def load_relevancy_map(policy_name):
             map_file = "relevancy_maps/ccpa_relevancy_map.py"
         elif 'aida' in policy_lower:
             map_file = "relevancy_maps/aida_relevancy_map.py"
+        elif 'colorado' in policy_lower:
+            map_file = "relevancy_maps/colorado_relevancy_map.py"
+        elif 'gdpr' in policy_lower:
+            map_file = "relevancy_maps/gdpr_relevancy_map.py"
         else:
             # Default fallback - use the current hardcoded map
             print(f"Warning: No specific relevancy map found for policy '{policy_name}', using default map")
@@ -231,12 +235,18 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         # Initialize dictionary to store section-based data
         section_data = {section: {} for section in sections}
         
+        # Create a list to store all concurrent tasks
+        all_tasks = []
+        task_metadata = {}  # To track which task corresponds to which policy/section/chunk
         
+        print(f"\n{'='*50}")
+        print(f"Preparing {len(policy_files)} policies for concurrent processing...")
+        print(f"{'='*50}")
+        
+        # Prepare all tasks first without executing them
         for policy_file in policy_files:
             try:
-                print(f"\n{'='*50}")
-                print(f"Processing policy file: {policy_file}")
-                print(f"{'='*50}")
+                print(f"Preparing policy file: {policy_file}")
                 
                 policy_path = os.path.join(policy_folder, policy_file)
                 
@@ -257,134 +267,185 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 section_chunks = load_relevancy_map(policy_file.split('.')[0])
                 print(f"Loaded relevancy map with {len(section_chunks)} sections")
 
-                # Initialize section data for this policy
-                policy_section_scores = {section: {} for section in sections}
-                policy_section_descriptions = {section: {} for section in sections}
-
+                # Create tasks for all sections and chunks
                 for section in sections:
-                        # Get the chunks for this specific section
-                        section_specific_chunks = section_chunks.get(section, [])
-                        if not section_specific_chunks:
-                            print(f"No chunks for section '{section}' - skipping evaluation")
-                            continue
-                            
-                        print(f"Evaluating section '{section}' with {len(section_specific_chunks)} chunks")
+                    # Get the chunks for this specific section
+                    section_specific_chunks = section_chunks.get(section, [])
+                    if not section_specific_chunks:
+                        print(f"No chunks for section '{section}' - skipping evaluation")
+                        continue
                         
-                        for chunk_idx, chunk in enumerate(section_specific_chunks):
-                            print(f"  Processing chunk {chunk_idx + 1}/{len(section_specific_chunks)} for section '{section}'")
-                            
-                            # Convert the chunk of articles into a comma-separated string
-                            articles_str = ", ".join(chunk)
-                            chunk_prompt_second = (
-                                chunk_prompt_temp
-                                .replace("{{LEGAL_DOC}}", legal_doc_content)
-                                .replace("{{SECTION}}", section)
-                                .replace("{{ARTICLES_TO_EVALUATE}}", articles_str)
+                    print(f"Preparing {len(section_specific_chunks)} chunks for section '{section}'")
+                    
+                    for chunk_idx, chunk in enumerate(section_specific_chunks):
+                        # Convert the chunk of articles into a comma-separated string
+                        articles_str = ", ".join(chunk)
+                        chunk_prompt_second = (
+                            chunk_prompt_temp
+                            .replace("{{LEGAL_DOC}}", legal_doc_content)
+                            .replace("{{SECTION}}", section)
+                            .replace("{{ARTICLES_TO_EVALUATE}}", articles_str)
+                        )
+                        
+                        messages = [
+                            {
+                                "role": "system",
+                                "content": [
+                                    {
+                                        "type": "text",
+                                        "text": f"{legal_doc_content}",
+                                        "cache_control": {"type": "ephemeral"},
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": f"{chunk_prompt}",
+                                        "cache_control": {"type": "ephemeral"},
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": f"{model_card_content}",
+                                        "cache_control": {"type": "ephemeral"},
+                                    },
+                                ],
+                            },
+                            {
+                                "role": "user",
+                                "content": f"{chunk_prompt_second}",
+                            },
+                        ]
+                        
+                        # Create the task
+                        task = asyncio.create_task(
+                            asyncio.wait_for(
+                                asyncio.to_thread(llm.invoke, messages),
+                                timeout=300  # 5 minute timeout for each evaluation
                             )
-                            print(f"Evaluating {policy_file} section '{section}' for articles {articles_str}...")
-                            messages = [
-                                {
-                                    "role": "system",
-                                    "content": [
-                                        {
-                                            "type": "text",
-                                            "text": f"{legal_doc_content}",
-                                            "cache_control": {"type": "ephemeral"},
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": f"{chunk_prompt}",
-                                            "cache_control": {"type": "ephemeral"},
-                                        },
-                                        {
-                                            "type": "text",
-                                            "text": f"{model_card_content}",
-                                            "cache_control": {"type": "ephemeral"},
-                                        },
-                                    ],
-                                },
-                                {
-                                    "role": "user",
-                                    "content": f"{chunk_prompt_second}",
-                                },
-                            ]
-                            
-                            # Add timeout protection for LLM calls
-                            try:
-                                response = await asyncio.wait_for(
-                                    asyncio.to_thread(llm.invoke, messages),
-                                    timeout=300  # 5 minute timeout for each evaluation
-                                )
-                                print(f"Successfully evaluated {policy_file} section '{section}' for articles {articles_str}")
-                            except asyncio.TimeoutError:
-                                print(f"Timeout error evaluating {policy_file} section '{section}' for articles {articles_str}")
-                                continue
-                            except Exception as e:
-                                print(f"Error evaluating {policy_file} section '{section}' for articles {articles_str}: {str(e)}")
-                                # Try one more time with a shorter timeout
-                                try:
-                                    print(f"Retrying evaluation for {policy_file} section '{section}' for articles {articles_str}...")
-                                    response = await asyncio.wait_for(
-                                        asyncio.to_thread(llm.invoke, messages),
-                                        timeout=180  # 3 minute timeout for retry
-                                    )
-                                    print(f"Successfully evaluated {policy_file} section '{section}' for articles {articles_str} on retry")
-                                except Exception as retry_e:
-                                    print(f"Retry failed for {policy_file} section '{section}' for articles {articles_str}: {str(retry_e)}")
-                                    continue
-                                
-                            print(response)
-                            # Parse the markdown table to extract JSON content
-                            try:
-                                lines = response.content.strip().splitlines()
+                        )
+                        
+                        # Store task metadata for later processing
+                        task_id = len(all_tasks)
+                        task_metadata[task_id] = {
+                            'policy_file': policy_file,
+                            'section': section,
+                            'chunk': chunk,
+                            'articles_str': articles_str,
+                            'messages': messages
+                        }
+                        
+                        all_tasks.append(task)
+                        
+            except Exception as e:
+                print(f"Error preparing policy file {policy_file}: {str(e)}")
+                continue
+        
+        print(f"\n{'='*50}")
+        print(f"Executing {len(all_tasks)} LLM requests concurrently...")
+        print(f"{'='*50}")
+        
+        # Execute all tasks concurrently
+        start_time = time.time()
+        responses = await asyncio.gather(*all_tasks, return_exceptions=True)
+        end_time = time.time()
+        
+        print(f"Completed {len(all_tasks)} requests in {end_time - start_time:.2f} seconds")
+        print(f"Average time per request: {(end_time - start_time) / len(all_tasks):.2f} seconds")
+        
+        # Initialize section data for all policies
+        policy_section_scores = {}
+        policy_section_descriptions = {}
+        
+        for policy_file in policy_files:
+            policy_name = policy_file.split('.')[0]
+            policy_section_scores[policy_name] = {section: {} for section in sections}
+            policy_section_descriptions[policy_name] = {section: {} for section in sections}
+        
+        # Process all responses
+        print(f"\n{'='*50}")
+        print(f"Processing {len(responses)} responses...")
+        print(f"{'='*50}")
+        
+        successful_requests = 0
+        failed_requests = 0
+        
+        for task_id, response in enumerate(responses):
+            metadata = task_metadata[task_id]
+            policy_file = metadata['policy_file']
+            section = metadata['section']
+            chunk = metadata['chunk']
+            articles_str = metadata['articles_str']
+            
+            if isinstance(response, Exception):
+                print(f"Request failed for {policy_file} section '{section}' articles {articles_str}: {str(response)}")
+                failed_requests += 1
+                continue
+            
+            try:
+                print(f"Processing response for {policy_file} section '{section}' articles {articles_str}")
+                
+                # Parse the markdown table to extract JSON content
+                lines = response.content.strip().splitlines()
 
-                                # Helper function to detect markdown separator row
-                                def is_separator_row(line):
-                                    parts = [p.strip() for p in line.strip().split('|')[1:-1]]
-                                    return all(part.replace('-', '') == '' for part in parts)
+                # Helper function to detect markdown separator row
+                def is_separator_row(line):
+                    parts = [p.strip() for p in line.strip().split('|')[1:-1]]
+                    return all(part.replace('-', '') == '' for part in parts)
 
-                                # Get all rows except the separator row (the one with |---|---| etc.)
-                                table_rows = [
-                                    line for line in lines
-                                    if line.strip().startswith('|') and not is_separator_row(line)
-                                ]
-                                # Skip header row (first row) and process each data row
-                                data_rows = table_rows[1:]  # Skip header row
-                                for data_row in data_rows:
-                                    # Split row into cells and remove empty cells at start/end
-                                    cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
-                                    if len(cells) != 2:  # Should have exactly 2 columns
-                                        print(f"Warning: Row does not have 2 columns: {data_row}")
-                                        continue
-                                    try:
-                                        # First cell should be the article number
-                                        # Clean and standardize the article number format
-                                        article_num = cells[0].strip()
-                                        # Remove any 'Art.' prefix if it exists
-                                        article_num = article_num.replace('Art.', '').strip()
-                                        # Keep the original number format (don't convert to int)
-                                        
-                                        # Second cell should be the JSON data
-                                        json_data = json.loads(cells[1])
-                                        
-                                        policy_section_scores[section][article_num] = json_data['score']
-                                        policy_section_descriptions[section][article_num] = json_data.get('description', '')
-                                    except (ValueError, json.JSONDecodeError) as e:
-                                        print(f"Error parsing row {data_row}: {e}")
-                                        continue
-                            except Exception as e:
-                                print("something went wrong")
-                                print(f"Error processing response: {e}")
-                                print(f"Full response:\n{response}")
-                           
-
-                # Store the data for this policy
+                # Get all rows except the separator row (the one with |---|---| etc.)
+                table_rows = [
+                    line for line in lines
+                    if line.strip().startswith('|') and not is_separator_row(line)
+                ]
+                
+                # Skip header row (first row) and process each data row
+                data_rows = table_rows[1:]  # Skip header row
+                for data_row in data_rows:
+                    # Split row into cells and remove empty cells at start/end
+                    cells = [cell.strip() for cell in data_row.split('|')[1:-1]]
+                    if len(cells) != 2:  # Should have exactly 2 columns
+                        print(f"Warning: Row does not have 2 columns: {data_row}")
+                        continue
+                    try:
+                        # First cell should be the article number
+                        # Clean and standardize the article number format
+                        article_num = cells[0].strip()
+                        # Remove any 'Art.' prefix if it exists
+                        article_num = article_num.replace('Art.', '').strip()
+                        # Keep the original number format (don't convert to int)
+                        
+                        # Second cell should be the JSON data
+                        json_data = json.loads(cells[1])
+                        
+                        policy_name = policy_file.split('.')[0]
+                        policy_section_scores[policy_name][section][article_num] = json_data['score']
+                        policy_section_descriptions[policy_name][section][article_num] = json_data.get('description', '')
+                        
+                    except (ValueError, json.JSONDecodeError) as e:
+                        print(f"Error parsing row {data_row}: {e}")
+                        continue
+                
+                successful_requests += 1
+                
+            except Exception as e:
+                print(f"Error processing response for {policy_file} section '{section}' articles {articles_str}: {str(e)}")
+                failed_requests += 1
+                continue
+        
+        print(f"\n{'='*50}")
+        print(f"Processing Summary:")
+        print(f"Successful requests: {successful_requests}")
+        print(f"Failed requests: {failed_requests}")
+        print(f"Total requests: {len(all_tasks)}")
+        print(f"{'='*50}")
+        
+        # Store the data for each policy
+        for policy_file in policy_files:
+            try:
                 policy_name = policy_file.split('.')[0]
                 
                 # Get all article numbers and convert to float for proper sorting
                 all_articles = set()
                 for section in sections:
-                    all_articles.update(policy_section_scores[section].keys())
+                    all_articles.update(policy_section_scores[policy_name][section].keys())
                 
                 print(f"Policy {policy_name}: Found {len(all_articles)} total articles across all sections")
                 
@@ -419,16 +480,16 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                 # Sort articles using the custom sorting function
                 sorted_articles = sorted(all_articles, key=article_to_sortable)                
                 all_policy_data[policy_name] = {
-                    'scores': policy_section_scores,
-                    'descriptions': policy_section_descriptions,
+                    'scores': policy_section_scores[policy_name],
+                    'descriptions': policy_section_descriptions[policy_name],
                     'articles': sorted_articles
                 }
 
                 # After processing each policy, organize data by section
                 for section in sections:
                     section_data[section][policy_name] = {
-                        'scores': policy_section_scores[section],
-                        'descriptions': policy_section_descriptions[section]
+                        'scores': policy_section_scores[policy_name][section],
+                        'descriptions': policy_section_descriptions[policy_name][section]
                     }
                 
                 print(f"Successfully processed policy {policy_name} with {len(sorted_articles)} articles")
@@ -460,7 +521,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                     article_key = article.replace('Art.', '').strip()
                     
                     scores_df.loc[section, column] = policy_data['scores'][section].get(article_key, 0)
-                    descriptions_df.loc[section, column] = policy_data['descriptions'][section].get(article_key, "No evaluation")
+                    descriptions_df.loc[section, column] = policy_data['descriptions'][section].get(article_key, "Irrelevant ")
         
         # Generate heatmaps for each section
         heatmap_filenames = []

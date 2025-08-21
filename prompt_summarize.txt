@@ -6,11 +6,11 @@ Summarize the **Policy Compliance Evaluation Results for a Specific Policy** int
   - `section`: The model card section being evaluated  
   - `article`: The policy article number  
   - `score`: The compliance score (0–5)  
-  - `description`: A short explanation of the issue or deficiency if `score < 5`
+  - `description`: A short explanation of the issue or deficiency if `score > 0`
 
 - Your task is to:
-  1. **Ignore any items where `score` is 5** – these are fully compliant and do not need to be mentioned.
-  2. For items with `score < 5`, group them by **common themes** (e.g., privacy issues, lack of documentation, missing impact assessment).
+  1. **Ignore any items where `score` is 0** – these are fully compliant and do not need to be mentioned.
+  2. For items with `score > 0`, group them by **common themes** (e.g., privacy issues, lack of documentation, missing impact assessment).
   3. Generate a summary with the following format:
 
 ### **Highlighting Instructions**
@@ -33,7 +33,7 @@ When assigning priority levels to compliance gaps, use the following criteria:
 ### **Output Format**
 ```
 **Current Compliance Status:**
-Brief 2–3 sentence overview of the model card's compliance status for this specific policy. Use highlighting for key issues.
+Brief 2–3 sentence overview of the model card's compliance status for this specific policy in a friendly, gentle, neutral tone. Do not be too harsh. Use highlighting for key issues.
 
 **Compliance Gaps and To-dos**  
 Present major compliance issues in a markdown table format as shown below. Each row represents a key gap. Present actionable recommendations to address each issue.
