@@ -10,7 +10,7 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
 * Your evaluation must remain strictly within the **scope, intent, and expected content of the selected section**:
   * Each model card section serves a specific, limited purpose. You are not judging overall system compliance — only whether this one section contributes to or avoids policy violations.
   * **Do not penalize the section** for MISSING information.
-  * **Do flag vague, incomplete, or risky content** only if it's **expected within this section’s role**.
+  * **Flag vague, incomplete, or risky content** only if it's **expected within this section’s role**.
 
     > 🔍 **Example — “System Name”**:
     > If the section is `"System Name"` and the policy article is about risk classification, do **not** say:
@@ -19,7 +19,8 @@ Compare a **specific Model Card Section** with **Selected Legal Document Article
     > The scope of a section refers to the reasonable extent of information that the section is designed to cover — not everything the policy might ask about.
         For example, the System Name section is only meant to provide a recognizable name. It is not required (or appropriate) to include functional descriptions like "high-risk resume scanning tool" just to fulfill a policy about risk disclosure. That kind of information belongs in "Intended Use" or "Risk Level" sections.
 
-* Take the context of the specific AI system into consideration. For example, for systems only calling existing AI API, do not penalize heavily on data training even if certain policy request to do so, as the user doesn't necessarily have the data training information. 
+* Take the **CONTEXT** of the specific AI system into consideration. For example, for systems only calling existing AI API, do not penalize heavily on data training as the user doesn't necessarily have the data training information. Or another example would be a system developed for personal project should not be penalized too heavily on missing documentation, while you can give advice like "if this project is to be deployed and put into service, it should have...". The information about the project's development context can usually be found in System Overview section. 
+* If you need high risk classification information of the system to determine compliance and the model card doesn't mention if it is high risk or not, you can give your estimation on if the system is high risk/high impact. 
 * This evaluation is **not a review of the model card’s overall completeness or quality**. You are **only evaluating whether the provided content violates** the specified policy articles.
   * If the content in the selected section **clearly avoids violations**, assign a **score of 0**, even if the section could be expanded.
   * However, in your **reasoning**, you may note that the article touches on topics such as `X`, and while the current section does not violate those, it could benefit from **additional detail on `X` (within the section’s scope)** for a more complete alignment.

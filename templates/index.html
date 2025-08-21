@@ -187,808 +187,2740 @@
             opacity: 1;
             transform: translateY(0);
         }
-
-
-        .color-bar {
-            width: 300px;
-            height: 32px;
-            overflow: visible;
-            border-radius: 10px;
-            display: none;
-            margin-right: 30px;
-        }
-
-        .color-bar.active {
-            display: flex;
-        }
-
-        .color-segment {
-            flex: 1;
-            height: 100%;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .color-segment:hover {
-            opacity: 0.8;
-        }
-
-        /* Color segments */
-        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
-        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
-        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
-        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
-        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
-        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
-
-
-        /* Tooltip styles */
-        .tooltip {
-            position: absolute;
-            visibility: hidden;
-            opacity: 0;
-            background-color: #2C3E50;
-            color: white;
-            text-align: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            line-height: 1.4;
-            width: max-content;
-            max-width: 220px;
-            top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 1000;
-        }
-
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .color-segment:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .heatmap-wrapper {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .scoring-guide {
+        
+        .heatmap-section {
             margin-top: 2rem;
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
         }
-
-        .scoring-guide h3 {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-icon {
-            cursor: help;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .info-tooltip {
-            visibility: hidden;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transition: opacity 0.2s, visibility 0.2s;
-        }
-
-        .info-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2C3E50 transparent transparent transparent;
-        }
-
-        .info-icon:hover .info-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .info-tooltip p {
-            margin: 0 0 0.75rem 0;
-        }
-
-        .info-tooltip p:last-child {
-            margin-bottom: 0;
-        }
-
-        .scoring-guide table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .scoring-guide th,
-        .scoring-guide td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-        }
-
-        .scoring-guide th {
-            background-color: #f1f3f5;
-            font-weight: 600;
-        }
-
-        .scoring-guide tr:nth-child(even) {
-            background-color: white;
-        }
-
-        .scoring-guide .score {
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .side-by-side-container {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .model-card-display {
-            background: #f8f9fa;
-            padding: 0;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Container for scrollable content */
-        .model-card-scroll {
-            flex: 1;
-            position: relative;
-        }
-
-        .model-card-content {
-            padding: 0.6rem;
-            padding-top: 0;
-        }
-
-        .heatmap-display {
-            display: none;
-        }
-
-        #heatmapIframe {
-            width: 100%;
-            height: 700px;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-label i {
-            margin-right: 0.5rem;
-            color: var(--secondary-color);
-        }
-
-        .container {
-            max-width: 95%;
-            padding: 0 2rem;
-        }
-
-        .policy-selector {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-
-        .policy-selector:hover {
-            border-color: var(--primary-color);
-        }
-
-        /* Policy info icon and tooltip styles */
-        .policy-info-icon {
-            color: var(--primary-color);
-            margin-left: 0.5rem;
-            font-size: 0.9rem;
-            cursor: help;
-            transition: color 0.2s ease;
-        }
-
-        .policy-info-icon:hover {
-            color: var(--secondary-color);
-        }
-
-        .policy-tooltip {
-            position: absolute;
-            visibility: hidden;
-            opacity: 0;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 9999;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s, visibility 0.3s;
-            width: 320px;
-            max-width: 90vw;
-            white-space: normal;
-            word-wrap: break-word;
-            pointer-events: none;
-        }
-
-        .policy-tooltip::before {
-            content: "";
-            position: absolute;
-            top: -8px;
-            left: 20px;
-            border-width: 8px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .policy-tooltip.show {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .policy-tooltip h4 {
-            margin: 0 0 0.75rem 0;
-            color: #ecf0f1;
-            font-size: 1rem;
-            border-bottom: 1px solid #34495e;
-            padding-bottom: 0.5rem;
-        }
-
-        .policy-tooltip p {
-            margin: 0 0 0.5rem 0;
-            color: #bdc3c7;
-        }
-
-        .policy-tooltip p:last-child {
-            margin-bottom: 0;
-        }
-
-        .policy-options {
-            margin-top: 1rem;
-            padding-left: 1.5rem;
-            border-left: 2px solid #e9ecef;
-        }
-
-        .form-check {
-            margin-bottom: 0.5rem;
-        }
-
-        .form-check-input {
-            cursor: pointer;
-        }
-
-        .form-check-input:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .form-check-label {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .summary-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-        }
-
-        .policy-summary {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid #e9ecef;
-            position: relative;
-        }
-
-        .policy-content {
-            max-height: none;
-            overflow: visible;
-        }
-
-        .policy-content.collapsed::after {
-            display: none;
-        }
-
-        .show-more-wrapper {
-            display: none;
-        }
-
-        .policy-name {
-            display: none;  /* Hide the old heading since it's in markdown now */
-        }
-
-        .summary-content {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-color);
-        }
-
-        .summary-content h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .summary-content strong {
-            color: #2C3E50;
-            font-weight: 600;
-        }
-
-        .summary-content ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .summary-content li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .summary-content li:before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .summary-content p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Add table styles for summary content */
-        .summary-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .summary-content th,
-        .summary-content td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .summary-content th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .summary-content tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .summary-content tr:nth-child(odd) {
-            background-color: white;
-        }
-
-        .summary-content tr:hover {
-            background-color: #e9ecef;
-        }
-
-        /* Priority-based color coding for table cells - more selective approach */
-        .priority-high {
-            background-color: #fff5f5 !important;
-        }
-
-        .priority-medium {
-            background-color: #fffbf0 !important;
-        }
-
-        .priority-low {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Priority color coding for top-level summary tables */
-        .top-level-summary .priority-high {
-            background-color: #fff5f5 !important;
-        }
-
-        .top-level-summary .priority-medium {
-            background-color: #fffbf0 !important;
-        }
-
-        .top-level-summary .priority-low {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
-        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
-            background-color: #fff5f5 !important;
-        }
-
-        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
-            background-color: #fffbf0 !important;
-        }
-
-        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Add styles for the policy icon and name */
-        .policy-icon {
-            color: var(--primary-color);
-            margin-right: 0.5rem;
-        }
-
-        /* Style for the orange circle emoji */
-        .status-emoji {
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
-        }
-
-        /* Add styles for top-level summary */
-        .top-level-summary {
-            background: linear-gradient(to right, #f8f9fa, #ffffff);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .top-level-summary h3 {
-            color: var(--primary-color);
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .top-level-summary strong {
-            color: #2C3E50;
-            font-weight: 600;
-        }
-
-        .top-level-summary ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .top-level-summary li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .top-level-summary li:before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .top-level-summary p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Add table styles for top-level summary */
-        .top-level-summary table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .top-level-summary th,
-        .top-level-summary td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .top-level-summary th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .top-level-summary tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .top-level-summary tr:nth-child(odd) {
-            background-color: white;
-        }
-
-        .top-level-summary tr:hover {
-            background-color: #e9ecef;
-        }
-
-
-        .top-level-summary tr.priority-low:nth-child(even) td,
-        .top-level-summary tr.priority-low:nth-child(odd) td,
-        .summary-content tr.priority-low:nth-child(even) td,
-        .summary-content tr.priority-low:nth-child(odd) td {
-            background-color: #f8fff9 !important;
-        } */
-
-        /* Add styles for the view toggle */
-        .view-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 1rem;
-            gap: 1rem;
-        }
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Policy Annotator</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.3/dist/purify.min.js"></script>
-    <style>
-        :root {
-            --primary-color: #4A90E2;
-            --secondary-color: #6C63FF;
-            --background-color: #F8F9FA;
-            --text-color: #2C3E50;
-        }
-
-        body {
-            background-color: var(--background-color);
-            color: var(--text-color);
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            padding: 1rem 0;
-            margin-bottom: 3rem;
-        }
-
-        .navbar-brand {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary-color) !important;
-        }
-
-        .navbar-brand i {
-            margin-right: 0.5rem;
-            color: var(--secondary-color);
-        }
-
-        .upload-section {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-        }
-
-        .upload-section:hover {
-            transform: translateY(-5px);
-        }
-
-        .upload-icon {
-            font-size: 3rem;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-        }
-
-        .form-control {
-            border: 2px solid #e9ecef;
-            padding: 0.75rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
-        }
-
-        /* Custom file input styling */
-        .file-input-wrapper {
-            position: relative;
-            width: 100%;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            position: absolute;
-            left: -9999px;
-            opacity: 0;
-        }
-
-        .custom-file-input {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
-            padding: 0.75rem;
-            background-color: white;
-            border: 2px dashed var(--primary-color);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--text-color);
-        }
-
-        .custom-file-input:hover {
-            border-color: var(--secondary-color);
-            background-color: rgba(74, 144, 226, 0.05);
-        }
-
-        .custom-file-input i {
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-
-        .custom-file-input span {
-            font-weight: 500;
-        }
-
-        .file-name {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: #6c757d;
-            text-align: center;
-            display: none;
-        }
-
-        .file-name.show {
-            display: block;
-        }
-
-        .btn-primary {
-            background-color: var(--primary-color);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .template-link {
-            color: var(--primary-color);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .template-link:hover {
-            color: var(--secondary-color);
-        }
-
-        .loading {
-            display: none;
-            margin: 2rem 0;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .loading i {
-            color: var(--primary-color);
-            animation: spin 1s linear infinite;
-        }
-
-        .loading p {
-            color: #6c757d;
-            margin-top: 1rem;
+        
+        .heatmap-section .section-title {
             font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .heatmap-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin-top: 2rem;
+
+        .color-bar {
+            width: 300px;
+            height: 32px;
+            overflow: visible;
+            border-radius: 10px;
             display: none;
+            margin-right: 30px;
+        }
+
+        .color-bar.active {
+            display: flex;
+        }
+
+        .color-segment {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-segment:hover {
+            opacity: 0.8;
+        }
+
+        /* Color segments */
+        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
+        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
+        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
+        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
+        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
+        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
+
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            visibility: hidden;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
+            background-color: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+            width: max-content;
+            max-width: 220px;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .color-segment:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .heatmap-wrapper {
+            margin-bottom: 2rem;
             position: relative;
         }
 
-        .heatmap-container.show {
+        .scoring-guide {
+            margin-top: 2rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .scoring-guide h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            cursor: help;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .info-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2C3E50 transparent transparent transparent;
+        }
+
+        .info-icon:hover .info-tooltip {
+            visibility: visible;
             opacity: 1;
-            transform: translateY(0);
+        }
+
+        .info-tooltip p {
+            margin: 0 0 0.75rem 0;
+        }
+
+        .info-tooltip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .scoring-guide table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .scoring-guide th,
+        .scoring-guide td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .scoring-guide th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+        }
+
+        .scoring-guide tr:nth-child(even) {
+            background-color: white;
+        }
+
+        .scoring-guide .score {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .side-by-side-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .model-card-display {
+            background: #f8f9fa;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for scrollable content */
+        .model-card-scroll {
+            flex: 1;
+            position: relative;
+        }
+
+        .model-card-content {
+            padding: 0.6rem;
+            padding-top: 0;
+        }
+
+        .heatmap-display {
+            display: none;
+        }
+
+        #heatmapIframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 95%;
+            padding: 0 2rem;
+        }
+
+        .policy-selector {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector:hover {
+            border-color: var(--primary-color);
+        }
+
+        /* Policy info icon and tooltip styles */
+        .policy-info-icon {
+            color: var(--primary-color);
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            cursor: help;
+            transition: color 0.2s ease;
+        }
+
+        .policy-info-icon:hover {
+            color: var(--secondary-color);
+        }
+
+        .policy-tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 9999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s, visibility 0.3s;
+            width: 320px;
+            max-width: 90vw;
+            white-space: normal;
+            word-wrap: break-word;
+            pointer-events: none;
+        }
+
+        .policy-tooltip::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .policy-tooltip.show {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .policy-tooltip h4 {
+            margin: 0 0 0.75rem 0;
+            color: #ecf0f1;
+            font-size: 1rem;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 0.5rem;
+        }
+
+        .policy-tooltip p {
+            margin: 0 0 0.5rem 0;
+            color: #bdc3c7;
+        }
+
+        .policy-tooltip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-options {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .summary-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .policy-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+            position: relative;
+        }
+
+        .policy-content {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .policy-content.collapsed::after {
+            display: none;
+        }
+
+        .show-more-wrapper {
+            display: none;
+        }
+
+        .policy-name {
+            display: none;  /* Hide the old heading since it's in markdown now */
+        }
+
+        .summary-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .summary-content h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-content strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .summary-content ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-content li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .summary-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .summary-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add table styles for summary content */
+        .summary-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-content th,
+        .summary-content td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .summary-content th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .summary-content tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .summary-content tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .summary-content tr:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Priority-based color coding for table cells - more selective approach */
+        .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Priority color coding for top-level summary tables */
+        .top-level-summary .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        .top-level-summary .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
+        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
+            background-color: #fff5f5 !important;
+        }
+
+        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Add styles for the policy icon and name */
+        .policy-icon {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        /* Style for the orange circle emoji */
+        .status-emoji {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Add styles for top-level summary */
+        .top-level-summary {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .top-level-summary h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .top-level-summary strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .top-level-summary ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .top-level-summary li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .top-level-summary li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .top-level-summary p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add table styles for top-level summary */
+        .top-level-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .top-level-summary th,
+        .top-level-summary td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .top-level-summary th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .top-level-summary tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .top-level-summary tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .top-level-summary tr:hover {
+            background-color: #e9ecef;
         }
 
 
+        .top-level-summary tr.priority-low:nth-child(even) td,
+        .top-level-summary tr.priority-low:nth-child(odd) td,
+        .summary-content tr.priority-low:nth-child(even) td,
+        .summary-content tr.priority-low:nth-child(odd) td {
+            background-color: #f8fff9 !important;
+        } */
+
+        /* Add styles for the view toggle */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+
+        .color-bar {
+            width: 300px;
+            height: 32px;
+            overflow: visible;
+            border-radius: 10px;
+            display: none;
+            margin-right: 30px;
+        }
+
+        .color-bar.active {
+            display: flex;
+        }
+
+        .color-segment {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-segment:hover {
+            opacity: 0.8;
+        }
+
+        /* Color segments */
+        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
+        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
+        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
+        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
+        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
+        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
+
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            background-color: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+            width: max-content;
+            max-width: 220px;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .color-segment:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .heatmap-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .scoring-guide {
+            margin-top: 2rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .scoring-guide h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            cursor: help;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .info-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2C3E50 transparent transparent transparent;
+        }
+
+        .info-icon:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .info-tooltip p {
+            margin: 0 0 0.75rem 0;
+        }
+
+        .info-tooltip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .scoring-guide table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .scoring-guide th,
+        .scoring-guide td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .scoring-guide th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+        }
+
+        .scoring-guide tr:nth-child(even) {
+            background-color: white;
+        }
+
+        .scoring-guide .score {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .side-by-side-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .model-card-display {
+            background: #f8f9fa;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for scrollable content */
+        .model-card-scroll {
+            flex: 1;
+            position: relative;
+        }
+
+        .model-card-content {
+            padding: 0.6rem;
+            padding-top: 0;
+        }
+
+        .heatmap-display {
+            display: none;
+        }
+
+        #heatmapIframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 95%;
+            padding: 0 2rem;
+        }
+
+        .policy-selector {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector:hover {
+            border-color: var(--primary-color);
+        }
+
+        /* Policy info icon and tooltip styles */
+        .policy-info-icon {
+            color: var(--primary-color);
+            margin-left: 0.5rem;
+            font-size: 0.9rem;
+            cursor: help;
+            transition: color 0.2s ease;
+        }
+
+        .policy-info-icon:hover {
+            color: var(--secondary-color);
+        }
+
+        .policy-tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 9999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s, visibility 0.3s;
+            width: 320px;
+            max-width: 90vw;
+            white-space: normal;
+            word-wrap: break-word;
+            pointer-events: none;
+        }
+
+        .policy-tooltip::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            border-width: 8px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .policy-tooltip.show {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .policy-tooltip h4 {
+            margin: 0 0 0.75rem 0;
+            color: #ecf0f1;
+            font-size: 1rem;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 0.5rem;
+        }
+
+        .policy-tooltip p {
+            margin: 0 0 0.5rem 0;
+            color: #bdc3c7;
+        }
+
+        .policy-tooltip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-options {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .summary-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .policy-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+            position: relative;
+        }
+
+        .policy-content {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .policy-content.collapsed::after {
+            display: none;
+        }
+
+        .show-more-wrapper {
+            display: none;
+        }
+
+        .policy-name {
+            display: none;  /* Hide the old heading since it's in markdown now */
+        }
+
+        .summary-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .summary-content h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-content strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .summary-content ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-content li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .summary-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .summary-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add table styles for summary content */
+        .summary-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-content th,
+        .summary-content td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .summary-content th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .summary-content tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .summary-content tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .summary-content tr:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Priority-based color coding for table cells - more selective approach */
+        .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Priority color coding for top-level summary tables */
+        .top-level-summary .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        .top-level-summary .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
+        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
+            background-color: #fff5f5 !important;
+        }
+
+        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Add styles for the policy icon and name */
+        .policy-icon {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        /* Style for the orange circle emoji */
+        .status-emoji {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Add styles for top-level summary */
+        .top-level-summary {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .top-level-summary h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .top-level-summary strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .top-level-summary ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .top-level-summary li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .top-level-summary li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .top-level-summary p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add table styles for top-level summary */
+        .top-level-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .top-level-summary th,
+        .top-level-summary td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .top-level-summary th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .top-level-summary tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .top-level-summary tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .top-level-summary tr:hover {
+            background-color: #e9ecef;
+        }
+
+
+        .top-level-summary tr.priority-low:nth-child(even) td,
+        .top-level-summary tr.priority-low:nth-child(odd) td,
+        .summary-content tr.priority-low:nth-child(even) td,
+        .summary-content tr.priority-low:nth-child(odd) td {
+            background-color: #f8fff9 !important;
+        } */
+
+        /* Add styles for the view toggle */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .view-toggle label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(32px);
+        }
+
+        /* Add styles for the section heatmap */
+        .section-heatmap {
+            width: 100%;
+            max-height: 30px;
+            display: none;
+            position: relative;
+        }
+
+        .section-heatmap.active {
+            display: block;
+        }
+
+        .section-heatmap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Add z-index to table rows to ensure proper layering */
+        .model-card-table tr {
+            position: relative;
+        }
+
+        /* Make sure the table cells don't block pointer events */
+        .model-card-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.3rem;
+            text-align: left;
+            font-size: 0.85rem;
+            vertical-align: top;
+        }
+
+        .model-card-table table {
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            table-layout: fixed;
+        }
+
+        .model-card-table th,
+        .model-card-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.3rem;
+            text-align: left;
+            font-size: 0.85rem;
+            vertical-align: top;
+        }
+
+        .model-card-table th:nth-child(1),
+        .model-card-table td:nth-child(1) {
+            width: 15%;
+            padding-top: 7px;
+            padding-left: 7px;
+        }
+
+        .model-card-table th:nth-child(2),
+        .model-card-table td:nth-child(2) {
+            width: 25%;
+            white-space: normal;
+            text-overflow: initial;
+            overflow: visible;
+            display: table-cell;
+        }
+
+        .model-card-table th:nth-child(3),
+        .model-card-table td:nth-child(3) {
+            width: 60%;
+            white-space: normal;
+            text-overflow: initial;
+            overflow: visible;
+            display: table-cell;
+        }
+
+        .combined-heatmap-cell {
+            height: 400px !important;  /* Adjust height as needed */
+            padding: 0 !important;
+        }
+
+        .model-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            border: none;
+        }
+
+        .model-card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        /* Add new styles for the policy selector dropdown */
+        .policy-selector-dropdown {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .policy-selector-dropdown select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background-color: white;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            font-size: 1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector-dropdown select:hover {
+            border-color: var(--primary-color);
+        }
+
+        .policy-selector-dropdown select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        .policy-selector-dropdown::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--primary-color);
+        }
+
+        .policy-evaluation {
+            display: none;
+        }
+
+        .policy-evaluation.active {
+            display: block;
+        }
+
+        .section-summary.active {
+            display: block;
+        }
+
+        .section-summary {
+            display: none;
+        }
+
+        /* Only the third column (heatmap/summary) allows pointer events */
+        .model-card-table td:nth-child(3) {
+            position: relative;
+            /* pointer-events: auto;  // default is fine */
+        }
+
+        /* The heatmap container and iframe should allow pointer events */
+        .section-heatmap,
+        .section-heatmap iframe {
+            z-index: 2;
+        }
+
+        .policy-selector-card select:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 0.15rem rgba(74, 144, 226, 0.15);
+            outline: none;
+        }
+        .policy-selector-card select:hover {
+            border-color: #6C63FF;
+        }
+
+        .color-segment { position: relative; }
+        .color-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            background: #2C3E50;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 0.7em 1em;
+            position: absolute;
+            z-index: 100;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transition: opacity 0.2s, visibility 0.2s;
+            min-width: 180px;
+            max-width: 260px;
+            pointer-events: none;
+            font-weight: 500;
+        }
+        .color-segment:hover .color-tooltip,
+        .color-segment:focus .color-tooltip {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* New styles for the priority legend */
+        .priority-legend-compact {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-legend-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .priority-items-compact {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            flex-wrap: wrap;
+        }
+
+        .priority-item-compact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .priority-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .priority-dot.high {
+            background-color: #FD8D3C; /* Warm Orange */
+        }
+
+        .priority-dot.medium {
+            background-color: #FEB24C; /* Warm Orange */
+        }
+
+        .priority-dot.low {
+            background-color: #EFEFEF; /* Off White */
+            border: 1px solid #dee2e6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .priority-legend-compact {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .priority-items-compact {
+                gap: 1rem;
+            }
+
+            .priority-item-compact {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Priority header tooltip styles */
+        .priority-header {
+            position: relative;
+            cursor: help;
+            white-space: nowrap;
+        }
+
+        .priority-info-icon {
+            font-size: 0.8em !important;
+            color: var(--primary-color) !important;
+            margin-left: 0.3rem !important;
+            display: inline !important;
+            vertical-align: middle !important;
+        }
+
+        .priority-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s, visibility 0.3s;
+            margin-top: 10px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .priority-tooltip::before {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .priority-header:hover .priority-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .priority-tooltip .tooltip-item {
+            margin-bottom: 0.75rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .priority-tooltip .tooltip-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .priority-tooltip .tooltip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .priority-tooltip strong {
+            color: #FFD700;
+        }
+
+        /* Tooltip styles for affected policies */
+        .policies-with-tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .policies-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            min-width: 300px;
+            max-width: 400px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #34495e;
+        }
+
+        .policies-with-tooltip:hover .policies-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .violation-tooltip h4 {
+            margin: 0 0 8px 0;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 4px;
+        }
+
+        .violation-item {
+            margin-bottom: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .violation-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .violation-item strong {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .violation-description {
+            color: #bdc3c7;
+            font-size: 0.8rem;
+            margin-top: 2px;
+            display: block;
+        }
+
+        .tooltip-indicator {
+            color: #3498db;
+            margin-left: 4px;
+            font-size: 0.8rem;
+        }
+
+        .policies-with-tooltip:hover .tooltip-indicator {
+            color: #2980b9;
+        }
+
+        /* Color bar legend with tooltips */
+        .color-bar {
+            width: 300px;
+            height: 32px;
+            overflow: visible;
+            border-radius: 10px;
+            display: none;
+            margin-right: 30px;
+        }
+
+        .color-bar.active {
+            display: flex;
+        }
+
+        .color-segment {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-segment:hover {
+            opacity: 0.8;
+        }
+
+        /* Color segments */
+        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
+        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
+        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
+        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
+        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
+        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
+
+
+        /* Tooltip styles */
+        .tooltip {
+            position: absolute;
+            visibility: hidden;
+            opacity: 0;
+            background-color: #2C3E50;
+            color: white;
+            text-align: center;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            line-height: 1.4;
+            width: max-content;
+            max-width: 220px;
+            top: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .color-segment:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .heatmap-wrapper {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .scoring-guide {
+            margin-top: 2rem;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+
+        .scoring-guide h3 {
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-icon {
+            cursor: help;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .info-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2C3E50 transparent transparent transparent;
+        }
+
+        .info-icon:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .info-tooltip p {
+            margin: 0 0 0.75rem 0;
+        }
+
+        .info-tooltip p:last-child {
+            margin-bottom: 0;
+        }
+
+        .scoring-guide table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+        }
+
+        .scoring-guide th,
+        .scoring-guide td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .scoring-guide th {
+            background-color: #f1f3f5;
+            font-weight: 600;
+        }
+
+        .scoring-guide tr:nth-child(even) {
+            background-color: white;
+        }
+
+        .scoring-guide .score {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .side-by-side-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .model-card-display {
+            background: #f8f9fa;
+            padding: 0;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Container for scrollable content */
+        .model-card-scroll {
+            flex: 1;
+            position: relative;
+        }
+
+        .model-card-content {
+            padding: 0.6rem;
+            padding-top: 0;
+        }
+
+        .heatmap-display {
+            display: none;
+        }
+
+        #heatmapIframe {
+            width: 100%;
+            height: 700px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-label i {
+            margin-right: 0.5rem;
+            color: var(--secondary-color);
+        }
+
+        .container {
+            max-width: 95%;
+            padding: 0 2rem;
+        }
+
+        .policy-selector {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector:hover {
+            border-color: var(--primary-color);
+        }
+
+        .policy-options {
+            margin-top: 1rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid #e9ecef;
+        }
+
+        .form-check {
+            margin-bottom: 0.5rem;
+        }
+
+        .form-check-input {
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .summary-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .policy-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border: 1px solid #e9ecef;
+            position: relative;
+        }
+
+        .policy-content {
+            max-height: none;
+            overflow: visible;
+        }
+
+        .policy-content.collapsed::after {
+            display: none;
+        }
+
+        .show-more-wrapper {
+            display: none;
+        }
+
+        .policy-name {
+            display: none;  /* Hide the old heading since it's in markdown now */
+        }
+
+        .summary-content {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .summary-content h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-content ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-content li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .summary-content li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .summary-content p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add table styles for summary content */
+        .summary-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-content th,
+        .summary-content td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .summary-content th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .summary-content tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .summary-content tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .summary-content tr:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Priority-based color coding for table cells - more selective approach */
+        .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Priority color coding for top-level summary tables */
+        .top-level-summary .priority-high {
+            background-color: #fff5f5 !important;
+        }
+
+        .top-level-summary .priority-medium {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary .priority-low {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
+        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
+            background-color: #fff5f5 !important;
+        }
+
+        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
+            background-color: #fffbf0 !important;
+        }
+
+        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
+        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
+        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
+            background-color: #f8fff9 !important;
+        }
+
+        /* Add styles for the policy icon and name */
+        .policy-icon {
+            color: var(--primary-color);
+            margin-right: 0.5rem;
+        }
+
+        /* Style for the orange circle emoji */
+        .status-emoji {
+            font-size: 1.2rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Add styles for top-level summary */
+        .top-level-summary {
+            background: linear-gradient(to right, #f8f9fa, #ffffff);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .top-level-summary h3 {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .top-level-summary strong {
+            color: #2C3E50;
+            font-weight: 600;
+        }
+
+        .top-level-summary ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .top-level-summary li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .top-level-summary li:before {
+            content: "•";
+            color: var(--primary-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .top-level-summary p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+
+        /* Add table styles for top-level summary */
+        .top-level-summary table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .top-level-summary th,
+        .top-level-summary td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .top-level-summary th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .top-level-summary tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .top-level-summary tr:nth-child(odd) {
+            background-color: white;
+        }
+
+        .top-level-summary tr:hover {
+            background-color: #e9ecef;
+        }
+
+
+        .top-level-summary tr.priority-low:nth-child(even) td,
+        .top-level-summary tr.priority-low:nth-child(odd) td,
+        .summary-content tr.priority-low:nth-child(even) td,
+        .summary-content tr.priority-low:nth-child(odd) td {
+            background-color: #f8fff9 !important;
+        } */
+
+        /* Add styles for the view toggle */
+        .view-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .view-toggle label {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 28px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(32px);
+        }
+
+        /* Add styles for the section heatmap */
+        .section-heatmap {
+            width: 100%;
+            max-height: 30px;
+            display: none;
+            position: relative;
+        }
+
+        .section-heatmap.active {
+            display: block;
+        }
+
+        .section-heatmap iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Add z-index to table rows to ensure proper layering */
+        .model-card-table tr {
+            position: relative;
+        }
+
+        /* Make sure the table cells don't block pointer events */
+        .model-card-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.3rem;
+            text-align: left;
+            font-size: 0.85rem;
+            vertical-align: top;
+        }
+
+        .model-card-table table {
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            table-layout: fixed;
+        }
+
+        .model-card-table th,
+        .model-card-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.3rem;
+            text-align: left;
+            font-size: 0.85rem;
+            vertical-align: top;
+        }
+
+        .model-card-table th:nth-child(1),
+        .model-card-table td:nth-child(1) {
+            width: 15%;
+            padding-top: 7px;
+            padding-left: 7px;
+        }
+
+        .model-card-table th:nth-child(2),
+        .model-card-table td:nth-child(2) {
+            width: 25%;
+            white-space: normal;
+            text-overflow: initial;
+            overflow: visible;
+            display: table-cell;
+        }
+
+        .model-card-table th:nth-child(3),
+        .model-card-table td:nth-child(3) {
+            width: 60%;
+            white-space: normal;
+            text-overflow: initial;
+            overflow: visible;
+            display: table-cell;
+        }
+
+        .combined-heatmap-cell {
+            height: 400px !important;  /* Adjust height as needed */
+            padding: 0 !important;
+        }
+
+        .model-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #e9ecef;
+            border: none;
+        }
+
+        .model-card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        /* Add new styles for the policy selector dropdown */
+        .policy-selector-dropdown {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .policy-selector-dropdown select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background-color: white;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            font-size: 1rem;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .policy-selector-dropdown select:hover {
+            border-color: var(--primary-color);
+        }
+
+        .policy-selector-dropdown select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        }
+
+        .policy-selector-dropdown::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--primary-color);
+        }
+
+        .policy-evaluation {
+            display: none;
+        }
+
+        .policy-evaluation.active {
+            display: block;
+        }
+
+        .section-summary.active {
+            display: block;
+        }
+
+        .section-summary {
+            display: none;
+        }
+
+        /* Only the third column (heatmap/summary) allows pointer events */
+        .model-card-table td:nth-child(3) {
+            position: relative;
+            /* pointer-events: auto;  // default is fine */
+        }
+
+        /* The heatmap container and iframe should allow pointer events */
+        .section-heatmap,
+        .section-heatmap iframe {
+            z-index: 2;
+        }
+
+        .policy-selector-card select:focus {
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 0.15rem rgba(74, 144, 226, 0.15);
+            outline: none;
+        }
+        .policy-selector-card select:hover {
+            border-color: #6C63FF;
+        }
+
+        .color-segment { position: relative; }
+        .color-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            background: #2C3E50;
+            color: #fff;
+            text-align: left;
+            border-radius: 8px;
+            padding: 0.7em 1em;
+            position: absolute;
+            z-index: 100;
+            top: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+            transition: opacity 0.2s, visibility 0.2s;
+            min-width: 180px;
+            max-width: 260px;
+            pointer-events: none;
+            font-weight: 500;
+        }
+        .color-segment:hover .color-tooltip,
+        .color-segment:focus .color-tooltip {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* New styles for priority legend */
+        .priority-legend-compact {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            margin-top: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .priority-legend-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-color);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .priority-items-compact {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+            flex-wrap: wrap;
+        }
+
+        .priority-item-compact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .priority-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .priority-dot.high {
+            background-color: #FD8D3C; /* Warm Orange */
+        }
+
+        .priority-dot.medium {
+            background-color: #FEB24C; /* Warm Orange */
+        }
+
+        .priority-dot.low {
+            background-color: #EFEFEF; /* Off White */
+            border: 1px solid #dee2e6;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .priority-legend-compact {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .priority-items-compact {
+                gap: 1rem;
+            }
+
+            .priority-item-compact {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* Priority header tooltip styles */
+        .priority-header {
+            position: relative;
+            cursor: help;
+            white-space: nowrap;
+        }
+
+        .priority-info-icon {
+            font-size: 0.8em !important;
+            color: var(--primary-color) !important;
+            margin-left: 0.3rem !important;
+            display: inline !important;
+            vertical-align: middle !important;
+        }
+
+        .priority-tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: opacity 0.3s, visibility 0.3s;
+            margin-top: 10px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
+        .priority-tooltip::before {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .priority-header:hover .priority-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .priority-tooltip .tooltip-item {
+            margin-bottom: 0.75rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .priority-tooltip .tooltip-item:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+        }
+
+        .priority-tooltip .tooltip-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .priority-tooltip strong {
+            color: #FFD700;
+        }
+
+        /* Tooltip styles for affected policies */
+        .policies-with-tooltip {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .policies-tooltip {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            min-width: 300px;
+            max-width: 400px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid #34495e;
+        }
+
+        .policies-with-tooltip:hover .policies-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .violation-tooltip h4 {
+            margin: 0 0 8px 0;
+            color: #ecf0f1;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #34495e;
+            padding-bottom: 4px;
+        }
+
+        .violation-item {
+            margin-bottom: 8px;
+            padding: 6px 0;
+            border-bottom: 1px solid #34495e;
+        }
+
+        .violation-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .violation-item strong {
+            color: #3498db;
+            font-weight: 600;
+        }
+
+        .violation-description {
+            color: #bdc3c7;
+            font-size: 0.8rem;
+            margin-top: 2px;
+            display: block;
+        }
+
+        .tooltip-indicator {
+            color: #3498db;
+            margin-left: 4px;
+            font-size: 0.8rem;
+        }
+
+        .policies-with-tooltip:hover .tooltip-indicator {
+            color: #2980b9;
+        }
+
+        /* Color bar legend with tooltips */
         .color-bar {
             width: 300px;
             height: 32px;
@@ -2325,2115 +4257,6 @@
             border-color: var(--primary-color);
         }
 
-        .policy-options {
-            margin-top: 1rem;
-            padding-left: 1.5rem;
-            border-left: 2px solid #e9ecef;
-        }
-
-        .form-check {
-            margin-bottom: 0.5rem;
-        }
-
-        .form-check-input {
-            cursor: pointer;
-        }
-
-        .form-check-input:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .form-check-label {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .summary-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-        }
-
-        .policy-summary {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid #e9ecef;
-            position: relative;
-        }
-
-        .policy-content {
-            max-height: none;
-            overflow: visible;
-        }
-
-        .policy-content.collapsed::after {
-            display: none;
-        }
-
-        .show-more-wrapper {
-            display: none;
-        }
-
-        .policy-name {
-            display: none;  /* Hide the old heading since it's in markdown now */
-        }
-
-        .summary-content {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-color);
-        }
-
-        .summary-content h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .summary-content ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .summary-content li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .summary-content li:before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .summary-content p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Add table styles for summary content */
-        .summary-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .summary-content th,
-        .summary-content td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .summary-content th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .summary-content tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .summary-content tr:nth-child(odd) {
-            background-color: white;
-        }
-
-        .summary-content tr:hover {
-            background-color: #e9ecef;
-        }
-
-        /* Priority-based color coding for table cells - more selective approach */
-        .priority-high {
-            background-color: #fff5f5 !important;
-        }
-
-        .priority-medium {
-            background-color: #fffbf0 !important;
-        }
-
-        .priority-low {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Priority color coding for top-level summary tables */
-        .top-level-summary .priority-high {
-            background-color: #fff5f5 !important;
-        }
-
-        .top-level-summary .priority-medium {
-            background-color: #fffbf0 !important;
-        }
-
-        .top-level-summary .priority-low {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
-        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
-            background-color: #fff5f5 !important;
-        }
-
-        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
-            background-color: #fffbf0 !important;
-        }
-
-        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Add styles for the policy icon and name */
-        .policy-icon {
-            color: var(--primary-color);
-            margin-right: 0.5rem;
-        }
-
-        /* Style for the orange circle emoji */
-        .status-emoji {
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
-        }
-
-        /* Add styles for top-level summary */
-        .top-level-summary {
-            background: linear-gradient(to right, #f8f9fa, #ffffff);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .top-level-summary h3 {
-            color: var(--primary-color);
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .top-level-summary strong {
-            color: #2C3E50;
-            font-weight: 600;
-        }
-
-        .top-level-summary ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .top-level-summary li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .top-level-summary li:before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .top-level-summary p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Add table styles for top-level summary */
-        .top-level-summary table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .top-level-summary th,
-        .top-level-summary td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .top-level-summary th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .top-level-summary tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .top-level-summary tr:nth-child(odd) {
-            background-color: white;
-        }
-
-        .top-level-summary tr:hover {
-            background-color: #e9ecef;
-        }
-
-
-        .top-level-summary tr.priority-low:nth-child(even) td,
-        .top-level-summary tr.priority-low:nth-child(odd) td,
-        .summary-content tr.priority-low:nth-child(even) td,
-        .summary-content tr.priority-low:nth-child(odd) td {
-            background-color: #f8fff9 !important;
-        } */
-
-        /* Add styles for the view toggle */
-        .view-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 1rem;
-            gap: 1rem;
-        }
-
-        .view-toggle label {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            cursor: pointer;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 28px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(32px);
-        }
-
-        /* Add styles for the section heatmap */
-        .section-heatmap {
-            width: 100%;
-            max-height: 30px;
-            display: none;
-            position: relative;
-        }
-
-        .section-heatmap.active {
-            display: block;
-        }
-
-        .section-heatmap iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Add z-index to table rows to ensure proper layering */
-        .model-card-table tr {
-            position: relative;
-        }
-
-        /* Make sure the table cells don't block pointer events */
-        .model-card-table td {
-            border: 1px solid #dee2e6;
-            padding: 0.3rem;
-            text-align: left;
-            font-size: 0.85rem;
-            vertical-align: top;
-        }
-
-        .model-card-table table {
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            table-layout: fixed;
-        }
-
-        .model-card-table th,
-        .model-card-table td {
-            border: 1px solid #dee2e6;
-            padding: 0.3rem;
-            text-align: left;
-            font-size: 0.85rem;
-            vertical-align: top;
-        }
-
-        .model-card-table th:nth-child(1),
-        .model-card-table td:nth-child(1) {
-            width: 15%;
-            padding-top: 7px;
-            padding-left: 7px;
-        }
-
-        .model-card-table th:nth-child(2),
-        .model-card-table td:nth-child(2) {
-            width: 25%;
-            white-space: normal;
-            text-overflow: initial;
-            overflow: visible;
-            display: table-cell;
-        }
-
-        .model-card-table th:nth-child(3),
-        .model-card-table td:nth-child(3) {
-            width: 60%;
-            white-space: normal;
-            text-overflow: initial;
-            overflow: visible;
-            display: table-cell;
-        }
-
-        .combined-heatmap-cell {
-            height: 400px !important;  /* Adjust height as needed */
-            padding: 0 !important;
-        }
-
-        .model-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #e9ecef;
-            border: none;
-        }
-
-        .model-card-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.2rem;
-            color: var(--text-color);
-            margin: 0;
-        }
-
-        /* Add new styles for the policy selector dropdown */
-        .policy-selector-dropdown {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .policy-selector-dropdown select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            background-color: white;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            font-size: 1rem;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .policy-selector-dropdown select:hover {
-            border-color: var(--primary-color);
-        }
-
-        .policy-selector-dropdown select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
-        }
-
-        .policy-selector-dropdown::after {
-            content: '\f078';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: var(--primary-color);
-        }
-
-        .policy-evaluation {
-            display: none;
-        }
-
-        .policy-evaluation.active {
-            display: block;
-        }
-
-        .section-summary.active {
-            display: block;
-        }
-
-        .section-summary {
-            display: none;
-        }
-
-        /* Only the third column (heatmap/summary) allows pointer events */
-        .model-card-table td:nth-child(3) {
-            position: relative;
-            /* pointer-events: auto;  // default is fine */
-        }
-
-        /* The heatmap container and iframe should allow pointer events */
-        .section-heatmap,
-        .section-heatmap iframe {
-            z-index: 2;
-        }
-
-        .policy-selector-card select:focus {
-            border-color: #4A90E2;
-            box-shadow: 0 0 0 0.15rem rgba(74, 144, 226, 0.15);
-            outline: none;
-        }
-        .policy-selector-card select:hover {
-            border-color: #6C63FF;
-        }
-
-        .color-segment { position: relative; }
-        .color-tooltip {
-            visibility: hidden;
-            opacity: 0;
-            background: #2C3E50;
-            color: #fff;
-            text-align: left;
-            border-radius: 8px;
-            padding: 0.7em 1em;
-            position: absolute;
-            z-index: 100;
-            top: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.95rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-            transition: opacity 0.2s, visibility 0.2s;
-            min-width: 180px;
-            max-width: 260px;
-            pointer-events: none;
-            font-weight: 500;
-        }
-        .color-segment:hover .color-tooltip,
-        .color-segment:focus .color-tooltip {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* New styles for priority legend */
-        .priority-legend-compact {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .priority-legend-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-            color: var(--text-color);
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .priority-items-compact {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.9rem;
-            color: #6c757d;
-            flex-wrap: wrap;
-        }
-
-        .priority-item-compact {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .priority-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .priority-dot.high {
-            background-color: #FD8D3C; /* Warm Orange */
-        }
-
-        .priority-dot.medium {
-            background-color: #FEB24C; /* Warm Orange */
-        }
-
-        .priority-dot.low {
-            background-color: #EFEFEF; /* Off White */
-            border: 1px solid #dee2e6;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .priority-legend-compact {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-
-            .priority-items-compact {
-                gap: 1rem;
-            }
-
-            .priority-item-compact {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Priority header tooltip styles */
-        .priority-header {
-            position: relative;
-            cursor: help;
-            white-space: nowrap;
-        }
-
-        .priority-info-icon {
-            font-size: 0.8em !important;
-            color: var(--primary-color) !important;
-            margin-left: 0.3rem !important;
-            display: inline !important;
-            vertical-align: middle !important;
-        }
-
-        .priority-tooltip {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 280px;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s, visibility 0.3s;
-            margin-top: 10px;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-
-        .priority-tooltip::before {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .priority-header:hover .priority-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .priority-tooltip .tooltip-item {
-            margin-bottom: 0.75rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .priority-tooltip .tooltip-item:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-        }
-
-        .priority-tooltip .tooltip-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .priority-tooltip strong {
-            color: #FFD700;
-        }
-
-        /* Tooltip styles for affected policies */
-        .policies-with-tooltip {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .policies-tooltip {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #2c3e50;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            min-width: 300px;
-            max-width: 400px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid #34495e;
-        }
-
-        .policies-with-tooltip:hover .policies-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .violation-tooltip h4 {
-            margin: 0 0 8px 0;
-            color: #ecf0f1;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #34495e;
-            padding-bottom: 4px;
-        }
-
-        .violation-item {
-            margin-bottom: 8px;
-            padding: 6px 0;
-            border-bottom: 1px solid #34495e;
-        }
-
-        .violation-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .violation-item strong {
-            color: #3498db;
-            font-weight: 600;
-        }
-
-        .violation-description {
-            color: #bdc3c7;
-            font-size: 0.8rem;
-            margin-top: 2px;
-            display: block;
-        }
-
-        .tooltip-indicator {
-            color: #3498db;
-            margin-left: 4px;
-            font-size: 0.8rem;
-        }
-
-        .policies-with-tooltip:hover .tooltip-indicator {
-            color: #2980b9;
-        }
-
-        /* Color bar legend with tooltips */
-        .color-bar {
-            width: 300px;
-            height: 32px;
-            overflow: visible;
-            border-radius: 10px;
-            display: none;
-            margin-right: 30px;
-        }
-
-        .color-bar.active {
-            display: flex;
-        }
-
-        .color-segment {
-            flex: 1;
-            height: 100%;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .color-segment:hover {
-            opacity: 0.8;
-        }
-
-        /* Color segments */
-        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
-        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
-        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
-        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
-        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
-        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
-
-
-        /* Tooltip styles */
-        .tooltip {
-            position: absolute;
-            visibility: hidden;
-            opacity: 0;
-            background-color: #2C3E50;
-            color: white;
-            text-align: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            line-height: 1.4;
-            width: max-content;
-            max-width: 220px;
-            top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 1000;
-        }
-
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .color-segment:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .heatmap-wrapper {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .scoring-guide {
-            margin-top: 2rem;
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-        }
-
-        .scoring-guide h3 {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-icon {
-            cursor: help;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .info-tooltip {
-            visibility: hidden;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transition: opacity 0.2s, visibility 0.2s;
-        }
-
-        .info-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2C3E50 transparent transparent transparent;
-        }
-
-        .info-icon:hover .info-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .info-tooltip p {
-            margin: 0 0 0.75rem 0;
-        }
-
-        .info-tooltip p:last-child {
-            margin-bottom: 0;
-        }
-
-        .scoring-guide table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .scoring-guide th,
-        .scoring-guide td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-        }
-
-        .scoring-guide th {
-            background-color: #f1f3f5;
-            font-weight: 600;
-        }
-
-        .scoring-guide tr:nth-child(even) {
-            background-color: white;
-        }
-
-        .scoring-guide .score {
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .side-by-side-container {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .model-card-display {
-            background: #f8f9fa;
-            padding: 0;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Container for scrollable content */
-        .model-card-scroll {
-            flex: 1;
-            position: relative;
-        }
-
-        .model-card-content {
-            padding: 0.6rem;
-            padding-top: 0;
-        }
-
-        .heatmap-display {
-            display: none;
-        }
-
-        #heatmapIframe {
-            width: 100%;
-            height: 700px;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-label i {
-            margin-right: 0.5rem;
-            color: var(--secondary-color);
-        }
-
-        .container {
-            max-width: 95%;
-            padding: 0 2rem;
-        }
-
-        .policy-selector {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-
-        .policy-selector:hover {
-            border-color: var(--primary-color);
-        }
-
-        /* Policy info icon and tooltip styles */
-        .policy-info-icon {
-            color: var(--primary-color);
-            margin-left: 0.5rem;
-            font-size: 0.9rem;
-            cursor: help;
-            transition: color 0.2s ease;
-        }
-
-        .policy-info-icon:hover {
-            color: var(--secondary-color);
-        }
-
-        .policy-tooltip {
-            position: absolute;
-            visibility: hidden;
-            opacity: 0;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 9999;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s, visibility 0.3s;
-            width: 320px;
-            max-width: 90vw;
-            white-space: normal;
-            word-wrap: break-word;
-            pointer-events: none;
-        }
-
-        .policy-tooltip::before {
-            content: "";
-            position: absolute;
-            top: -8px;
-            left: 20px;
-            border-width: 8px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .policy-tooltip.show {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .policy-tooltip h4 {
-            margin: 0 0 0.75rem 0;
-            color: #ecf0f1;
-            font-size: 1rem;
-            border-bottom: 1px solid #34495e;
-            padding-bottom: 0.5rem;
-        }
-
-        .policy-tooltip p {
-            margin: 0 0 0.5rem 0;
-            color: #bdc3c7;
-        }
-
-        .policy-tooltip p:last-child {
-            margin-bottom: 0;
-        }
-
-        .policy-options {
-            margin-top: 1rem;
-            padding-left: 1.5rem;
-            border-left: 2px solid #e9ecef;
-        }
-
-        .form-check {
-            margin-bottom: 0.5rem;
-        }
-
-        .form-check-input {
-            cursor: pointer;
-        }
-
-        .form-check-input:checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-        }
-
-        .form-check-label {
-            cursor: pointer;
-            user-select: none;
-        }
-
-        .summary-section {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e9ecef;
-        }
-
-        .policy-summary {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border: 1px solid #e9ecef;
-            position: relative;
-        }
-
-        .policy-content {
-            max-height: none;
-            overflow: visible;
-        }
-
-        .policy-content.collapsed::after {
-            display: none;
-        }
-
-        .show-more-wrapper {
-            display: none;
-        }
-
-        .policy-name {
-            display: none;  /* Hide the old heading since it's in markdown now */
-        }
-
-        .summary-content {
-            font-size: 0.95rem;
-            line-height: 1.6;
-            color: var(--text-color);
-        }
-
-        .summary-content h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .summary-content strong {
-            color: #2C3E50;
-            font-weight: 600;
-        }
-
-        .summary-content ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .summary-content li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .summary-content li:before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .summary-content p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Add table styles for summary content */
-        .summary-content table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .summary-content th,
-        .summary-content td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .summary-content th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .summary-content tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .summary-content tr:nth-child(odd) {
-            background-color: white;
-        }
-
-        .summary-content tr:hover {
-            background-color: #e9ecef;
-        }
-
-        /* Priority-based color coding for table cells - more selective approach */
-        .priority-high {
-            background-color: #fff5f5 !important;
-        }
-
-        .priority-medium {
-            background-color: #fffbf0 !important;
-        }
-
-        .priority-low {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Priority color coding for top-level summary tables */
-        .top-level-summary .priority-high {
-            background-color: #fff5f5 !important;
-        }
-
-        .top-level-summary .priority-medium {
-            background-color: #fffbf0 !important;
-        }
-
-        .top-level-summary .priority-low {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Ensure priority styling overrides alternating row colors - for all priority levels and only 3rd column */
-        .top-level-summary tr.priority-high:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-high:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-high:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-high:nth-child(odd) td:nth-child(3) {
-            background-color: #fff5f5 !important;
-        }
-
-        .top-level-summary tr.priority-medium:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-medium:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-medium:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-medium:nth-child(odd) td:nth-child(3) {
-            background-color: #fffbf0 !important;
-        }
-
-        .top-level-summary tr.priority-low:nth-child(even) td:nth-child(3),
-        .top-level-summary tr.priority-low:nth-child(odd) td:nth-child(3),
-        .summary-content tr.priority-low:nth-child(even) td:nth-child(3),
-        .summary-content tr.priority-low:nth-child(odd) td:nth-child(3) {
-            background-color: #f8fff9 !important;
-        }
-
-        /* Add styles for the policy icon and name */
-        .policy-icon {
-            color: var(--primary-color);
-            margin-right: 0.5rem;
-        }
-
-        /* Style for the orange circle emoji */
-        .status-emoji {
-            font-size: 1.2rem;
-            margin-right: 0.5rem;
-        }
-
-        /* Add styles for top-level summary */
-        .top-level-summary {
-            background: linear-gradient(to right, #f8f9fa, #ffffff);
-            padding: 2rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-        }
-
-        .top-level-summary h3 {
-            color: var(--primary-color);
-            font-size: 1.4rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .top-level-summary strong {
-            color: #2C3E50;
-            font-weight: 600;
-        }
-
-        .top-level-summary ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .top-level-summary li {
-            margin-bottom: 1rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .top-level-summary li:before {
-            content: "•";
-            color: var(--primary-color);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        .top-level-summary p {
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        /* Add table styles for top-level summary */
-        .top-level-summary table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .top-level-summary th,
-        .top-level-summary td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .top-level-summary th {
-            background-color: #f8f9fa;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .top-level-summary tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .top-level-summary tr:nth-child(odd) {
-            background-color: white;
-        }
-
-        .top-level-summary tr:hover {
-            background-color: #e9ecef;
-        }
-
-
-        .top-level-summary tr.priority-low:nth-child(even) td,
-        .top-level-summary tr.priority-low:nth-child(odd) td,
-        .summary-content tr.priority-low:nth-child(even) td,
-        .summary-content tr.priority-low:nth-child(odd) td {
-            background-color: #f8fff9 !important;
-        } */
-
-        /* Add styles for the view toggle */
-        .view-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 1rem;
-            gap: 1rem;
-        }
-
-        .view-toggle label {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            cursor: pointer;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 28px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(32px);
-        }
-
-        /* Add styles for the section heatmap */
-        .section-heatmap {
-            width: 100%;
-            max-height: 30px;
-            display: none;
-            position: relative;
-        }
-
-        .section-heatmap.active {
-            display: block;
-        }
-
-        .section-heatmap iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Add z-index to table rows to ensure proper layering */
-        .model-card-table tr {
-            position: relative;
-        }
-
-        /* Make sure the table cells don't block pointer events */
-        .model-card-table td {
-            border: 1px solid #dee2e6;
-            padding: 0.3rem;
-            text-align: left;
-            font-size: 0.85rem;
-            vertical-align: top;
-        }
-
-        .model-card-table table {
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-            table-layout: fixed;
-        }
-
-        .model-card-table th,
-        .model-card-table td {
-            border: 1px solid #dee2e6;
-            padding: 0.3rem;
-            text-align: left;
-            font-size: 0.85rem;
-            vertical-align: top;
-        }
-
-        .model-card-table th:nth-child(1),
-        .model-card-table td:nth-child(1) {
-            width: 15%;
-            padding-top: 7px;
-            padding-left: 7px;
-        }
-
-        .model-card-table th:nth-child(2),
-        .model-card-table td:nth-child(2) {
-            width: 25%;
-            white-space: normal;
-            text-overflow: initial;
-            overflow: visible;
-            display: table-cell;
-        }
-
-        .model-card-table th:nth-child(3),
-        .model-card-table td:nth-child(3) {
-            width: 60%;
-            white-space: normal;
-            text-overflow: initial;
-            overflow: visible;
-            display: table-cell;
-        }
-
-        .combined-heatmap-cell {
-            height: 400px !important;  /* Adjust height as needed */
-            padding: 0 !important;
-        }
-
-        .model-card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #e9ecef;
-            border: none;
-        }
-
-        .model-card-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.2rem;
-            color: var(--text-color);
-            margin: 0;
-        }
-
-        /* Add new styles for the policy selector dropdown */
-        .policy-selector-dropdown {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .policy-selector-dropdown select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e9ecef;
-            border-radius: 8px;
-            background-color: white;
-            appearance: none;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            font-size: 1rem;
-            color: var(--text-color);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .policy-selector-dropdown select:hover {
-            border-color: var(--primary-color);
-        }
-
-        .policy-selector-dropdown select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
-        }
-
-        .policy-selector-dropdown::after {
-            content: '\f078';
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: var(--primary-color);
-        }
-
-        .policy-evaluation {
-            display: none;
-        }
-
-        .policy-evaluation.active {
-            display: block;
-        }
-
-        .section-summary.active {
-            display: block;
-        }
-
-        .section-summary {
-            display: none;
-        }
-
-        /* Only the third column (heatmap/summary) allows pointer events */
-        .model-card-table td:nth-child(3) {
-            position: relative;
-            /* pointer-events: auto;  // default is fine */
-        }
-
-        /* The heatmap container and iframe should allow pointer events */
-        .section-heatmap,
-        .section-heatmap iframe {
-            z-index: 2;
-        }
-
-        .policy-selector-card select:focus {
-            border-color: #4A90E2;
-            box-shadow: 0 0 0 0.15rem rgba(74, 144, 226, 0.15);
-            outline: none;
-        }
-        .policy-selector-card select:hover {
-            border-color: #6C63FF;
-        }
-
-        .color-segment { position: relative; }
-        .color-tooltip {
-            visibility: hidden;
-            opacity: 0;
-            background: #2C3E50;
-            color: #fff;
-            text-align: left;
-            border-radius: 8px;
-            padding: 0.7em 1em;
-            position: absolute;
-            z-index: 100;
-            top: 120%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.95rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-            transition: opacity 0.2s, visibility 0.2s;
-            min-width: 180px;
-            max-width: 260px;
-            pointer-events: none;
-            font-weight: 500;
-        }
-        .color-segment:hover .color-tooltip,
-        .color-segment:focus .color-tooltip {
-            visibility: visible;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* New styles for priority legend */
-        .priority-legend-compact {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            margin-top: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .priority-legend-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1rem;
-            color: var(--text-color);
-            font-weight: 600;
-            flex-shrink: 0;
-        }
-
-        .priority-items-compact {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.9rem;
-            color: #6c757d;
-            flex-wrap: wrap;
-        }
-
-        .priority-item-compact {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
-        }
-
-        .priority-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .priority-dot.high {
-            background-color: #FD8D3C; /* Warm Orange */
-        }
-
-        .priority-dot.medium {
-            background-color: #FEB24C; /* Warm Orange */
-        }
-
-        .priority-dot.low {
-            background-color: #EFEFEF; /* Off White */
-            border: 1px solid #dee2e6;
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .priority-legend-compact {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-
-            .priority-items-compact {
-                gap: 1rem;
-            }
-
-            .priority-item-compact {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Priority header tooltip styles */
-        .priority-header {
-            position: relative;
-            cursor: help;
-            white-space: nowrap;
-        }
-
-        .priority-info-icon {
-            font-size: 0.8em !important;
-            color: var(--primary-color) !important;
-            margin-left: 0.3rem !important;
-            display: inline !important;
-            vertical-align: middle !important;
-        }
-
-        .priority-tooltip {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 280px;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: opacity 0.3s, visibility 0.3s;
-            margin-top: 10px;
-            white-space: normal;
-            word-wrap: break-word;
-        }
-
-        .priority-tooltip::before {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .priority-header:hover .priority-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .priority-tooltip .tooltip-item {
-            margin-bottom: 0.75rem;
-            padding-left: 1rem;
-            position: relative;
-        }
-
-        .priority-tooltip .tooltip-item:before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-        }
-
-        .priority-tooltip .tooltip-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .priority-tooltip strong {
-            color: #FFD700;
-        }
-
-        /* Tooltip styles for affected policies */
-        .policies-with-tooltip {
-            position: relative;
-            cursor: pointer;
-        }
-
-        .policies-tooltip {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #2c3e50;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            min-width: 300px;
-            max-width: 400px;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            border: 1px solid #34495e;
-        }
-
-        .policies-with-tooltip:hover .policies-tooltip {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .violation-tooltip h4 {
-            margin: 0 0 8px 0;
-            color: #ecf0f1;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #34495e;
-            padding-bottom: 4px;
-        }
-
-        .violation-item {
-            margin-bottom: 8px;
-            padding: 6px 0;
-            border-bottom: 1px solid #34495e;
-        }
-
-        .violation-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-
-        .violation-item strong {
-            color: #3498db;
-            font-weight: 600;
-        }
-
-        .violation-description {
-            color: #bdc3c7;
-            font-size: 0.8rem;
-            margin-top: 2px;
-            display: block;
-        }
-
-        .tooltip-indicator {
-            color: #3498db;
-            margin-left: 4px;
-            font-size: 0.8rem;
-        }
-
-        .policies-with-tooltip:hover .tooltip-indicator {
-            color: #2980b9;
-        }
-
-        /* Color bar legend with tooltips */
-        .color-bar {
-            width: 300px;
-            height: 32px;
-            overflow: visible;
-            border-radius: 10px;
-            display: none;
-            margin-right: 30px;
-        }
-
-        .color-bar.active {
-            display: flex;
-        }
-
-        .color-segment {
-            flex: 1;
-            height: 100%;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .color-segment:hover {
-            opacity: 0.8;
-        }
-
-        /* Color segments */
-        .color-segment:nth-child(1) { background-color: #EFEFEF; }  /* Score 0 - Off White */
-        .color-segment:nth-child(2) { background-color: #FFEDA0; }  /* Score 1 - Light Yellow */
-        .color-segment:nth-child(3) { background-color: #FEB24C; }  /* Score 2 - Warm Orange */
-        .color-segment:nth-child(4) { background-color: #FD8D3C; }  /* Score 3 - Medium Orange */
-        .color-segment:nth-child(5) { background-color: #F03B20; }  /* Score 4 - Strong Red-Orange */
-        .color-segment:nth-child(6) { background-color: #B10026; }  /* Score 5 - Dark Red */
-
-
-        /* Tooltip styles */
-        .tooltip {
-            position: absolute;
-            visibility: hidden;
-            opacity: 0;
-            background-color: #2C3E50;
-            color: white;
-            text-align: center;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
-            line-height: 1.4;
-            width: max-content;
-            max-width: 220px;
-            top: calc(100% + 10px);
-            left: 50%;
-            transform: translateX(-50%);
-            transition: all 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-            z-index: 1000;
-        }
-
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent #2C3E50 transparent;
-        }
-
-        .color-segment:hover .tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .heatmap-wrapper {
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .scoring-guide {
-            margin-top: 2rem;
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-        }
-
-        .scoring-guide h3 {
-            color: var(--text-color);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-icon {
-            cursor: help;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .info-tooltip {
-            visibility: hidden;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            background-color: #2C3E50;
-            color: white;
-            text-align: left;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: normal;
-            line-height: 1.5;
-            z-index: 1000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transition: opacity 0.2s, visibility 0.2s;
-        }
-
-        .info-tooltip::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2C3E50 transparent transparent transparent;
-        }
-
-        .info-icon:hover .info-tooltip {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .info-tooltip p {
-            margin: 0 0 0.75rem 0;
-        }
-
-        .info-tooltip p:last-child {
-            margin-bottom: 0;
-        }
-
-        .scoring-guide table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 1rem;
-            font-size: 0.85rem;
-        }
-
-        .scoring-guide th,
-        .scoring-guide td {
-            border: 1px solid #dee2e6;
-            padding: 0.75rem;
-            text-align: left;
-        }
-
-        .scoring-guide th {
-            background-color: #f1f3f5;
-            font-weight: 600;
-        }
-
-        .scoring-guide tr:nth-child(even) {
-            background-color: white;
-        }
-
-        .scoring-guide .score {
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        .side-by-side-container {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .model-card-display {
-            background: #f8f9fa;
-            padding: 0;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Container for scrollable content */
-        .model-card-scroll {
-            flex: 1;
-            position: relative;
-        }
-
-        .model-card-content {
-            padding: 0.6rem;
-            padding-top: 0;
-        }
-
-        .heatmap-display {
-            display: none;
-        }
-
-        #heatmapIframe {
-            width: 100%;
-            height: 700px;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-        }
-
-        .form-label i {
-            margin-right: 0.5rem;
-            color: var(--secondary-color);
-        }
-
-        .container {
-            max-width: 95%;
-            padding: 0 2rem;
-        }
-
-        .policy-selector {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
-        }
-
-        .policy-selector:hover {
-            border-color: var(--primary-color);
-        }
-
         /* Policy info icon and tooltip styles */
         .policy-info-icon {
             color: var(--primary-color);
@@ -7102,66 +6925,6 @@
         .summary-content tr.priority-low:nth-child(odd) td {
             background-color: #f8fff9 !important;
         } */
-
-        /* Add styles for the view toggle */
-        .view-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 1rem;
-            gap: 1rem;
-        }
-
-        .view-toggle label {
-            font-size: 0.9rem;
-            color: var(--text-color);
-            cursor: pointer;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 28px;
-        }
-
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 20px;
-            width: 20px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: var(--primary-color);
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(32px);
-        }
 
         /* Add styles for the section heatmap */
         .section-heatmap {
@@ -9634,6 +9397,44 @@
             display: inline;
             margin: 0;
         }
+
+        /* Custom styles for the heatmap info tooltip */
+        .heatmap-info-tooltip {
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2C3E50;
+            color: white;
+            text-align: left;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: normal;
+            line-height: 1.5;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.2s, visibility 0.2s;
+            margin-top: 10px;
+        }
+
+        .heatmap-info-tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #2C3E50 transparent;
+        }
+
+        .info-icon:hover .heatmap-info-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -9822,16 +9623,15 @@
             const existingHeatmaps = JSON.parse(localStorage.getItem('currentHeatmaps') || '{"filenames": [], "modelCardContent": "", "summaries": {}}');
             console.log("file length");
             console.log(existingHeatmaps.filenames.length);
-            if (existingHeatmaps.filenames.length > 0) {
-                console.log("heatmaps exist");
-                console.log(existingHeatmaps.filenames.length);
-                displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries, window.currentViewMode);
-                heatmapContainer.style.display = 'block';
-                setTimeout(() => heatmapContainer.classList.add('show'), 100);
-            }
+                            if (existingHeatmaps.filenames.length > 0) {
+                    console.log("heatmaps exist");
+                    console.log(existingHeatmaps.filenames.length);
+                    displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries);
+                    heatmapContainer.style.display = 'block';
+                    setTimeout(() => heatmapContainer.classList.add('show'), 100);
+                }
 
-            // Store the current view mode globally
-            window.currentViewMode = 'highlevel'; // 'highlevel' or 'article'
+
 
             function parseMarkdownTable(markdown) {
                 const lines = markdown.trim().split('\n');
@@ -9862,7 +9662,7 @@
                 return html;
             }
 
-            function displayHeatmaps(heatmapFilenames, modelCardContent, summaries, topLevelSummary, sectionSummaries, viewMode = 'highlevel') {
+            function displayHeatmaps(heatmapFilenames, modelCardContent, summaries, topLevelSummary, sectionSummaries) {
                 // Configure marked.js
                 marked.setOptions({
                     breaks: true,
@@ -9906,6 +9706,42 @@
                             <div class="summary-content">
                                 ${summaryWithTooltips}
                             </div>
+                            
+                            <!-- Add heatmap at the end of High Level Summary -->
+                            <div class="heatmap-section mt-4">
+                                                                    <h5 class="section-title">
+                                        <i class="fas fa-chart-area" style="color: #000000;"></i>
+                                        <span style="color: #000000;">Compliance Heatmap</span>
+                                    <span class="info-icon" style="margin-left: 0.5rem; cursor: help; position: relative; display: inline-flex; align-items: center;">
+                                                                                 <i class="fas fa-info-circle" style="color: #4A90E2; font-size: 0.9rem; margin-top: 30px;"></i>
+                                        <div class="heatmap-info-tooltip" style="width: 450px; max-width: 90vw;">
+                                            <h6 style="margin: 0 0 1rem 0; color: #ecf0f1; font-size: 1rem; border-bottom: 1px solid #34495e; padding-bottom: 0.5rem; font-weight: 600;">Understanding Your Compliance Heatmap</h6>
+                                            <p style="margin-bottom: 1rem; font-size: 0.9rem; line-height: 1.5; color: #bdc3c7;">
+                                                This heatmap provides a <strong style="color: #FFD700;">comprehensive compliance overview</strong> of your AI system across different policy frameworks. Here's what you're seeing:
+                                            </p>
+                                            <div style="margin-bottom: 1rem;">
+                                                <strong style="color: #FFD700; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">Y-Axis (Model Card Sections):</strong>
+                                                <p style="margin: 0; font-size: 0.85rem; line-height: 1.4; color: #bdc3c7; padding-left: 0.5rem;">
+                                                    Each row represents a specific section of your model card, such as system overview, dataset description, or usage constraints.
+                                                </p>
+                                            </div>
+                                            <div style="margin-bottom: 1rem;">
+                                                <strong style="color: #FFD700; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">X-Axis (Policy Articles):</strong>
+                                                <p style="margin: 0; font-size: 0.85rem; line-height: 1.4; color: #bdc3c7; padding-left: 0.5rem;">
+                                                    Each column represents a specific policy article from frameworks like EU AI Act, CCPA, AIDA, Colorado Privacy Act, or GDPR.
+                                                </p>
+                                            </div>
+                                            <div style="background: rgba(255,255,255,0.08); padding: 1rem; border-radius: 8px; border-left: 4px solid #4A90E2; margin-top: 1rem;">
+                                                <strong style="color: #FFD700; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">What Each Cell Represents:</strong>
+                                                <p style="margin: 0; font-size: 0.85rem; line-height: 1.4; color: #bdc3c7;">
+                                                    Each colored block shows the evaluation result for that specific <strong style="color: #3498db;">model card section vs. policy article pair</strong>. This enables a <strong style="color: #3498db;">bird's-eye view</strong> to identify exactly which policies and which sections of your system require attention by highlighting patterns of violations (red areas).
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </span>
+                                </h5>
+                                ${generateHeatmapContent(heatmapFilenames)}
+                            </div>
                         </div>
                     `;
                 }
@@ -9915,7 +9751,7 @@
                     <div class="summary-section mb-4">
                         <h4 class="section-title">
                             <i class="fas fa-file-alt"></i>
-                            Individual Policy Evaluations
+                            Overall Evaluation Summary for Individual Policies
                         </h4>
                         <div class="policy-selector-dropdown">
                             <select id="policySelector">
@@ -10005,6 +9841,19 @@
                             text-align: right;
                             margin-top: 0.5rem;
                         }
+                        
+                        .heatmap-section {
+                            padding: 1.5rem;
+                        }
+                        
+                        .heatmap-section .section-title {
+                            font-size: 1.1rem;
+                            color: var(--primary-color);
+                            margin-bottom: 1.5rem;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        }
                     </style>
                 `;
                 
@@ -10017,11 +9866,7 @@
                 
                 // Determine the title based on view mode
                 const getTitle = (mode) => {
-                    if (mode === 'article') {
-                        return 'Evaluation Result';
-                    } else {
-                        return 'Evaluation Result';
-                    }
+                    return 'Issues and Fixes for Your Model Card';
                 };
                 
                 modelCardWrapper.innerHTML = `
@@ -10030,20 +9875,12 @@
                             <div class="model-card-header">
                                 <h4 class="model-card-title" id="modelCardTitle">
                                     <i class="fas fa-file-alt"></i>
-                                    ${getTitle(viewMode)}
+                                    ${getTitle()}
                                 </h4>
-                                <div class="view-toggle">
-                                    <label>Issues and Fixes</label>
-                                    <label class="switch">
-                                        <input type="checkbox" class="view-toggle-input" ${viewMode === 'article' ? 'checked' : ''}>
-                                        <span class="slider"></span>
-                                    </label>
-                                    <label>Heatmap View</label>
-                                </div>
                             </div>
                             <div class="model-card-content">
                                 <div class="model-card-table">
-                                    ${parseModelCardWithSummaries(modelCardContent, sectionSummaries, heatmapFilenames, viewMode)}
+                                    ${parseModelCardWithSummaries(modelCardContent, sectionSummaries, heatmapFilenames)}
                                 </div>
                             </div>
                         </div>
@@ -10071,148 +9908,89 @@
                         }
                     });
                 });
-
-                // Add event listener for view toggle
-                document.querySelector('.view-toggle-input').addEventListener('change', function(e) {
-                    window.currentViewMode = this.checked ? 'article' : 'highlevel';
-                    
-                    // Update the title based on the new view mode
-                    const titleElement = document.getElementById('modelCardTitle');
-                    if (titleElement) {
-                        if (window.currentViewMode === 'article') {
-                            titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Evaluation Result in Heatmap View';
-            
-                        } else {
-                            titleElement.innerHTML = '<i class="fas fa-file-alt"></i> Section-wise Compliance Issues and Fixes';
-                        }
-                    }
-                    
-                    // Re-render the table with the new view mode
-                    const existingHeatmaps = JSON.parse(localStorage.getItem('currentHeatmaps') || '{"filenames": [], "modelCardContent": "", "summaries": {}}');
-                    displayHeatmaps(existingHeatmaps.filenames, existingHeatmaps.modelCardContent, existingHeatmaps.summaries, existingHeatmaps.topLevelSummary, existingHeatmaps.sectionSummaries, window.currentViewMode);
-                    
-                    // Apply highlighting to the newly rendered content
-                    setTimeout(() => applyHighlighting(), 100);
-                });
             }
 
-            function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames, viewMode = 'highlevel') {
-                // Restore heatmap in Article View
+            function generateHeatmapContent(heatmapFilenames) {
                 const combinedHeatmapFilename = heatmapFilenames.find(filename => filename.includes('combined'));
-                if (viewMode === 'article') {
-                    // Color bar legend with tooltips
-                    const colorBarHtml = `
-                        <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 1.2rem; margin-top: 0.5rem;">
-                            <div class="color-bar active" style="margin-right: 15px;">
-                                <div class="color-segment">
-                                    <div class="color-tooltip">0 – Off White<br><span style='font-weight:400;'>No issues. Fully compliant or not applicable.</span></div>
-                                </div>
-                                <div class="color-segment">
-                                    <div class="color-tooltip">1 – Light Yellow<br><span style='font-weight:400;'>Minor ambiguity, but likely compliant.</span></div>
-                                </div>
-                                <div class="color-segment">
-                                    <div class="color-tooltip">2 – Warm Orange<br><span style='font-weight:400;'>Possible minor risk or unclear compliance.</span></div>
-                                </div>
-                                <div class="color-segment">
-                                    <div class="color-tooltip">3 – Medium Orange<br><span style='font-weight:400;'>Possible risk or moderate ambiguity.</span></div>
-                                </div>
-                                <div class="color-segment">
-                                    <div class="color-tooltip">4 – Strong Red-Orange<br><span style='font-weight:400;'>Probable violation or strong risk.</span></div>
-                                </div>
-                                <div class="color-segment">
-                                    <div class="color-tooltip">5 – Dark Red<br><span style='font-weight:400;'>Clear violation or severe non-compliance.</span></div>
-                                </div>
-                            </div>
-                            <div class="color-legend-info" style="position: relative; cursor: help;">
-                                <i class="fas fa-info-circle" style="color: #4A90E2; font-size: 1.1rem;"></i>
-                                <div class="color-legend-tooltip" style="display: none; background: #2C3E50; color: #fff; text-align: center; border-radius: 8px; padding: 0.8em 1em; position: absolute; z-index: 100; top: 120%; right: 0; font-size: 0.9rem; box-shadow: 0 2px 8px rgba(0,0,0,0.12); white-space: nowrap; min-width: 200px;">
-                                    Hover over each color block to see what each color represents
-                                </div>
-                            </div>
-                        </div>
-                        <style>
-                            .color-segment { position: relative; }
-                            .color-tooltip {
-                                visibility: hidden;
-                                opacity: 0;
-                                background: #2C3E50;
-                                color: #fff;
-                                text-align: left;
-                                border-radius: 8px;
-                                padding: 0.7em 1em;
-                                position: absolute;
-                                z-index: 100;
-                                top: 120%;
-                                left: 50%;
-                                transform: translateX(-50%);
-                                font-size: 0.95rem;
-                                box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-                                transition: opacity 0.2s, visibility 0.2s;
-                                min-width: 180px;
-                                max-width: 260px;
-                                pointer-events: none;
-                                font-weight: 500;
-                            }
-                            .color-segment:hover .color-tooltip,
-                            .color-segment:focus .color-tooltip {
-                                visibility: visible;
-                                opacity: 1;
-                                pointer-events: auto;
-                            }
-                            .color-legend-info:hover .color-legend-tooltip {
-                                display: block !important;
-                            }
-                        </style>
-                    `;
-                    
-                    // Add explanatory text block above the heatmap
-                    const explanationHtml = `
-                        <div class="heatmap-explanation" style="background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); padding: 1.5rem; border-radius: 12px; border: 1px solid #e9ecef; margin-bottom: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
-                                <i class="fas fa-info-circle" style="color: #4A90E2; font-size: 1.2rem;"></i>
-                                <h5 style="margin: 0; color: #2C3E50; font-weight: 600; font-size: 1.1rem;">Understanding Your Compliance Heatmap</h5>
-                            </div>
-                            <div style="color: #495057; line-height: 1.6; font-size: 0.95rem;">
-                                <p style="margin-bottom: 0.75rem;">
-                                    This heatmap provides a <strong>comprehensive compliance overview</strong> of your AI system across different policy frameworks. Here's what you're seeing:
-                                </p>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem;">
-                                    <div>
-                                        <strong style="color: #2C3E50;">Y-Axis (Model Card Sections):</strong>
-                                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
-                                            Each row represents a specific section of your model card, such as system overview, dataset description, or usage constraints.
-                                        </p>
-                                    </div>
-                                    <div>
-                                        <strong style="color: #2C3E50;">X-Axis (Policy Articles):</strong>
-                                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
-                                            Each column represents a specific policy article from frameworks like EU AI Act, CCPA, AIDA, Colorado Privacy Act, or GDPR.
-                                        </p>
-                                    </div>
-                                </div>
-                                <div style="background: #fff; padding: 1rem; border-radius: 8px; border-left: 4px solid #4A90E2; margin-top: 1rem;">
-                                    <strong style="color: #2C3E50;">What Each Cell Represents:</strong>
-                                    <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">
-                                        Each colored block shows the evaluation result for that specific <strong>model card section vs. policy article pair</strong>. This enables a <strong>bird's-eye view</strong> to identify exactly which policies and which sections of your system require attention by highlighting patterns of violations (red areas).
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    if (combinedHeatmapFilename) {
-                        return `
-                            ${explanationHtml}
-                            ${colorBarHtml}
-                            <div style="height: 700px; width: 100%;">
-                                <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
-                            </div>
-                        `;
-                    } else {
-                        return `${explanationHtml}${colorBarHtml}<div>No heatmap available.</div>`;
-                    }
+                
+                if (!combinedHeatmapFilename) {
+                    return '<div class="text-muted">No heatmap available.</div>';
                 }
 
+                // Color bar legend with tooltips
+                const colorBarHtml = `
+                    <div style="display: flex; align-items: center; justify-content: flex-end; margin-bottom: 1.2rem; margin-top: 0.5rem;">
+                        <div class="color-bar active" style="margin-right: 15px;">
+                            <div class="color-segment">
+                                <div class="color-tooltip">0 – Off White<br><span style='font-weight:400;'>No issues. Fully compliant or not applicable.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">1 – Light Yellow<br><span style='font-weight:400;'>Minor ambiguity, but likely compliant.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">2 – Warm Orange<br><span style='font-weight:400;'>Possible minor risk or unclear compliance.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">3 – Medium Orange<br><span style='font-weight:400;'>Possible risk or moderate ambiguity.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">4 – Strong Red-Orange<br><span style='font-weight:400;'>Probable violation or strong risk.</span></div>
+                            </div>
+                            <div class="color-segment">
+                                <div class="color-tooltip">5 – Dark Red<br><span style='font-weight:400;'>Clear violation or severe non-compliance.</span></div>
+                            </div>
+                        </div>
+                        <div class="color-legend-info" style="position: relative; cursor: help;">
+                            <i class="fas fa-info-circle" style="color: #4A90E2; font-size: 1.1rem;"></i>
+                            <div class="color-legend-tooltip" style="display: none; background: #2C3E50; color: #fff; text-align: center; border-radius: 8px; padding: 0.8em 1em; position: absolute; z-index: 100; top: 120%; right: 0; font-size: 0.9rem; box-shadow: 0 2px 8px rgba(0,0,0,0.12); white-space: nowrap; min-width: 200px;">
+                                Hover over each color block to see what each color represents
+                            </div>
+                        </div>
+                    </div>
+                    <style>
+                        .color-segment { position: relative; }
+                        .color-tooltip {
+                            visibility: hidden;
+                            opacity: 0;
+                            background: #2C3E50;
+                            color: #fff;
+                            text-align: left;
+                            border-radius: 8px;
+                            padding: 0.7em 1em;
+                            position: absolute;
+                            z-index: 100;
+                            top: 120%;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            font-size: 0.95rem;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+                            transition: opacity 0.2s, visibility 0.2s;
+                            min-width: 180px;
+                            max-width: 260px;
+                            pointer-events: none;
+                            font-weight: 500;
+                        }
+                        .color-segment:hover .color-tooltip,
+                        .color-segment:focus .color-tooltip {
+                            visibility: visible;
+                            opacity: 1;
+                            pointer-events: auto;
+                        }
+                        .color-legend-info:hover .color-legend-tooltip {
+                            display: block !important;
+                        }
+                    </style>
+                `;
+                
+                return `
+                    ${colorBarHtml}
+                    <div style="height: 700px; width: 100%;">
+                        <iframe src="/static/${combinedHeatmapFilename}" frameborder="0" style="width:100%;height:100%;border:none;"></iframe>
+                    </div>
+                `;
+            }
+
+            function parseModelCardWithSummaries(markdown, sectionSummaries, heatmapFilenames) {
                 // Parse the model card content table to map section names to their content
                 const lines = markdown.trim().split('\n');
                 let sectionContentMap = {};
@@ -10245,9 +10023,9 @@
                     } catch {}
                 }
 
-                // Add the global dropdown and explanation beside the view toggle (only in highlevel view)
+                // Add the global dropdown and explanation
                 let globalDropdownHtml = '';
-                if (viewMode === 'highlevel' && policyKeys.length > 0) {
+                if (policyKeys.length > 0) {
                     globalDropdownHtml = `
                         <div class="policy-selector-bar" style="display: flex; justify-content: flex-end; align-items: center; gap: 1rem; margin-bottom: 1.2rem;">
                             <div class="policy-selector-dropdown" style="min-width: 220px; max-width: 300px;">
@@ -10336,7 +10114,7 @@
                                  data-section="${row.section}"
                                  data-summary-json='${summaryJson ? JSON.stringify(summaryJson).replace(/'/g, "&apos;") : ""}'>
                                 ${
-                                    (viewMode === 'highlevel' && summaryJson && summaryJson[policyKeys[0]])
+                                    (summaryJson && summaryJson[policyKeys[0]])
                                         ? DOMPurify.sanitize(marked.parse(summaryJson[policyKeys[0]]))
                                         : DOMPurify.sanitize(marked.parse(sectionSummaryRaw))
                                 }
@@ -10542,8 +10320,7 @@
                             data.model_card_content, 
                             data.summaries,
                             data.top_level_summary,
-                            data.section_summaries,
-                            window.currentViewMode
+                            data.section_summaries
                         );
                         
                         // Show the container

@@ -211,14 +211,9 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         print(model_card_content)
 
         # Read prompt template
-        prompt_template_path = "new_prompt.txt"
-        async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
-            chunk_prompt = await f.read()
-            
-        # Read prompt template
         prompt_template_path = "new_prompt_second.txt"
         async with aiofiles.open(prompt_template_path, "r", encoding="utf-8") as f:
-            chunk_prompt_temp = await f.read()
+            chunk_prompt = await f.read()
 
         # Get list of policy files and filter based on selection
         policy_files = sorted(os.listdir(policy_folder))
@@ -280,8 +275,10 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                     for chunk_idx, chunk in enumerate(section_specific_chunks):
                         # Convert the chunk of articles into a comma-separated string
                         articles_str = ", ".join(chunk)
-                        chunk_prompt_second = (
-                            chunk_prompt_temp
+                        
+                        # Replace placeholders in the prompt
+                        formatted_prompt = (
+                            chunk_prompt
                             .replace("{{LEGAL_DOC}}", legal_doc_content)
                             .replace("{{SECTION}}", section)
                             .replace("{{ARTICLES_TO_EVALUATE}}", articles_str)
@@ -298,11 +295,6 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                                     },
                                     {
                                         "type": "text",
-                                        "text": f"{chunk_prompt}",
-                                        "cache_control": {"type": "ephemeral"},
-                                    },
-                                    {
-                                        "type": "text",
                                         "text": f"{model_card_content}",
                                         "cache_control": {"type": "ephemeral"},
                                     },
@@ -310,7 +302,7 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
                             },
                             {
                                 "role": "user",
-                                "content": f"{chunk_prompt_second}",
+                                "content": f"{formatted_prompt}",
                             },
                         ]
                         

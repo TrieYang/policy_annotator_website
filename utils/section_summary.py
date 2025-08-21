@@ -52,7 +52,7 @@ async def generate_section_summary(section_name, section_data, llm, TESTING_MODE
 
         # Get summary from Claude
         print(f"Requesting summary for section '{section_name}' from LLM...")
-        response = llm.invoke(prompt)
+        response = await asyncio.to_thread(llm.invoke, prompt)
         response_content = response.content.strip()
         print(f"Received response for section '{section_name}' (length: {len(response_content)} characters)")
         
