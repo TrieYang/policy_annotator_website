@@ -234,59 +234,7 @@
             margin-right: 10px;
         }
         
-        /* NASA TLX Scale Styles */
-        .nasa-scale {
-            text-align: center;
-            margin: 10px 0;
-        }
-        
-        .scale-bar {
-            border: 2px solid #333;
-            height: 20px;
-            margin: 10px 0;
-            position: relative;
-            background: white;
-        }
-        
-        .scale-segments {
-            display: flex;
-            height: 100%;
-        }
-        
-        .segment {
-            flex: 1;
-            border-right: 1px solid #ccc;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            position: relative;
-        }
-        
-        .segment:last-child {
-            border-right: none;
-        }
-        
-        .segment:hover {
-            background-color: #e0e0e0;
-        }
-        
-        .segment.selected {
-            background-color: #4CAF50;
-        }
-        
-        .scale-labels {
-            display: flex;
-            justify-content: space-between;
-            margin: 5px 0;
-            font-weight: bold;
-            color: #666;
-        }
-        
-        .rating-display {
-            margin-top: 5px;
-            font-weight: bold;
-            color: #4CAF50;
-            min-height: 20px;
-        }
+
         
         /* Scroll behavior for smooth navigation */
         html {
@@ -319,9 +267,6 @@
                         <li><a href="#sus-section">a. System Usability Scale (Questions 1-10)</a></li>
                         <li><a href="#tool-effectiveness-section">b. Tool Effectiveness Survey (Questions 11-17)</a></li>
                     </ul>
-                </li>
-                <li class="toc-item">
-                    <a href="#section-2" class="toc-main">2. NASA Task Load Index (TLX) (Questions 18-23)</a>
                 </li>
             </ul>
         </div>
@@ -597,272 +542,6 @@
             </tbody>
         </table>
         
-        <!-- NASA Task Load Index Section -->
-        <div id="section-2" class="section-anchor" style="margin-top: 40px; margin-bottom: 30px;">
-            <h2 style="text-align: center; color: #4CAF50; margin-bottom: 20px;">NASA Task Load Index (TLX)</h2>
-            <div class="instructions" style="background-color: #e8f5e8; border-left-color: #4CAF50;">
-                <strong>Instructions:</strong> For each scale below, click anywhere along the scale to indicate your rating.
-                Each scale ranges from "Low" to "High" (or "Good" to "Poor" for Performance). 
-            </div>
-        </div>
-        
-        <table class="question-table">
-            <thead>
-                <tr>
-                    <th class="question-number">#</th>
-                    <th class="question-text">Question</th>
-                    <th class="likert-scale">Rating Scale</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Add section anchor for compliance report task load -->
-                <tr>
-                    <td class="question-number">18</td>
-                    <td class="question-text">
-                        <small>How much mental and perceptual activity was required (e.g. thinking, deciding, calculating, remembering, looking, searching, etc) to find the compliance issues? Was the task easy or demanding, simple or complex, exacting or forgiving?</small>
-                    </td>
-                    <td class="likert-scale">
-                        <div class="nasa-scale" id="nasa-scale-0">
-                            <div class="scale-bar">
-                                <div class="scale-segments">
-                                    <div class="segment" data-value="5" onclick="setNASARating(0, 5)"></div>
-                                    <div class="segment" data-value="10" onclick="setNASARating(0, 10)"></div>
-                                    <div class="segment" data-value="15" onclick="setNASARating(0, 15)"></div>
-                                    <div class="segment" data-value="20" onclick="setNASARating(0, 20)"></div>
-                                    <div class="segment" data-value="25" onclick="setNASARating(0, 25)"></div>
-                                    <div class="segment" data-value="30" onclick="setNASARating(0, 30)"></div>
-                                    <div class="segment" data-value="35" onclick="setNASARating(0, 35)"></div>
-                                    <div class="segment" data-value="40" onclick="setNASARating(0, 40)"></div>
-                                    <div class="segment" data-value="45" onclick="setNASARating(0, 45)"></div>
-                                    <div class="segment" data-value="50" onclick="setNASARating(0, 50)"></div>
-                                    <div class="segment" data-value="55" onclick="setNASARating(0, 55)"></div>
-                                    <div class="segment" data-value="60" onclick="setNASARating(0, 60)"></div>
-                                    <div class="segment" data-value="65" onclick="setNASARating(0, 65)"></div>
-                                    <div class="segment" data-value="70" onclick="setNASARating(0, 70)"></div>
-                                    <div class="segment" data-value="75" onclick="setNASARating(0, 75)"></div>
-                                    <div class="segment" data-value="80" onclick="setNASARating(0, 80)"></div>
-                                    <div class="segment" data-value="85" onclick="setNASARating(0, 85)"></div>
-                                    <div class="segment" data-value="90" onclick="setNASARating(0, 90)"></div>
-                                    <div class="segment" data-value="95" onclick="setNASARating(0, 95)"></div>
-                                    <div class="segment" data-value="100" onclick="setNASARating(0, 100)"></div>
-                                </div>
-                            </div>
-                            <div class="scale-labels">
-                                <span>Low</span>
-                                <span>High</span>
-                            </div>
-                            <div class="rating-display" id="nasa-rating-0">No rating selected</div>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Physical Demand -->
-                <tr>
-                    <td class="question-number">19</td>
-                    <td class="question-text">
-                        <small>How much physical activity was required (e.g. pushing, pulling, turning, controlling, activating, etc) to find the compliance issues? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?</small>
-                    </td>
-                    <td class="likert-scale">
-                        <div class="nasa-scale" id="nasa-scale-1">
-                            <div class="scale-bar">
-                                <div class="scale-segments">
-                                    <div class="segment" data-value="5" onclick="setNASARating(1, 5)"></div>
-                                    <div class="segment" data-value="10" onclick="setNASARating(1, 10)"></div>
-                                    <div class="segment" data-value="15" onclick="setNASARating(1, 15)"></div>
-                                    <div class="segment" data-value="20" onclick="setNASARating(1, 20)"></div>
-                                    <div class="segment" data-value="25" onclick="setNASARating(1, 25)"></div>
-                                    <div class="segment" data-value="30" onclick="setNASARating(1, 30)"></div>
-                                    <div class="segment" data-value="35" onclick="setNASARating(1, 35)"></div>
-                                    <div class="segment" data-value="40" onclick="setNASARating(1, 40)"></div>
-                                    <div class="segment" data-value="45" onclick="setNASARating(1, 45)"></div>
-                                    <div class="segment" data-value="50" onclick="setNASARating(1, 50)"></div>
-                                    <div class="segment" data-value="55" onclick="setNASARating(1, 55)"></div>
-                                    <div class="segment" data-value="60" onclick="setNASARating(1, 60)"></div>
-                                    <div class="segment" data-value="65" onclick="setNASARating(1, 65)"></div>
-                                    <div class="segment" data-value="70" onclick="setNASARating(1, 70)"></div>
-                                    <div class="segment" data-value="75" onclick="setNASARating(1, 75)"></div>
-                                    <div class="segment" data-value="80" onclick="setNASARating(1, 80)"></div>
-                                    <div class="segment" data-value="85" onclick="setNASARating(1, 85)"></div>
-                                    <div class="segment" data-value="90" onclick="setNASARating(1, 90)"></div>
-                                    <div class="segment" data-value="95" onclick="setNASARating(1, 95)"></div>
-                                    <div class="segment" data-value="100" onclick="setNASARating(1, 100)"></div>
-                                </div>
-                            </div>
-                            <div class="scale-labels">
-                                <span>Low</span>
-                                <span>High</span>
-                            </div>
-                            <div class="rating-display" id="nasa-rating-1">No rating selected</div>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Performance -->
-                <tr>
-                    <td class="question-number">20</td>
-                    <td class="question-text">
-                        <small>How successful do you think you were in accomplishing the goals of the task set by the experimenter (or yourself)? How satisfied were you with your performance in accomplishing these goals?</small>
-                    </td>
-                    <td class="likert-scale">
-                        <div class="nasa-scale" id="nasa-scale-2">
-                            <div class="scale-bar">
-                                <div class="scale-segments">
-                                    <div class="segment" data-value="5" onclick="setNASARating(2, 5)"></div>
-                                    <div class="segment" data-value="10" onclick="setNASARating(2, 10)"></div>
-                                    <div class="segment" data-value="15" onclick="setNASARating(2, 15)"></div>
-                                    <div class="segment" data-value="20" onclick="setNASARating(2, 20)"></div>
-                                    <div class="segment" data-value="25" onclick="setNASARating(2, 25)"></div>
-                                    <div class="segment" data-value="30" onclick="setNASARating(2, 30)"></div>
-                                    <div class="segment" data-value="35" onclick="setNASARating(2, 35)"></div>
-                                    <div class="segment" data-value="40" onclick="setNASARating(2, 40)"></div>
-                                    <div class="segment" data-value="45" onclick="setNASARating(2, 45)"></div>
-                                    <div class="segment" data-value="50" onclick="setNASARating(2, 50)"></div>
-                                    <div class="segment" data-value="55" onclick="setNASARating(2, 55)"></div>
-                                    <div class="segment" data-value="60" onclick="setNASARating(2, 60)"></div>
-                                    <div class="segment" data-value="65" onclick="setNASARating(2, 65)"></div>
-                                    <div class="segment" data-value="70" onclick="setNASARating(2, 70)"></div>
-                                    <div class="segment" data-value="75" onclick="setNASARating(2, 75)"></div>
-                                    <div class="segment" data-value="80" onclick="setNASARating(2, 80)"></div>
-                                    <div class="segment" data-value="85" onclick="setNASARating(2, 85)"></div>
-                                    <div class="segment" data-value="90" onclick="setNASARating(2, 90)"></div>
-                                    <div class="segment" data-value="95" onclick="setNASARating(2, 95)"></div>
-                                    <div class="segment" data-value="100" onclick="setNASARating(2, 100)"></div>
-                                </div>
-                            </div>
-                            <div class="scale-labels">
-                                <span>Good</span>
-                                <span>Poor</span>
-                            </div>
-                            <div class="rating-display" id="nasa-rating-2">No rating selected</div>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Effort -->
-                <tr>
-                    <td class="question-number">21</td>
-                    <td class="question-text">
-                        <small>How hard did you have to work (mentally and physically) to accomplish your level of performance?</small>
-                    </td>
-                    <td class="likert-scale">
-                        <div class="nasa-scale" id="nasa-scale-3">
-                            <div class="scale-bar">
-                                <div class="scale-segments">
-                                    <div class="segment" data-value="5" onclick="setNASARating(3, 5)"></div>
-                                    <div class="segment" data-value="10" onclick="setNASARating(3, 10)"></div>
-                                    <div class="segment" data-value="15" onclick="setNASARating(3, 15)"></div>
-                                    <div class="segment" data-value="20" onclick="setNASARating(3, 20)"></div>
-                                    <div class="segment" data-value="25" onclick="setNASARating(3, 25)"></div>
-                                    <div class="segment" data-value="30" onclick="setNASARating(3, 30)"></div>
-                                    <div class="segment" data-value="35" onclick="setNASARating(3, 35)"></div>
-                                    <div class="segment" data-value="40" onclick="setNASARating(3, 40)"></div>
-                                    <div class="segment" data-value="45" onclick="setNASARating(3, 45)"></div>
-                                    <div class="segment" data-value="50" onclick="setNASARating(3, 50)"></div>
-                                    <div class="segment" data-value="55" onclick="setNASARating(3, 55)"></div>
-                                    <div class="segment" data-value="60" onclick="setNASARating(3, 60)"></div>
-                                    <div class="segment" data-value="65" onclick="setNASARating(3, 65)"></div>
-                                    <div class="segment" data-value="70" onclick="setNASARating(3, 70)"></div>
-                                    <div class="segment" data-value="75" onclick="setNASARating(3, 75)"></div>
-                                    <div class="segment" data-value="80" onclick="setNASARating(3, 80)"></div>
-                                    <div class="segment" data-value="85" onclick="setNASARating(3, 85)"></div>
-                                    <div class="segment" data-value="90" onclick="setNASARating(3, 90)"></div>
-                                    <div class="segment" data-value="95" onclick="setNASARating(3, 95)"></div>
-                                    <div class="segment" data-value="100" onclick="setNASARating(3, 100)"></div>
-                                </div>
-                            </div>
-                            <div class="scale-labels">
-                                <span>Low</span>
-                                <span>High</span>
-                            </div>
-                            <div class="rating-display" id="nasa-rating-3">No rating selected</div>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Mental Demand - Model Card -->
-                <tr>
-                    <td class="question-number">22</td>
-                    <td class="question-text">
-                        <small>Compared to going through a real legal compliance process, how mentally demanding was filling in the model card? Was the task easy or demanding, simple or complex, exacting or forgiving?</small>
-                    </td>
-                    <td class="likert-scale">
-                        <div class="nasa-scale" id="nasa-scale-4">
-                            <div class="scale-bar">
-                                <div class="scale-segments">
-                                    <div class="segment" data-value="5" onclick="setNASARating(4, 5)"></div>
-                                    <div class="segment" data-value="10" onclick="setNASARating(4, 10)"></div>
-                                    <div class="segment" data-value="15" onclick="setNASARating(4, 15)"></div>
-                                    <div class="segment" data-value="20" onclick="setNASARating(4, 20)"></div>
-                                    <div class="segment" data-value="25" onclick="setNASARating(4, 25)"></div>
-                                    <div class="segment" data-value="30" onclick="setNASARating(4, 30)"></div>
-                                    <div class="segment" data-value="35" onclick="setNASARating(4, 35)"></div>
-                                    <div class="segment" data-value="40" onclick="setNASARating(4, 40)"></div>
-                                    <div class="segment" data-value="45" onclick="setNASARating(4, 45)"></div>
-                                    <div class="segment" data-value="50" onclick="setNASARating(4, 50)"></div>
-                                    <div class="segment" data-value="55" onclick="setNASARating(4, 55)"></div>
-                                    <div class="segment" data-value="60" onclick="setNASARating(4, 60)"></div>
-                                    <div class="segment" data-value="65" onclick="setNASARating(4, 65)"></div>
-                                    <div class="segment" data-value="70" onclick="setNASARating(4, 70)"></div>
-                                    <div class="segment" data-value="75" onclick="setNASARating(4, 75)"></div>
-                                    <div class="segment" data-value="80" onclick="setNASARating(4, 80)"></div>
-                                    <div class="segment" data-value="85" onclick="setNASARating(4, 85)"></div>
-                                    <div class="segment" data-value="90" onclick="setNASARating(4, 90)"></div>
-                                    <div class="segment" data-value="95" onclick="setNASARating(4, 95)"></div>
-                                    <div class="segment" data-value="100" onclick="setNASARating(4, 100)"></div>
-                                </div>
-                            </div>
-                            <div class="scale-labels">
-                                <span>Low</span>
-                                <span>High</span>
-                            </div>
-                            <div class="rating-display" id="nasa-rating-4">No rating selected</div>
-                        </div>
-                    </td>
-                </tr>
-                
-                <!-- Physical Demand - Model Card -->
-                <tr>
-                    <td class="question-number">23</td>
-                    <td class="question-text">
-                        <small>Compared to going through a real legal compliance process, how physically demanding was filling in the model card? Was the task easy or demanding, slow or brisk, slack or strenuous, restful or laborious?</small>
-                    </td>
-                    <td class="likert-scale">
-                        <div class="nasa-scale" id="nasa-scale-5">
-                            <div class="scale-bar">
-                                <div class="scale-segments">
-                                    <div class="segment" data-value="5" onclick="setNASARating(5, 5)"></div>
-                                    <div class="segment" data-value="10" onclick="setNASARating(5, 10)"></div>
-                                    <div class="segment" data-value="15" onclick="setNASARating(5, 15)"></div>
-                                    <div class="segment" data-value="20" onclick="setNASARating(5, 20)"></div>
-                                    <div class="segment" data-value="25" onclick="setNASARating(5, 25)"></div>
-                                    <div class="segment" data-value="30" onclick="setNASARating(5, 30)"></div>
-                                    <div class="segment" data-value="35" onclick="setNASARating(5, 35)"></div>
-                                    <div class="segment" data-value="40" onclick="setNASARating(5, 40)"></div>
-                                    <div class="segment" data-value="45" onclick="setNASARating(5, 45)"></div>
-                                    <div class="segment" data-value="50" onclick="setNASARating(5, 50)"></div>
-                                    <div class="segment" data-value="55" onclick="setNASARating(5, 55)"></div>
-                                    <div class="segment" data-value="60" onclick="setNASARating(5, 60)"></div>
-                                    <div class="segment" data-value="65" onclick="setNASARating(5, 65)"></div>
-                                    <div class="segment" data-value="70" onclick="setNASARating(5, 70)"></div>
-                                    <div class="segment" data-value="75" onclick="setNASARating(5, 75)"></div>
-                                    <div class="segment" data-value="80" onclick="setNASARating(5, 80)"></div>
-                                    <div class="segment" data-value="85" onclick="setNASARating(5, 85)"></div>
-                                    <div class="segment" data-value="90" onclick="setNASARating(5, 90)"></div>
-                                    <div class="segment" data-value="95" onclick="setNASARating(5, 95)"></div>
-                                    <div class="segment" data-value="100" onclick="setNASARating(5, 100)"></div>
-                                </div>
-                            </div>
-                            <div class="scale-labels">
-                                <span>Low</span>
-                                <span>High</span>
-                            </div>
-                            <div class="rating-display" id="nasa-rating-5">No rating selected</div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        
         <button class="submit-btn" onclick="calculateResults()">Submit Responses</button>
         
         <div id="results" class="results">
@@ -875,27 +554,6 @@
         // Add the saveAs library for file downloads
         var saveAs=saveAs||function(e){"use strict";if("undefined"==typeof navigator||!/MSIE [1-9]\./.test(navigator.userAgent)){var t=e.document,n=function(){return e.URL||e.webkitURL||e},o=t.createElementNS("http://www.w3.org/1999/xhtml","a"),r="download"in o,i=function(e){var t=new MouseEvent("click");e.dispatchEvent(t)},a=/Version\/[\d\.]+.*Safari/.test(navigator.userAgent),c=e.webkitRequestFileSystem,f=e.requestFileSystem||c||e.mozRequestFileSystem,u=function(t){(e.setImmediate||e.setTimeout)(function(){throw t},0)},d="application/octet-stream",s=0,l=4e4,v=function(e){var t=function(){"string"==typeof e?n().revokeObjectURL(e):e.remove()};setTimeout(t,l)},p=function(e,t,n){t=[].concat(t);for(var o=t.length;o--;){var r=e["on"+t[o]];if("function"==typeof r)try{r.call(e,n||e)}catch(i){u(i)}}},w=function(e){return/^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(e.type)?new Blob(["\ufeff",e],{type:e.type}):e},y=function(t,u,l){l||(t=w(t));var y,m,S,h=this,R=t.type,O=!1,g=function(){p(h,"writestart progress write writeend".split(" "))},b=function(){if(m&&a&&"undefined"!=typeof FileReader){var o=new FileReader;return o.onloadend=function(){var e=o.result;m.location.href="data:attachment/file"+e.slice(e.search(/[,;]/)),h.readyState=h.DONE,g()},o.readAsDataURL(t),void(h.readyState=h.INIT)}if((O||!y)&&(y=n().createObjectURL(t)),m)m.location.href=y;else{var r=e.open(y,"_blank");void 0===r&&a&&(e.location.href=y)}h.readyState=h.DONE,g(),v(y)},E=function(e){return function(){return h.readyState!==h.DONE?e.apply(this,arguments):void 0}},N={create:!0,exclusive:!1};return h.readyState=h.INIT,u||(u="download"),r?(y=n().createObjectURL(t),void setTimeout(function(){o.href=y,o.download=u,i(o),g(),v(y),h.readyState=h.DONE})):(e.chrome&&R&&R!==d&&(S=t.slice||t.webkitSlice,t=S.call(t,0,t.size,d),O=!0),c&&"download"!==u&&(u+=".download"),(R===d||c)&&(m=e),f?(s+=t.size,void f(e.TEMPORARY,s,E(function(e){e.root.getDirectory("saved",N,E(function(e){var n=function(){e.getFile(u,N,E(function(e){e.createWriter(E(function(n){n.onwriteend=function(t){m.location.href=e.toURL(),h.readyState=h.DONE,p(h,"writeend",t),v(e)},n.onerror=function(){var e=n.error;e.code!==e.ABORT_ERR&&b()},"writestart progress write abort".split(" ").forEach(function(e){n["on"+e]=h["on"+e]}),n.write(t),h.abort=function(){n.abort(),h.readyState=h.DONE},h.readyState=h.WRITING}),b)}),b)};e.getFile(u,{create:!1},E(function(e){e.remove(),n()}),E(function(e){e.code===e.NOT_FOUND_ERR?n():b()}))}),b)}),b)):void b())},m=y.prototype,S=function(e,t,n){return new y(e,t,n)};return"undefined"!=typeof navigator&&navigator.msSaveOrOpenBlob?function(e,t,n){return n||(e=w(e)),navigator.msSaveOrOpenBlob(e,t||"download")}:(m.abort=function(){var e=this;e.readyState=e.DONE,p(e,"abort")},m.readyState=m.INIT=0,m.WRITING=1,m.DONE=2,m.error=m.onwritestart=m.onprogress=m.onwrite=m.onabort=m.onerror=m.onwriteend=null,S)}}("undefined"!=typeof self&&self||"undefined"!=typeof window&&window||this.content);
 
-        // NASA TLX ratings storage
-        let nasaRatings = {};
-        
-        function setNASARating(scaleIndex, value) {
-            // Clear previous selection
-            const scale = document.getElementById(`nasa-scale-${scaleIndex}`);
-            const segments = scale.querySelectorAll('.segment');
-            segments.forEach(seg => seg.classList.remove('selected'));
-            
-            // Select the clicked segment
-            const selectedSegment = scale.querySelector(`[data-value="${value}"]`);
-            selectedSegment.classList.add('selected');
-            
-            // Update rating display
-            const ratingDisplay = document.getElementById(`nasa-rating-${scaleIndex}`);
-            ratingDisplay.textContent = `Rating: ${value}`;
-            
-            // Store the rating
-            nasaRatings[scaleIndex] = value;
-        }
-        
         function calculateResults() {
             // Get participant info
             const participant = document.getElementById('participant').value.trim();
@@ -924,20 +582,6 @@
                 return;
             }
             
-            // Check NASA TLX ratings
-            let allNASARated = true;
-            for (let i = 0; i < 6; i++) {
-                if (!nasaRatings[i]) {
-                    allNASARated = false;
-                    break;
-                }
-            }
-            
-            if (!allNASARated) {
-                alert('Please complete all NASA TLX scales before submitting.');
-                return;
-            }
-            
             // Calculate SUS score (standard SUS scoring for first 10 questions only)
             // For SUS, odd questions are scored as (score - 1) and even questions as (5 - score)
             let susScore = 0;
@@ -961,12 +605,6 @@
                 complianceScore += responses[`q${i}`];
             }
             complianceScore = (complianceScore / 7) * 20; // Convert to 0-100 scale
-            
-            // Calculate NASA TLX scores
-            const nasaScaleNames = [
-                'Mental Demand', 'Physical Demand', 'Performance', 
-                'Effort', 'Mental Demand - Model Card', 'Physical Demand - Model Card'
-            ];
             
             // Determine SUS grade
             let grade = '';
@@ -997,10 +635,6 @@
                 <p><strong>Standard SUS Score (Questions 1-10):</strong> <span style="font-size: 1.2em; font-weight: bold; color: ${gradeColor};">${susScore.toFixed(1)}/100</span></p>
                 <p><strong>SUS Grade:</strong> <span style="color: ${gradeColor}; font-weight: bold;">${grade}</span></p>
                 <p><strong>Compliance Report Score (Questions 11-17):</strong> <span style="font-size: 1.2em; font-weight: bold; color: #2196F3;">${complianceScore.toFixed(1)}/100</span></p>
-                <p><strong>NASA TLX Ratings:</strong></p>
-                <ul>
-                    ${Object.keys(nasaRatings).map(index => `<li>${nasaScaleNames[index]}: ${nasaRatings[index]}/100</li>`).join('')}
-                </ul>
                 <p><strong>Individual SUS Responses:</strong></p>
                 <ul>
                     ${Object.keys(responses).map(q => `<li>Question ${q.substring(1)}: ${responses[q]}/5</li>`).join('')}
@@ -1026,17 +660,9 @@
                     susGrade: grade,
                     complianceScore: complianceScore
                 },
-                nasaTLX: {
-                    ratings: nasaRatings,
-                    scales: nasaScaleNames
-                },
                 calculatedScores: {
                     standardSUSScore: susScore,
-                    complianceReportScore: complianceScore,
-                    nasaTLXRatings: Object.keys(nasaRatings).map(index => ({
-                        scale: nasaScaleNames[index],
-                        rating: nasaRatings[index]
-                    }))
+                    complianceReportScore: complianceScore
                 }
             };
             
