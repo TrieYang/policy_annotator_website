@@ -20,6 +20,163 @@ import asyncio
 SAMPLE_RESPONSE_FOLDER = "./sample_responses"
 TESTING_MODE = False
 
+def generate_policy_summary_prompt(policy_name, policy_data, model_card_content, sections):
+    """Generate the prompt for policy summary (extracted for token tracking)"""
+    import json
+    from utils.policy_summary import generate_policy_summary
+    # This is a helper to generate the prompt that generate_policy_summary would use
+    # We'll call the actual function but need to extract the prompt building logic
+    # For now, we'll use a simpler approach - just call it and track the response
+    pass
+
+async def generate_policy_summary_prompt_async(policy_name, policy_data, model_card_content, sections):
+    """Async version to build the prompt"""
+    import json
+    import aiofiles
+    
+    async with aiofiles.open("prompt_summarize.txt", "r") as f:
+        prompt_template = await f.read()
+    
+    evaluation_results = []
+    for section in sections:
+        if section not in policy_data['scores']:
+            continue
+        for article, score in policy_data['scores'][section].items():
+            if score < 5:
+                description = policy_data['descriptions'][section].get(article, "No description available")
+                evaluation_results.append({
+                    "section": section,
+                    "article": article,
+                    "score": score,
+                    "description": description
+                })
+    
+    if not evaluation_results:
+        return None  # Will return early, no LLM call needed
+    
+    evaluation_str = json.dumps(evaluation_results, indent=2)
+    prompt = prompt_template.replace("{{POLICY_DOC_NAME}}", policy_name)
+    prompt = prompt.replace("{{EVALUATION_RESULT}}", evaluation_str)
+    return prompt
+
+def generate_top_level_summary_prompt(summaries):
+    """Generate the prompt for top-level summary"""
+    import json
+    import aiofiles
+    
+    # Read synchronously for this helper
+    with open("prompt_top_level_summary.txt", "r") as f:
+        prompt_template = f.read()
+    
+    summaries_json = json.dumps({"policy_summaries": summaries}, indent=2)
+    prompt = prompt_template.replace("{{POLICY_SUMMARIES}}", summaries_json)
+    return prompt
+
+async def generate_cost_report(cost_tracking, input_cost_per_million, output_cost_per_million):
+    """Generate a markdown cost report file"""
+    timestamp = int(time.time())
+    report_filename = f"cost_report_{timestamp}.md"
+    cost_reports_folder = "cost_reports"
+    report_path = os.path.join(cost_reports_folder, report_filename)
+    
+    os.makedirs(cost_reports_folder, exist_ok=True)
+    
+    report_lines = []
+    report_lines.append("# Cost and Performance Report\n")
+    report_lines.append(f"**Generated:** {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+    report_lines.append(f"**Report ID:** {timestamp}\n\n")
+    report_lines.append("---\n\n")
+    
+    # Per-policy breakdown
+    report_lines.append("## Per-Policy Evaluation Breakdown\n\n")
+    report_lines.append("| Policy | Input Tokens | Output Tokens | Requests | Failed | Input Cost | Output Cost | Total Cost |\n")
+    report_lines.append("|--------|--------------|---------------|----------|--------|------------|-------------|------------|\n")
+    
+    total_policy_input = 0
+    total_policy_output = 0
+    total_policy_requests = 0
+    total_policy_failed = 0
+    
+    for policy_name, stats in sorted(cost_tracking['policies'].items()):
+        input_tokens = stats['input_tokens']
+        output_tokens = stats['output_tokens']
+        num_requests = stats['num_requests']
+        failed = stats['failed_requests']
+        
+        input_cost = (input_tokens / 1_000_000) * input_cost_per_million
+        output_cost = (output_tokens / 1_000_000) * output_cost_per_million
+        total_cost = input_cost + output_cost
+        
+        report_lines.append(
+            f"| {policy_name} | {input_tokens:,} | {output_tokens:,} | {num_requests} | {failed} | "
+            f"${input_cost:.4f} | ${output_cost:.4f} | ${total_cost:.4f} |\n"
+        )
+        
+        total_policy_input += input_tokens
+        total_policy_output += output_tokens
+        total_policy_requests += num_requests
+        total_policy_failed += failed
+    
+    # Add evaluation time note
+    eval_time = cost_tracking['total'].get('evaluation_time', 0)
+    report_lines.append(f"\n**Note:** All policy evaluations ran concurrently. Total evaluation time: {eval_time:.2f} seconds ({eval_time/60:.2f} minutes)\n\n")
+    
+    # Summary generation
+    report_lines.append("\n## Summary Generation\n\n")
+    summary_input = cost_tracking['summary']['input_tokens']
+    summary_output = cost_tracking['summary']['output_tokens']
+    summary_time = cost_tracking['summary']['time']
+    
+    summary_input_cost = (summary_input / 1_000_000) * input_cost_per_million
+    summary_output_cost = (summary_output / 1_000_000) * output_cost_per_million
+    summary_total_cost = summary_input_cost + summary_output_cost
+    
+    report_lines.append(f"- **Input Tokens:** {summary_input:,}\n")
+    report_lines.append(f"- **Output Tokens:** {summary_output:,}\n")
+    report_lines.append(f"- **Time:** {summary_time:.2f} seconds\n")
+    report_lines.append(f"- **Input Cost:** ${summary_input_cost:.4f}\n")
+    report_lines.append(f"- **Output Cost:** ${summary_output_cost:.4f}\n")
+    report_lines.append(f"- **Total Cost:** ${summary_total_cost:.4f}\n\n")
+    
+    # Totals
+    report_lines.append("## Total Summary\n\n")
+    total_input = cost_tracking['total']['input_tokens'] + summary_input
+    total_output = cost_tracking['total']['output_tokens'] + summary_output
+    total_time = cost_tracking['total']['time']
+    
+    total_input_cost = (total_input / 1_000_000) * input_cost_per_million
+    total_output_cost = (total_output / 1_000_000) * output_cost_per_million
+    total_cost = total_input_cost + total_output_cost
+    
+    report_lines.append(f"- **Total Input Tokens:** {total_input:,}\n")
+    report_lines.append(f"- **Total Output Tokens:** {total_output:,}\n")
+    report_lines.append(f"- **Total Tokens:** {total_input + total_output:,}\n")
+    report_lines.append(f"- **Total Time:** {total_time:.2f} seconds ({total_time/60:.2f} minutes)\n")
+    report_lines.append(f"  - Evaluation Time: {cost_tracking['total'].get('evaluation_time', 0):.2f} seconds\n")
+    report_lines.append(f"  - Summary Time: {cost_tracking['summary']['time']:.2f} seconds\n")
+    report_lines.append(f"- **Total Input Cost:** ${total_input_cost:.4f}\n")
+    report_lines.append(f"- **Total Output Cost:** ${total_output_cost:.4f}\n")
+    report_lines.append(f"- **🎯 TOTAL COST:** **${total_cost:.4f}**\n\n")
+    
+    report_lines.append("---\n\n")
+    report_lines.append("## Pricing Information\n\n")
+    report_lines.append(f"- **Input Cost:** ${input_cost_per_million:.2f} per million tokens\n")
+    report_lines.append(f"- **Output Cost:** ${output_cost_per_million:.2f} per million tokens\n")
+    report_lines.append(f"- **Model:** Claude Sonnet 4\n\n")
+    
+    # Write report
+    async with aiofiles.open(report_path, "w", encoding="utf-8") as f:
+        await f.write("".join(report_lines))
+    
+    print(f"\n{'='*60}")
+    print(f"💰 COST REPORT GENERATED: {report_path}")
+    print(f"{'='*60}")
+    print(f"Total Cost: ${total_cost:.4f}")
+    print(f"Total Time: {total_time:.2f} seconds ({total_time/60:.2f} minutes)")
+    print(f"{'='*60}\n")
+    
+    return report_path
+
 def load_relevancy_map(policy_name):
     """
     Dynamically load the appropriate relevancy map based on policy name.
@@ -193,6 +350,17 @@ sections = [
 
 
 async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_policies=None):
+    # Initialize cost tracking
+    cost_tracking = {
+        'policies': {},
+        'summary': {'input_tokens': 0, 'output_tokens': 0, 'time': 0},
+        'total': {'input_tokens': 0, 'output_tokens': 0, 'time': 0, 'start_time': time.time()}
+    }
+    
+    # Claude Sonnet 4 pricing (per million tokens)
+    INPUT_COST_PER_MILLION = 3.0
+    OUTPUT_COST_PER_MILLION = 15.0
+    
     try:
         # Load model card content from CSV and convert to markdown table format
         df = pd.read_csv(model_card_path)
@@ -339,8 +507,11 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         responses = await asyncio.gather(*all_tasks, return_exceptions=True)
         end_time = time.time()
         
-        print(f"Completed {len(all_tasks)} requests in {end_time - start_time:.2f} seconds")
-        print(f"Average time per request: {(end_time - start_time) / len(all_tasks):.2f} seconds")
+        evaluation_time = end_time - start_time
+        evaluation_time = end_time - start_time
+        cost_tracking['total']['evaluation_time'] = evaluation_time
+        print(f"Completed {len(all_tasks)} requests in {evaluation_time:.2f} seconds")
+        print(f"Average time per request: {evaluation_time / len(all_tasks):.2f} seconds")
         
         # Initialize section data for all policies
         policy_section_scores = {}
@@ -350,6 +521,14 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
             policy_name = policy_file.split('.')[0]
             policy_section_scores[policy_name] = {section: {} for section in sections}
             policy_section_descriptions[policy_name] = {section: {} for section in sections}
+            # Initialize cost tracking for this policy
+            cost_tracking['policies'][policy_name] = {
+                'input_tokens': 0,
+                'output_tokens': 0,
+                'time': 0,  # Will be calculated based on requests
+                'num_requests': 0,
+                'failed_requests': 0
+            }
         
         # Process all responses
         print(f"\n{'='*50}")
@@ -369,10 +548,39 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
             if isinstance(response, Exception):
                 print(f"Request failed for {policy_file} section '{section}' articles {articles_str}: {str(response)}")
                 failed_requests += 1
+                policy_name = policy_file.split('.')[0]
+                if policy_name in cost_tracking['policies']:
+                    cost_tracking['policies'][policy_name]['failed_requests'] += 1
                 continue
             
             try:
                 print(f"Processing response for {policy_file} section '{section}' articles {articles_str}")
+                
+                # Track token usage
+                policy_name = policy_file.split('.')[0]
+                input_tokens = 0
+                output_tokens = 0
+                
+                # Try different ways to get usage metadata
+                if hasattr(response, 'response_metadata') and response.response_metadata:
+                    usage = response.response_metadata.get('usage', {})
+                    input_tokens = usage.get('input_tokens', 0) or usage.get('input_token_count', 0)
+                    output_tokens = usage.get('output_tokens', 0) or usage.get('output_token_count', 0)
+                elif hasattr(response, 'usage_metadata') and response.usage_metadata:
+                    usage = response.usage_metadata
+                    if isinstance(usage, dict):
+                        input_tokens = usage.get('input_tokens', 0) or usage.get('input_token_count', 0)
+                        output_tokens = usage.get('output_tokens', 0) or usage.get('output_token_count', 0)
+                    elif hasattr(usage, 'input_tokens'):
+                        input_tokens = usage.input_tokens
+                        output_tokens = usage.output_tokens
+                
+                if policy_name in cost_tracking['policies']:
+                    cost_tracking['policies'][policy_name]['input_tokens'] += input_tokens
+                    cost_tracking['policies'][policy_name]['output_tokens'] += output_tokens
+                    cost_tracking['policies'][policy_name]['num_requests'] += 1
+                    cost_tracking['total']['input_tokens'] += input_tokens
+                    cost_tracking['total']['output_tokens'] += output_tokens
                 
                 # Parse the markdown table to extract JSON content
                 lines = response.content.strip().splitlines()
@@ -526,91 +734,198 @@ async def run_ai_pipeline(model_card_path, policy_folder, output_path, selected_
         generate_interactive_heatmap(scores_df, descriptions_df, "Combined", model_card_content, heatmap_filename)
         heatmap_filenames.append(heatmap_filename)
 
-        # Generate summaries for each policy
+        # Generate summaries for each policy (concurrently)
         summaries = {}
+        summary_start_time = time.time()
+        
+        # Create tasks for all policy summaries
+        policy_summary_tasks = []
+        policy_summary_metadata = {}
+        
+        print(f"\n{'='*50}")
+        print(f"Preparing {len(policy_files)} policy summaries for concurrent generation...")
+        print(f"{'='*50}")
+        
         for policy_file in policy_files:
             try:
                 policy_name = policy_file.split('.')[0]
-                if policy_name in all_policy_data:
-                    policy_data = all_policy_data[policy_name]
-                    print(f"\nGenerating summary for policy: {policy_name}")
-                    print(f"Policy data keys: {list(policy_data.keys())}")
-                    print(f"Number of sections with data: {len([s for s in sections if s in policy_data['scores']])}")
-                    
-                    # Validate policy data structure
-                    if 'scores' not in policy_data or 'descriptions' not in policy_data:
-                        print(f"Error: Invalid policy data structure for {policy_name}")
-                        summaries[policy_name] = f"""**Current Compliance Status:**
+                if policy_name not in all_policy_data:
+                    print(f"Warning: No policy data found for {policy_name}")
+                    continue
+                
+                policy_data = all_policy_data[policy_name]
+                print(f"Preparing summary for policy: {policy_name}")
+                
+                # Validate policy data structure
+                if 'scores' not in policy_data or 'descriptions' not in policy_data:
+                    print(f"Error: Invalid policy data structure for {policy_name}")
+                    summaries[policy_name] = f"""**Current Compliance Status:**
 Error: Invalid policy data structure for {policy_name}. Please check the evaluation results manually.
 
 **Compliance Gaps and To-dos:**
 | Compliance Gap | Description | To-dos | Priority |
 |----------------|-------------|--------|----------|
 | Data Structure Error | Invalid policy data structure | Review evaluation process | High |"""
-                        continue
-                    
-                    # Check if there's any actual evaluation data
-                    has_data = False
-                    for section in sections:
-                        if section in policy_data['scores'] and policy_data['scores'][section]:
-                            has_data = True
-                            break
-                    
-                    if not has_data:
-                        print(f"Warning: No evaluation data found for {policy_name}")
-                        summaries[policy_name] = f"""**Current Compliance Status:**
+                    continue
+                
+                # Check if there's any actual evaluation data
+                has_data = False
+                for section in sections:
+                    if section in policy_data['scores'] and policy_data['scores'][section]:
+                        has_data = True
+                        break
+                
+                if not has_data:
+                    print(f"Warning: No evaluation data found for {policy_name}")
+                    summaries[policy_name] = f"""**Current Compliance Status:**
 No evaluation data found for {policy_name}. This could indicate that no applicable policy requirements were found or an error occurred during evaluation.
 
 **Compliance Gaps and To-dos:**
 | Compliance Gap | Description | To-dos | Priority |
 |----------------|-------------|--------|----------|
 | No Evaluation Data | No applicable policy requirements found | Review policy mapping and evaluation process | Medium |"""
-                        continue
-                    
-                    # Add timeout protection for the entire summary generation
+                    continue
+                
+                # Create async task for policy summary
+                async def generate_single_policy_summary(policy_name, policy_data, model_card_content, sections, llm, cost_tracking):
                     try:
-                        summary = await asyncio.wait_for(
-                            generate_policy_summary(policy_name, policy_data, model_card_content, llm, sections),
-                            timeout=600  # 10 minute timeout for entire summary generation
-                        )
-                        summaries[policy_name] = summary
-                        print(f"Generated summary for {policy_name}")
+                        # Build prompt
+                        prompt = await generate_policy_summary_prompt_async(policy_name, policy_data, model_card_content, sections)
+                        
+                        if prompt is None:
+                            # No non-compliant articles, return early
+                            return policy_name, f"""**Current Compliance Status:**
+The model card demonstrates full compliance with {policy_name} requirements. All evaluated sections meet the necessary standards with no identified compliance gaps.
+
+**Compliance Gaps and To-dos:**
+| Compliance Gap | Description | To-dos | Priority |
+|----------------|-------------|--------|----------|
+| None | All requirements met | Continue monitoring compliance | N/A |""", 0, 0
+                        else:
+                            summary_response = await asyncio.wait_for(
+                                asyncio.to_thread(llm.invoke, prompt),
+                                timeout=600  # 10 minute timeout
+                            )
+                            summary = summary_response.content.strip()
+                            
+                            # Track token usage
+                            input_tokens = 0
+                            output_tokens = 0
+                            if hasattr(summary_response, 'response_metadata') and summary_response.response_metadata:
+                                usage = summary_response.response_metadata.get('usage', {})
+                                input_tokens = usage.get('input_tokens', 0) or usage.get('input_token_count', 0)
+                                output_tokens = usage.get('output_tokens', 0) or usage.get('output_token_count', 0)
+                            elif hasattr(summary_response, 'usage_metadata') and summary_response.usage_metadata:
+                                usage = summary_response.usage_metadata
+                                if isinstance(usage, dict):
+                                    input_tokens = usage.get('input_tokens', 0) or usage.get('input_token_count', 0)
+                                    output_tokens = usage.get('output_tokens', 0) or usage.get('output_token_count', 0)
+                                elif hasattr(usage, 'input_tokens'):
+                                    input_tokens = usage.input_tokens
+                                    output_tokens = usage.output_tokens
+                            
+                            return policy_name, summary, input_tokens, output_tokens
                     except asyncio.TimeoutError:
                         print(f"Timeout error generating summary for {policy_name}")
-                        summaries[policy_name] = f"""**Current Compliance Status:**
+                        return policy_name, f"""**Current Compliance Status:**
 Timeout occurred while generating summary for {policy_name}. Please check the evaluation results manually.
 
 **Compliance Gaps and To-dos:**
 | Compliance Gap | Description | To-dos | Priority |
 |----------------|-------------|--------|----------|
-| Summary Generation Timeout | Unable to generate detailed summary | Review evaluation results manually | Medium |"""
+| Summary Generation Timeout | Unable to generate detailed summary | Review evaluation results manually | Medium |""", 0, 0
                     except Exception as e:
                         print(f"Error generating summary for {policy_name}: {str(e)}")
-                        summaries[policy_name] = f"""**Current Compliance Status:**
+                        return policy_name, f"""**Current Compliance Status:**
 Error occurred while generating summary for {policy_name}. Please check the evaluation results manually.
 
 **Compliance Gaps and To-dos:**
 | Compliance Gap | Description | To-dos | Priority |
 |----------------|-------------|--------|----------|
-| Summary Generation Error | {str(e)} | Review evaluation results manually | Medium |"""
-                else:
-                    print(f"Warning: No policy data found for {policy_name}")
+| Summary Generation Error | {str(e)} | Review evaluation results manually | Medium |""", 0, 0
+                
+                task = asyncio.create_task(
+                    generate_single_policy_summary(policy_name, policy_data, model_card_content, sections, llm, cost_tracking)
+                )
+                policy_summary_tasks.append(task)
+                policy_summary_metadata[len(policy_summary_tasks) - 1] = policy_name
+                
             except Exception as e:
-                print(f"Error processing policy file {policy_file}: {str(e)}")
+                print(f"Error preparing policy summary for {policy_file}: {str(e)}")
                 continue
+        
+        # Execute all policy summaries concurrently
+        print(f"\n{'='*50}")
+        print(f"Executing {len(policy_summary_tasks)} policy summary requests concurrently...")
+        print(f"{'='*50}")
+        
+        policy_summary_responses = await asyncio.gather(*policy_summary_tasks, return_exceptions=True)
+        
+        # Process responses
+        for idx, response in enumerate(policy_summary_responses):
+            if isinstance(response, Exception):
+                policy_name = policy_summary_metadata.get(idx, "Unknown")
+                print(f"Error in policy summary task for {policy_name}: {str(response)}")
+                summaries[policy_name] = f"""**Current Compliance Status:**
+Error occurred while generating summary for {policy_name}. Please check the evaluation results manually.
+
+**Compliance Gaps and To-dos:**
+| Compliance Gap | Description | To-dos | Priority |
+|----------------|-------------|--------|----------|
+| Summary Generation Error | {str(response)} | Review evaluation results manually | Medium |"""
+            else:
+                policy_name, summary, input_tokens, output_tokens = response
+                summaries[policy_name] = summary
+                cost_tracking['summary']['input_tokens'] += input_tokens
+                cost_tracking['summary']['output_tokens'] += output_tokens
+                print(f"Generated summary for {policy_name}")
+        
+        summary_time = time.time() - summary_start_time
+        cost_tracking['summary']['time'] = summary_time
+        print(f"\nCompleted {len(policy_summary_tasks)} policy summaries in {summary_time:.2f} seconds")
 
         print("\nGenerated summaries for policies:", list(summaries.keys()))
         
         # Generate top-level summary
         print("\nGenerating top-level summary across all policies...")
-        top_level_summary = await generate_top_level_summary(summaries, llm)
+        top_level_start = time.time()
+        top_level_response = await asyncio.to_thread(llm.invoke, 
+            generate_top_level_summary_prompt(summaries))
+        top_level_summary = top_level_response.content.strip()
+        top_level_time = time.time() - top_level_start
+        cost_tracking['summary']['time'] += top_level_time
+        
+        # Track token usage for top-level summary
+        input_tokens = 0
+        output_tokens = 0
+        if hasattr(top_level_response, 'response_metadata') and top_level_response.response_metadata:
+            usage = top_level_response.response_metadata.get('usage', {})
+            input_tokens = usage.get('input_tokens', 0) or usage.get('input_token_count', 0)
+            output_tokens = usage.get('output_tokens', 0) or usage.get('output_token_count', 0)
+        elif hasattr(top_level_response, 'usage_metadata') and top_level_response.usage_metadata:
+            usage = top_level_response.usage_metadata
+            if isinstance(usage, dict):
+                input_tokens = usage.get('input_tokens', 0) or usage.get('input_token_count', 0)
+                output_tokens = usage.get('output_tokens', 0) or usage.get('output_token_count', 0)
+            elif hasattr(usage, 'input_tokens'):
+                input_tokens = usage.input_tokens
+                output_tokens = usage.output_tokens
+        cost_tracking['summary']['input_tokens'] += input_tokens
+        cost_tracking['summary']['output_tokens'] += output_tokens
+        
         print("Generated top-level summary")
 
         # Generate section-based summaries
         print("\nGenerating section-based summaries...")
+        section_summary_start = time.time()
         try:
             section_summaries = await generate_multiple_section_summaries(section_data, llm, TESTING_MODE)
+            section_summary_time = time.time() - section_summary_start
+            cost_tracking['summary']['time'] += section_summary_time
             print(f"Generated summaries for {len(section_summaries)} sections")
+            
+            # Note: Section summary token tracking would need to be added to generate_multiple_section_summaries
+            # For now, we'll estimate or track separately if needed
         except Exception as e:
             print(f"Error generating section summaries: {str(e)}")
             # Fallback to individual processing if the main function fails
@@ -642,7 +957,17 @@ An error occurred while generating the summary for this section. Please check th
                     })
 
         print("All evaluations completed.")
+        
+        # Calculate total time
+        cost_tracking['total']['time'] = time.time() - cost_tracking['total']['start_time']
+        
+        # Generate cost report
+        await generate_cost_report(cost_tracking, INPUT_COST_PER_MILLION, OUTPUT_COST_PER_MILLION)
+        
         return heatmap_filenames, summaries, top_level_summary, section_summaries
     except Exception as e:
         print(f"Error in AI pipeline: {str(e)}")
+        # Still generate cost report even on error
+        cost_tracking['total']['time'] = time.time() - cost_tracking['total']['start_time']
+        await generate_cost_report(cost_tracking, INPUT_COST_PER_MILLION, OUTPUT_COST_PER_MILLION)
         raise
