@@ -1,17 +1,19 @@
 import json
 
+DEFAULT_SECTIONS = [
+    "System Name", "Versioning Information", "Primary Developer/Org",
+    "Contact Info", "System Overview", "Primary intended uses",
+    "Primary intended users", "Out-of-scope use cases", "Terms and conditions",
+    "Current legal compliance status", "Dataset Description", "Collection Method",
+    "Bias Mitigation Measures", "Usage Constraints", "Summary of Performance Assessment",
+    "Disaggregated Performance", "Testing Contexts",
+    "Evaluations for Edge Cases or Adversarial Inputs", "Potential Risks and Harms",
+    "Actions taken", "Misuse Scenarios", "Human Oversight", "Update Frequency"
+]
+
 def get_chunking_prompt(sections=None, irre=True):
     if sections is None:
-        sections = [
-            "System Name", "Versioning Information", "Primary Developer/Org",
-            "Contact Info", "System Overview", "Primary intended uses",
-            "Primary intended users", "Out-of-scope use cases", "Terms and conditions",
-            "Current legal compliance status", "Dataset Description", "Collection Method",
-            "Bias Mitigation Measures", "Usage Constraints", "Summary of Performance Assessment",
-            "Disaggregated Performance", "Testing Contexts",
-            "Evaluations for Edge Cases or Adversarial Inputs", "Potential Risks and Harms",
-            "Actions taken", "Misuse Scenarios", "Human Oversight", "Update Frequency"
-        ]
+        sections = DEFAULT_SECTIONS
     
     sections_str = json.dumps(sections)
     if irre:
@@ -94,19 +96,9 @@ def parse_chunk_response(response, irre=True):
             }
         except Exception as e:
             print(f"Error parsing chunk response: {e}")
-            # Fallback to evaluating everything at once for all sections
             return {
                 section: [(1, 999)]  # Large end number to include all articles
-                for section in [
-                    "System Name", "Versioning Information", "Primary Developer/Org",
-                    "Contact Info", "System Overview", "Primary intended uses",
-                    "Primary intended users", "Out-of-scope use cases", "Terms and conditions",
-                    "Current legal compliance status", "Dataset Description", "Collection Method",
-                    "Bias Mitigation Measures", "Usage Constraints", "Summary of Performance Assessment",
-                    "Disaggregated Performance", "Testing Contexts",
-                    "Evaluations for Edge Cases or Adversarial Inputs", "Potential Risks and Harms",
-                    "Actions taken", "Misuse Scenarios", "Human Oversight", "Update Frequency"
-                ]
+                for section in DEFAULT_SECTIONS
             }
     else:
         try:
@@ -114,19 +106,11 @@ def parse_chunk_response(response, irre=True):
             return [(chunk["start"], chunk["end"]) for chunk in chunks]
         except Exception as e:
             print(f"Error parsing chunk response: {e}")
+            return []
 
 def get_section_groups():
     """Split sections into five groups for processing."""
-    all_sections = [
-        "System Name", "Versioning Information", "Primary Developer/Org",
-        "Contact Info", "System Overview", "Primary intended uses",
-        "Primary intended users", "Out-of-scope use cases", "Terms and conditions",
-        "Current legal compliance status", "Dataset Description", "Collection Method",
-        "Bias Mitigation Measures", "Usage Constraints", "Summary of Performance Assessment",
-        "Disaggregated Performance", "Testing Contexts",
-        "Evaluations for Edge Cases or Adversarial Inputs", "Potential Risks and Harms",
-        "Actions taken", "Misuse Scenarios", "Human Oversight", "Update Frequency"
-    ]
+    all_sections = DEFAULT_SECTIONS
     
     total = len(all_sections)
     base = total // 5

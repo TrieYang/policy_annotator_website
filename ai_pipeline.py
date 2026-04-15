@@ -1,39 +1,19 @@
 import os
 import time
-import sys
 import json
 import importlib.util
 from langchain_anthropic import ChatAnthropic
 from dotenv import load_dotenv
 import aiofiles
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
-from policy_chunker import get_chunking_prompt, parse_chunk_response, get_section_groups
 from utils.section_summary import generate_section_summary, generate_multiple_section_summaries
-from utils.top_level_summary import generate_top_level_summary
 from utils.interactive_heatmap import generate_interactive_heatmap
-from utils.policy_summary import generate_policy_summary
 import asyncio
 
-SAMPLE_RESPONSE_FOLDER = "./sample_responses"
 TESTING_MODE = False
-
-def generate_policy_summary_prompt(policy_name, policy_data, model_card_content, sections):
-    """Generate the prompt for policy summary (extracted for token tracking)"""
-    import json
-    from utils.policy_summary import generate_policy_summary
-    # This is a helper to generate the prompt that generate_policy_summary would use
-    # We'll call the actual function but need to extract the prompt building logic
-    # For now, we'll use a simpler approach - just call it and track the response
-    pass
 
 async def generate_policy_summary_prompt_async(policy_name, policy_data, model_card_content, sections):
     """Async version to build the prompt"""
-    import json
-    import aiofiles
-    
     async with aiofiles.open("prompt_summarize.txt", "r") as f:
         prompt_template = await f.read()
     
@@ -178,15 +158,10 @@ async def generate_cost_report(cost_tracking, input_cost_per_million, output_cos
     return report_path
 
 def load_relevancy_map(policy_name):
-    """
-    Dynamically load the appropriate relevancy map based on policy name.
-    Returns the section_chunks dictionary from the corresponding relevancy map file.
-    """
+    """Load the section_chunks map for a policy name."""
     try:
-        # Convert policy name to lowercase for file matching
         policy_lower = policy_name.lower()
-        
-        # Map policy names to relevancy map files
+
         if 'eu' in policy_lower:
             map_file = "relevancy_maps/eu_relevancy_map.py"
         elif 'ccpa' in policy_lower:
@@ -198,7 +173,6 @@ def load_relevancy_map(policy_name):
         elif 'gdpr' in policy_lower:
             map_file = "relevancy_maps/gdpr_relevancy_map.py"
         else:
-            # Default fallback - use the current hardcoded map
             print(f"Warning: No specific relevancy map found for policy '{policy_name}', using default map")
             return {
                 'System Name': [('Article 2', 'Article 4', 'Article 5', 'Article 7', 'Article 8')],
@@ -226,7 +200,6 @@ def load_relevancy_map(policy_name):
                 'Update Frequency': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')]
             }
         
-        # Load the relevancy map module
         spec = importlib.util.spec_from_file_location("relevancy_map", map_file)
         relevancy_map_module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(relevancy_map_module)
@@ -236,7 +209,6 @@ def load_relevancy_map(policy_name):
         
     except Exception as e:
         print(f"Error loading relevancy map for policy '{policy_name}': {e}")
-        # Return the default hardcoded map as fallback
         return {
             'System Name': [('Article 2', 'Article 4', 'Article 5', 'Article 7', 'Article 8')],
             'Versioning Information': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')],
@@ -263,58 +235,13 @@ def load_relevancy_map(policy_name):
             'Update Frequency': [('Article 1', 'Article 2', 'Article 3', 'Article 4', 'Article 5', 'Article 6', 'Article 7', 'Article 8', 'Article 9', 'Article 10'), ('Article 11', 'Article 12', 'Article 13', 'Article 14', 'Article 15', 'Article 16', 'Article 17', 'Article 18', 'Article 19', 'Article 20'), ('Article 21', 'Article 22', 'Article 23', 'Article 24', 'Article 25', 'Article 26', 'Article 27', 'Article 28', 'Article 29', 'Article 30'), ('Article 31', 'Article 32', 'Article 33', 'Article 34', 'Article 35', 'Article 36', 'Article 37', 'Article 38', 'Article 39', 'Article 40')]
         }
 
-class FakeLLM:
-    def __init__(self, sample_folder):
-        self.sample_folder = sample_folder
-        self.current_policy = None
-        self.current_section = None
-
-    def set_context(self, policy, section):
-        self.current_policy = policy
-        self.current_section = section
-
-    def _section_to_filename(self, section):
-        # Convert section name to filename format
-        # e.g., "System Name" -> "System_Name"
-        # e.g., "Primary Developer/Org" -> "Primary_Developer_Org"
-        # e.g., "Out-of-scope use cases" -> "Out_of_scope_Use_Cases"
-        # First replace special characters with underscores
-        filename = section.replace(" ", "_").replace("/", "_").replace("-", "_")
-        # Then capitalize each word
-        words = filename.split("_")
-        capitalized_words = [word.capitalize() for word in words]
-        return "_".join(capitalized_words)
-
-    def invoke(self, messages):
-        if not self.current_policy or not self.current_section:
-            raise ValueError("Policy and section must be set before invoking FakeLLM")
-
-        filename = self._section_to_filename(self.current_section)
-        sample_file_path = os.path.join(self.sample_folder, self.current_policy, f"{filename}.md")
-        
-        if not os.path.exists(sample_file_path):
-            raise FileNotFoundError(f"Sample response not found: {sample_file_path}")
-
-        with open(sample_file_path, "r") as f:
-            content = f.read()
-
-        return type("Response", (object,), {
-            "content": content,
-            "usage_metadata": {"input_token_details": "mocked"}
-        })()
-
 # Load environment variables
 load_dotenv()
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
 
-
-fakeLlm = FakeLLM(SAMPLE_RESPONSE_FOLDER)
-
 llm = ChatAnthropic(
 model="claude-sonnet-4-20250514",
-#model="claude-3-7-sonnet-20250219",
-#model="claude-3-haiku-20240307",
 anthropic_api_key=ANTHROPIC_API_KEY,
 temperature=0.3,
 max_retries=3,  # Add retry logic
