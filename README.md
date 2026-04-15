@@ -90,6 +90,14 @@ At runtime, the app creates/updates:
 - `static/` - generated heatmap HTML files
 - `cost_reports/` - token/cost markdown reports
 
+## Policy Parser Workflow
+
+This repo also includes a dedicated policy parsing workflow in `policy_parser/`, especially for converting policy text into structured clause tables using Claude.
+
+See the detailed guide:
+
+- [`policy_parser/README.md`](policy_parser/README.md)
+
 ## Running Pipeline Directly (Without Web UI)
 
 You can call `run_ai_pipeline(...)` from Python:

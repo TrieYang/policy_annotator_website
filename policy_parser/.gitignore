@@ -1,0 +1,23 @@
+.DS_Store
+**/.DS_Store
+
+# Generated evaluation artifacts
+outputs/
+model_tables/
+policy_tables/
+evaluation_contribution_score_EU/
+
+# Temporary/random samples
+policy_outputs/random_policy_clauses/
+policy_outputs/selected_clause.txt
+model_card_outputs/selected_clause.txt
+
+# Generated summaries/reports
+contribution_matrix_summary.txt
+AIDA_table.txt
+CCPA_table.txt
+policy_outputs/cleanup.txt
+policy_outputs/cleanup.md
+
+# Duplicate/backup working folders
+policy_outputs/Articles_structured copy/

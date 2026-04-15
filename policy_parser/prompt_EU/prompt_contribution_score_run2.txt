@@ -1,0 +1,85 @@
+### **Task**  
+Compare the **Model Card Information** with the **Legal Document Information**, both provided in markdown table format. Determine whether the AI system complies with the legal document by assigning compliance levels to each model card section and assessing the significance of each section in determining compliance. An **Information sheet** will be provided for context of the **Legal Document Information**.
+
+### **Instructions**
+- Evaluate each model card section(one markdown row in the provided **Model Card Information**) against each policy paragraph(one markdown row in the provided **Legal Document Information**). For each comparison for Compliance Contribution Score, remove that model card section to see how much does it impact the compliance evaluation for the **Model Card Information** with the **Legal Document Information**.
+- Assign a **Compliance Level** (0-5) based on how well the model card information satisfies legal document requirements.
+- Provide reasoning for the compliance level assigned.
+- Assign a **Compliance Contribution Score** (0-5) to indicate how critical this section of the model card is for determining compliance with the **specific provided** legal policy document (not AI policy compliance in general).  
+- Provide specific reasoning for the **Compliance Contribution Score** assigned. List which policy paragraph the section is relevant to with a good amount of detail. If the Compliance Contribution Score is under 5, explicitly state why it is only partially contributory.
+- Assess each section provided in the model card—**do not skip any section even if its Compliance Contribution Score is 0**.
+- Only evaluate model card section from "Usage Constraints" to "Update Frequency".
+- Use **Information sheet** to look for definition/additional information if a policy paragraph refers to other policy articles or regulations.
+- Ensure the final output is in a **Markdown Table Format**.
+
+---
+
+### **What is Compliance Contribution Score?**
+The **Compliance Contribution Score** evaluates how necessary a section is for assessing compliance with the provided legal document. Instead of measuring how "useful" or "related" a section is, it measures the impact of removing that section on the ability to determine compliance.
+
+It is scored based on **how much the absence of this section would hinder compliance assessment** for this model card, rather than how informative it is when present. It is important to notice that this approach not only focuses on the uniqueness of the information provided in the model card section and treats the model card as a whole, but also pays attention to sections' relevance to the content in the policy paragraph. For example, even if a section provides information that isn't mentioned in any other parts, if it isn't relevant to any policy paragraphs, removing it would not impact the compliance evaluation. 
+
+- **Level 0 (Not Needed)**: The section has no impact on compliance assessment. Removing it does not affect this model card's ability to determine compliance to one or multiple policy paragraphs.
+- **Level 5 (Essential)**: The section is indispensable. Without it, determining compliance to one or multiple policy paragraphs would be impossible or highly unreliable.
+- **Levels 1-4 (Partially Contributory)**: The section provides some information useful for compliance assessment, but its removal would not entirely prevent compliance determination to one or multiple policy paragraphs.
+
+---
+
+### **Inputs**
+#### **Model Card Information**: {{MODEL_CARD}}  
+#### **Legal Document Information**: {{LEGAL_DOC}}  
+#### **Information Sheet**: {{INFO_SHEET}} 
+
+---
+
+### **Example Input and Outputs (for format demonstration)**
+#### **Model Card Information (Example)**
+| Section | Content |
+| :---- | :---- |
+| System Overview	 | Computer vision-based retail analytics platform utilizing deep learning models for anonymous customer behavior tracking. Integrates with existing CCTV infrastructure to provide real-time insights on store traffic patterns, customer engagement, and space utilization through edge computing devices and cloud processing. |
+| Primary Intended Uses	 | (1) Store Layout Optimization: Analyzing customer movement patterns to optimize product placement and store design; (2) Peak Hour Management: Identifying busy periods for staff scheduling and resource allocation; (3) Conversion Rate Analysis: Measuring store entry to purchase ratios; (4) Department Performance Tracking: Monitoring customer engagement across different store sections |
+| Bias Mitigation Measures	 | (1) Diverse Store Types: Data collected from various retail formats and locations; (2) Cultural Representation: Balanced dataset across different cultural contexts and regions; (3) Accessibility Considerations: Includes movement patterns of customers with mobility aids; (4) Regular Bias Audits: Quarterly assessment of prediction accuracy across different demographics |
+
+---
+
+#### **Legal Document Information (Example)**
+| Article Number | Clause Number | Legal Clause |
+|------------|------------|-------------|
+| Article 9 | 1 | A risk management system shall be established, implemented, documented and maintained in relation to AI systems. |
+| Article 9 | 2 | The risk management system shall be understood as a continuous iterative process planned and run throughout the entire lifecycle of an AI system, requiring regular systematic review and updating... |
+
+---
+
+#### **Example Output Format(this is only provided as a reference for output formatting, its actual content/writing should be ignored)**
+###### **Table 1: Compliance Evaluation**
+| Model Card Section | Compliance Level (0-5) | Reasoning |
+|-------------------|------------------------|-----------|
+| System Overview | 3 | placeholder for reasoning |
+| Primary Intended Uses | 3 | placeholder for reasoning|
+| Bias Mitigation Measures | 4 | placeholder for reasoning |
+
+###### **Table 2: Compliance Contribution Score**
+| Model Card Section | Compliance Contribution Score (0-5) | Reasoning |
+|-------------------|------------------------|-----------|
+| System Overview | 3 | placeholder for reasoning |
+| Primary Intended Uses | 4 | placeholder for reasoning |
+| Bias Mitigation Measures | 5 | placeholder for reasoning |
+
+---
+
+### **Metrics**
+#### **Compliance Level** (0-5)  
+- **Level 0 – Non-Compliant**: The section contradicts legal requirements or provides no relevant compliance information.  
+- **Level 1 – Severely Insufficient**: Contains very little or vague information that does not support compliance assessment.  
+- **Level 2 – Partially Compliant**: Some elements align with the legal document, but major gaps exist.  
+- **Level 3 – Moderately Compliant**: Covers key requirements but lacks full implementation or supporting evidence.  
+- **Level 4 – Largely Compliant**: Satisfies most compliance requirements with clear evidence but has minor gaps.  
+- **Level 5 – Fully Compliant**: Completely adheres to the legal document’s requirements with detailed evidence.  
+
+#### **Compliance Contribution Score** (0-5)  
+- **Level 0 - Not Needed**: The section has no impact on compliance assessment. Removing it does not affect this model card's ability to determine compliance to one or multiple policy paragraphs.
+- **Level 1 - Marginal Contribution**: Provides minimal information, with little impact to determine compliance to one or multiple policy paragraphs if removed.  
+- **Level 2 - Some Contribution**: Offers indirect relevance but does not directly determine compliance.  
+- **Level 3 - Moderate Contribution**: Provides partial but significant evidence that helps assess compliance.  
+- **Level 4 - High Contribution**: The section is important for compliance assessment and removing it would make evaluation difficult.  
+- **Level 5 - Essential Contribution**: The section is indispensable. Without it, determining compliance to one or multiple policy paragraphs would be **impossible or highly unreliable**.
